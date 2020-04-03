@@ -17,3 +17,6 @@ replacing `<PATH TO FILE>` with the location where you saved the file.
 ## Use
 `File` > `New File` > `R Markdown` > `From Template` > `Basic Homework Template`
 Name your file something meaningful e.g. `123456789_stats20_hw1` where `123456789` is replaced with your University ID.
+
+This will create a new directory named `123456789_stats20_hw1` containing the required files. You should then, immediately, do:
+`File` > `New Project` > `Existing Directory` and select the newly created directory, e.g. `123456789_stats20_hw1`.
