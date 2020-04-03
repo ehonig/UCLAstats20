@@ -15,5 +15,5 @@ install.packages("<PATH TO FILE>/UCLAstats20_1.0.tar.gz", repos = NULL, type = "
 replacing `<PATH TO FILE>` with the location where you saved the file.
 
 ## Use
-`File > New File > R Markdown > From Template > Basic Homework Template`
+`File` > `New File` > `R Markdown` > `From Template` > `Basic Homework Template`
 Name your file something meaningful e.g. `123456789_stats20_hw1` where `123456789` is replaced with your University ID.
