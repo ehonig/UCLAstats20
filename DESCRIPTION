@@ -1,0 +1,13 @@
+Package: UCLAstats20
+Type: Package
+Title: Stats 20 Homework Templates
+Version: 1.0
+Author: Jake Elmstedt
+Maintainer: Jake Elmstedt <jake.elmstedt@gmail.com>
+Description: Two custom html_document templates for creating homework templates
+    to use in Stats 20: Introduction to Statistical Programming with R course at
+    UCLA.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+depends: rmdformats
