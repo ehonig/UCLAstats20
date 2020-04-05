@@ -43,16 +43,6 @@ $(function() {
 })
 ```
 
-\begin{center}
-All rights reserved, Michael Tsiang, 2017--2019.
-
-\includegraphics[width=0.1\textwidth]{by-nc-sa.png}
-
-Acknowledgements: Vivian Lew and Juana Sanchez
-\end{center}
-
-\newpage
-
 ## Learning Objectives {-}
 
 After studying this chapter, you should be able to:

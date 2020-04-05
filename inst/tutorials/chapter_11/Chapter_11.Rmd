@@ -48,15 +48,6 @@ $(function() {
 })
 ```
 
-\begin{center}
-All rights reserved, Michael Tsiang, 2017--2020.\\
-Acknowledgements: Vivian Lew and Juana Sanchez
-
-Do not post, share, or distribute anywhere or with anyone without explicit permission.
-\end{center}
-
-\newpage
-
 ## Learning Objectives {-}
 
 After studying this chapter, you should be able to:
