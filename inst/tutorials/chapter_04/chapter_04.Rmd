@@ -2,7 +2,7 @@
 title: "Flow Control Statements"
 subtitle: "Chapter 4"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Jake Kramer, Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements: Jake Kramer, Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
@@ -22,7 +22,7 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 options(width = 80)
 
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)

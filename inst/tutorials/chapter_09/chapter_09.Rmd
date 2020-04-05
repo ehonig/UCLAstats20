@@ -18,11 +18,9 @@ output:
 runtime: shiny_prerendered
 ---
 
-\newtheorem{question}{Question}
-
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 options(width = 80)
 
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
@@ -894,19 +892,8 @@ Your task is to use the workflow and helper functions explained and provided in 
 
 
 ```{r, echo = FALSE}
-pre_process_text <- function(text) {
-  text_sentences <- strsplit(text, split = "[.!?:;]")[[1]]
-  text_sentences <- tolower(text_sentences)
-  text_sentences <- gsub(pattern = "[[:punct:]]", replacement = "", text_sentences)
-  words <- strsplit(text_sentences, split = " ")
-  lapply(words, keep_words)
-}
-
 reading_ease <- function(text) {
-  words <- pre_process_text(text)
-  asl <- mean(vapply(words, length, numeric(1)))
-  asw <- mean(vapply(unlist(words), count_syllables, numeric(1)))
-  206.835 - (1.015 * asl) - (84.6 * asw)
+  96.76339
 }
 ```
 
