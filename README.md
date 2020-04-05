@@ -33,3 +33,7 @@ This will create a new directory named `123456789_stats20_hw1` containing the re
 After loading the library, type `notes(#)` where the `#` is replaced with the number corresponding to the chapter number you want to see. Current chapters are 1-11.
 
 This will launch a local shiny app with the course notes and interactive R code environments.
+
+## Copyright Notice
+
+The contents of the course notes are the copyright of Dr Michael Tsiang.
