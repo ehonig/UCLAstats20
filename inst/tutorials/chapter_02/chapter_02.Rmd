@@ -2,7 +2,7 @@
 title: "Vectors"
 subtitle: "Chapter 2"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
@@ -19,29 +19,8 @@ runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
 options(width = 80)
-checker <- function(
-  label,
-  user_code,
-  solution_code,
-  check_code,
-  envir_result,
-  evaluate_result,
-  envir_prep,
-  ...
-) {
-  uc <- styler::style_text(user_code)
-  user_code <- paste(uc[uc != ""], collapse = "\n")
-  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
-  if (user_code == solution_code) {
-    list(message = learnr::random_praise(),
-         correct = TRUE, location = "append")
-  } else {
-    list(message = learnr::random_encouragement(),
-         correct = FALSE, location = "append")
-  }
-}
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
 fib <- c(1, 1, 2, 3, 5, 8, 13)
 parks <- c("Leslie", "April", "Ron", "Tom", "Donna", "Jerry")

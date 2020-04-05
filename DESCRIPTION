@@ -10,4 +10,4 @@ Description: Two custom html_document templates for creating homework templates
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Depends: rlang, shiny, learnr
+Depends: rlang, shiny, learnr, styler, prettycode

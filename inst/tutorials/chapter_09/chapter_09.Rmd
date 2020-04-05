@@ -2,7 +2,7 @@
 title: "Basic String Manipulation"
 subtitle: "Chapter 9"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
@@ -22,35 +22,56 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
 options(width = 80)
-checker <- function(
-  label,
-  user_code,
-  solution_code,
-  check_code,
-  envir_result,
-  evaluate_result,
-  envir_prep,
-  ...
-) {
-  uc <- styler::style_text(user_code)
-  user_code <- paste(uc[uc != ""], collapse = "\n")
-  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
-  if (user_code == solution_code) {
-    list(message = learnr::random_praise(),
-         correct = TRUE, location = "append")
+
+tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+source("waffles.R")
+x <- "Pawnee rules!"
+y <- c("Pawnee rules", "Eagleton drools")
+z <- c("Pawnee rules and Eagleton drools.", "I love friends, waffles, and work.")
+
+keep_words <- function(words) {
+  words[nchar(words) > 0]
+}
+is_special_ending <- function(ending) {
+  is_es <- all(ending == c("e", "s"))
+  is_ed <- all(ending == c("e", "d"))
+  is_e_not_le <- ending[2] == "e" & ending[1] != "l"
+  is_es | is_ed | is_e_not_le
+}
+rm_special_endings <- function(word_letters) {
+  word_tail <- tail(word_letters, n = 2)
+  if (is_special_ending(word_tail)) {
+    if (word_tail[2] == "e") {
+      word_letters[-length(word_letters)]
+    } else {
+      head(word_letters, n = -2)
+    }
   } else {
-    list(message = learnr::random_encouragement(),
-         correct = FALSE, location = "append")
+    word_letters
   }
 }
-tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+
+is_vowel <- function(letter) {
+  letter %in% c("a", "e", "i", "o", "u", "y")
+}
+
+count_syllables <- function(word) {
+  word_letters <- unlist(strsplit(word, split = ""))
+  if (length(word_letters) <= 3) {
+    1
+  } else {
+    word_letters <- rm_special_endings(word_letters)
+    word_vowels <- is_vowel(word_letters)
+    sum(word_vowels) - sum(diff(which(word_vowels)) == 1)
+  }
+}
 ```
 
 
 ```{r wrap-hook, include = FALSE}
-##h ttps://github.com/yihui/knitr-examples/blob/master/077-wrap-output.Rmd
+## https://github.com/yihui/knitr-examples/blob/master/077-wrap-output.Rmd
 library(knitr)
 hook_output = knit_hooks$get('output')
 knit_hooks$set(output = function(x, options) {
@@ -63,6 +84,7 @@ knit_hooks$set(output = function(x, options) {
   }
   hook_output(x, options)
 })
+
 ```
 
 ```{js, echo=FALSE}
@@ -159,17 +181,13 @@ x
 ```
 
 Use the `typeof()` function to determine the type of object `x` is.
-```{r, echo=FALSE}
-x <- "Pawnee rules"
-```
-
 ```{r character_vectors2, exercise=TRUE}
 
 ```
 
 Characters can be created using single or double quotation marks, but double quotation marks are almost universally preferred.
 
-Single quotation marks can be used within double quotation marks and vice versa, but you cannot directly insert single quotes within single quotes or double quotes within double quotes.
+While it is possible to use single quotation marks within double quotation marks and vice versa, you should not. You cannot directly insert single quotes within single quotes or double quotes within double quotes.
 
 The double quotation inside a string is a special character, so inserting it within double quotes requires a backslash `\" to **escape** the special property of the character.
 
@@ -240,7 +258,7 @@ The **`print()`** function (technically the `print.default()` method) has an opt
 
 A similar output can be produced using **`noquote()`**.
 
-Using `print()` display `x` \emph{without} quotation marks.
+Using `print()` display `x` *without* quotation marks.
 ```{r, include = FALSE}
 print(x, quote = FALSE)
 noquote(x)
@@ -263,7 +281,7 @@ Do the same with `noquote()`
 
 The **`cat()`** funtion concatenates multiple character vectors into a single vector, adds a specified separator, and prints the result (without quotations).
 
-```{r}
+```{r cat, exercise = TRUE}
 cat(x, "Eagleton drools", sep = ", ")
 ```
 
@@ -271,8 +289,10 @@ The printing is slightly different from that of `noquote()`. In particular, the 
 
 One benefit of `cat()` is that the printed output can be saved to an external file using the **`file`** argument:
 
-```{r}
+```{r cat_file, exercise = TRUE}
+dir()
 cat(x, "Eagleton drools", sep=", ", file = "pawnee.txt")
+dir()
 ```
 
 When `file` is specified, an optional logical argument **`append`** specifies whether the result should be appended to or overwrite an existing file.
@@ -297,7 +317,7 @@ For controling the printing of numbers:
 - **`nsmall`** specifies the minimum number of digits to the right of the decimal point to include.
 - **`scientific`** specifies whether to use scientific notation (`TRUE`) or standard notation (`FALSE`).
 
-```{r}
+```{r format, exercise = TRUE}
 format(1 / (1:5), digits = 2)
 format(1 / (1:5), digits = 2, scientific = TRUE)
 format(c("Pawnee", "rules", "Eagleton", "drools"),
@@ -333,7 +353,7 @@ The best way to understand how these functions work is to try them on simple exa
 
 The **`nchar()`** function inputs a character vector and outputs the number of (human-readable) characters contained in each entry of the vector.
 
-```{r}
+```{r nchar, exercise = TRUE}
 y <- c("Pawnee rules", "Eagleton drools")
 nchar(y)
 ```
@@ -344,14 +364,14 @@ nchar(y)
 
 The process of coverting all characters into the same case (upper-case or lower-case) is called **case folding**. The **`tolower()`** and **`toupper()`** functions convert upper-case letters in a character vector to lower-case, or vice-versa.
 
-```{r}
+```{r tolower, exercise = TRUE}
 tolower(y)
 toupper(y)
 ```
 
 The **`casefold()`** function is a wrapper for `tolower()` and `toupper()` that uses a logical argument `upper` to determine which function to use.
 
-```{r}
+```{r casefold, exercise = TRUE}
 casefold(y, upper = TRUE)
 ```
 
@@ -363,15 +383,15 @@ casefold(y, upper = TRUE)
 
 The **`chartr()`** function performs character translation. The `old` argument specifies the characters to be translated, and the `new` argument specifies the translations.
 
-For example, the command below translates `P` into `p` and `E` into `e`.
+For example, the command below translates `p` into `P` and `e` into `E`.
 
-```{r}
-chartr(old = "PE", new = "pe", y)
+```{r chartr, exercise = TRUE}
+chartr(old = "pe", new = "PE", y)
 ```
 
 We can also translate to and from non-alphabetic characters. For example, the command below translates `a` into `#`, `e` into `?`, and `o` into `!`.
 
-```{r}
+```{r chartr2, exercise = TRUE}
 chartr("aeo", "#?!", y)
 ```
 
@@ -381,7 +401,7 @@ chartr("aeo", "#?!", y)
 
 The **`substr()`** function inputs a character vector and extracts a **substring** (i.e., a subset of the original character values) starting from the `start` position and ending with the `stop` position.
 
-```{r}
+```{r substr, exercise = TRUE}
 ## Extract the 2nd to 9th characters of `x`
 substr(x, start = 2, stop = 9)
 ## Extract the 3rd to 5th characters of each value in `y`
@@ -396,21 +416,26 @@ The **`strsplit()`** function splits elements of a character vector `x` into sub
 
 For example, the command below splits the character `Pawnee rules` by the letter `l`.
 
-```{r}
+```{r strsplit1, exercise = TRUE}
 strsplit(x, split = "l")
 ```
 
 To separate a sentence into separate words, we can split by the single space character `" "`.
 
-```{r}
+```{r words, exercise = TRUE}
 z <- c("Pawnee rules and Eagleton drools.", "I love friends, waffles, and work.")
 word_z <- strsplit(z, split = " ")
 word_z
 ```
 
 **Note**: The `i`th component in `word_z` contains the words in the `i`th sentence of `z`. To combine all values in separate components of a list into a single vector, we can use the **`unlist()`** function to remove the list structure.
+```{r prepare-unlist, echo = FALSE}
+z <- c("Pawnee rules and Eagleton drools.", "I love friends, waffles, and work.")
+word_z <- strsplit(z, split = " ")
+```
 
-```{r}
+
+```{r unlist, exercise = TRUE, exercise.setup = "prepare-unlist"}
 unlist(word_z)
 ```
 
@@ -426,7 +451,7 @@ One main application of string manipulation is pattern matching. Finding pattern
 
 A first tool for pattern/value matching is the **`%in%`** operator. The `%in%` operator is a vectorized binary operator that checks each value in the vector on the left and returns `TRUE` if the entry matches one of the values on the right and `FALSE` otherwise. The output of the `%in%` operator is always a logical vector.
 
-```{r}
+```{r ucla, exercise = TRUE}
 1:10 %in% c(5, 7, 9)
 ucla <- c("u", "c", "l", "a")
 letters %in% ucla
@@ -452,7 +477,7 @@ grepl(pattern, x)
 
 The command `grep(pattern, x)` returns a numeric vector of the indices of the entries of `x` that contain a match to `pattern`. The command `grepl(pattern, x)` returns a logical vector of whether each entry of `x` contains a match (`TRUE`) or not (`FALSE`).
 
-```{r}
+```{r grep, exercise = TRUE}
 test <- c("April", "and", "Andy", "love", "Champion", "and", "Lil'", "Sebastian")
 grep(pattern = "a", test)
 grepl(pattern = "a", test)
@@ -470,7 +495,11 @@ gsub(pattern, replacement, x)
 
 The `pattern`, `x`, and optional arguments of `gsub()` are identical to those found in `grep()` and `grepl()`. While `grep()` and `grepl()` identify pattern matches, `gsub()` replaces the `pattern` match by the **`replacement`** argument.
 
-```{r}
+```{r prep-gsub, echo=FALSE}
+test <- c("April", "and", "Andy", "love", "Champion", "and", "Lil'", "Sebastian")
+```
+
+```{r gsub, exercise = TRUE, exercise = TRUE, exercise.setup = "prep-gsub"}
 gsub(pattern = "A", replacement = "a", test)
 gsub(pattern = "a", replacement = "x", test)
 ```
@@ -542,7 +571,12 @@ As an example, we will compute the Flesch reading ease score of the following pa
 
 For convenience, the command to create a `waffles` object containing this passage is in the `waffles.R` file on CCLE.
 
-```{r, linewidth = 80}
+```{r prepare-waffles, echo = FALSE}
+waffles_sentences <- strsplit(waffles, split = "[.!?:;]")[[1]]
+```
+
+
+```{r source_waffles, linewidth = 80}
 source("waffles.R")
 waffles
 ```
@@ -565,13 +599,13 @@ A regular expression that represents the pattern of "any sentence delimiter" wou
 
 We will use this regular expression to split the sentences in the `waffles` object into separate characters.
 
-```{r}
+```{r strsplit2, exercise = TRUE}
 strsplit(waffles, split = "[.!?:;]")
 ```
 
 Remember that the output of `strsplit()` is always a list. Since the `waffles` object was a single character value, then the output of `strsplit(waffles, split = "[.!?:;]")` has a single component. To continue processing the text, we will extract the character vector inside.
 
-```{r}
+```{r sentences, exercise = TRUE}
 waffles_sentences <- strsplit(waffles, split = "[.!?:;]")[[1]]
 waffles_sentences
 ```
@@ -579,15 +613,22 @@ waffles_sentences
 Within each sentence, the capitalization and punctuation are not important to the Flesch reading ease formula (since it only counts syllables, words, and sentences, not capital letters, commas, or apostrophes). We can thus prepare our sentences for splitting into words by converting all letters to lower case and removing all remaining punctuation.
 
 We can apply the `tolower()` function to perform the case folding.
+```{r prepare-sentences2, echo = FALSE}
+waffles_sentences <- strsplit(waffles, split = "[.!?:;]")[[1]]
+```
 
-```{r}
+```{r sentences2, exercise = TRUE, exercise.setup = "prepare-sentences2"}
 waffles_sentences <- tolower(waffles_sentences)
 waffles_sentences
 ```
 
 To remove the remaining punctuation, we can use the regular expression `[[:punct:]]` that represents the pattern of *any* single punctuation symbol. We will replace the punctuation by the empty character `""`.
+```{r prepare-sentences3, echo = FALSE}
+waffles_sentences <- strsplit(waffles, split = "[.!?:;]")[[1]]
+waffles_sentences <- tolower(waffles_sentences)
+```
 
-```{r}
+```{r sentences3, exercise = TRUE, exercise.setup = "prepare-sentences3"}
 waffles_sentences <- gsub(pattern = "[[:punct:]]", replacement = "", waffles_sentences)
 waffles_sentences
 ```
@@ -604,7 +645,13 @@ We now have a vector of sentences that have been processed to remove cases and p
 
 At this stage in the notes, each entry in the `waffles_sentences` vector is a sentence that we want to split into words. Since we have removed all punctuation already, the only character that separates words is the single whitespace character `" "`. We thus can use `strsplit()` again, splitting based on `" "`.
 
-```{r}
+```{r prepare-waf_words, echo = FALSE}
+waffles_sentences <- strsplit(waffles, split = "[.!?:;]")[[1]]
+waffles_sentences <- tolower(waffles_sentences)
+waffles_sentences <- gsub(pattern = "[[:punct:]]", replacement = "", waffles_sentences)
+```
+
+```{r waf_words, exercise = TRUE, exercise.setup = "prepare-waf_words"}
 waffles_words <- strsplit(waffles_sentences, split = " ")
 waffles_words
 ```
@@ -620,8 +667,14 @@ keep_words <- function(words) {
 ```
 
 The `keep_words()` function inputs a vector of words and returns only the words that have a positive number of characters. We can now use `lapply()` to apply the `keep_words()` function to each component of the `waffles_words` list.
+```{r prepare-waf_words2, echo = FALSE}
+waffles_sentences <- strsplit(waffles, split = "[.!?:;]")[[1]]
+waffles_sentences <- tolower(waffles_sentences)
+waffles_sentences <- gsub(pattern = "[[:punct:]]", replacement = "", waffles_sentences)
+waffles_words <- strsplit(waffles_sentences, split = " ")
+```
 
-```{r}
+```{r waf_words2, exercise = TRUE, exercise.setup = "prepare-waf_words2"}
 waffles_words <- lapply(waffles_words, keep_words)
 waffles_words
 ```
@@ -648,7 +701,7 @@ Before tackling all of the words in the entire text, we first want to know how t
 
 As a first step, we need to separate each word into its component letters. To split a word into letters, we can again use `strsplit()`, now splitting by the empty character `""`.
 
-```{r}
+```{r tom_letters, exercise = TRUE}
 tom_letters <- unlist(strsplit("tom", split = ""))
 tom_letters
 horses_letters <- unlist(strsplit("horses", split = ""))
@@ -668,8 +721,11 @@ The first rule: Words of three letters or shorter count as single syllables.
 Regardless of how many vowels are in a short word (at most 3 letters long), the Flesch reading ease formula counts the entire word as one syllable. Thus, before counting vowels, we simply need to check whether there are at most 3 letters in the word.
 
 The `tom_letters` vector contains the individual letters of the word `"tom"`. The number of letters in the word is the length of the `tom_letters` vector.
+```{r prepare-length, echo = FALSE}
+  tom_letters <- unlist(strsplit("tom", split = ""))
+```
 
-```{r}
+```{r length, exercise = TRUE, exercise.setup = "prepare-length"}
 length(tom_letters)
 ```
 
@@ -686,9 +742,13 @@ The second rule: -es, -ed and -e (except -le) endings are ignored.
 Before we count the syllables in words longer than 3 letters, we need to first ignore the special word endings: -es, -ed, and -e, *unless* the ending is -le.
 
 The `horses_letters` vector contains the individual letters of the word `"horses"`. We can use the `tail()` function to extract the last two letters of the word.
+```{r prepare-endings1, echo = FALSE}
+  horses_letters <- unlist(strsplit("horses", split = ""))
+```
 
-```{r}
+```{r endings1, exercise = TRUE,exercise.setup = "prepare-endings1"}
 horses_tail <- tail(horses_letters, n = 2)
+horses_tail
 ```
 
 We can write a helper function `is_special_ending()` that inputs a vector of two letters (that represent the last two letters of a word) and returns `TRUE` if the word ends in a special ending (-es, -ed, or -e except -le) and `FALSE` otherwise.
@@ -701,8 +761,12 @@ is_special_ending <- function(ending) {
   is_es | is_ed | is_e_not_le
 }
 ```
+```{r prepare-endings2, echo = FALSE}
+  horses_letters <- unlist(strsplit("horses", split = ""))
+  horses_tail <- tail(horses_letters, n = 2)
+```
 
-```{r}
+```{r endings2, exercise = TRUE,exercise.setup = "prepare-endings2"}
 is_special_ending(horses_tail)
 ```
 
@@ -724,13 +788,18 @@ rm_special_endings <- function(word_letters) {
   }
 }
 ```
-```{r}
+
+```{r prepare-rm_endings, echo = FALSE}
+  horses_letters <- unlist(strsplit("horses", split = ""))
+  eagleton_letters <- unlist(strsplit("eagleton", split = ""))
+```
+
+```{r rm_endings, exercise = TRUE,exercise.setup = "prepare-rm_endings"}
 rm_special_endings(horses_letters)
 rm_special_endings(eagleton_letters)
 ```
 
 **Note**: Notice that `rm_special_endings()` will remove two letters from words ending in -es or -ed but only one letter from words ending in -e other than -le. If there is no special ending, the function will simply leave the input letters unchanged.
-
 
 \newpage
 
@@ -747,7 +816,12 @@ is_vowel <- function(letter) {
   letter %in% c("a", "e", "i", "o", "u", "y")
 }
 ```
-```{r}
+
+```{r prepare-vowels, echo = FALSE}
+  eagleton_letters <- unlist(strsplit("eagleton", split = ""))
+```
+
+```{r vowels, exercise = TRUE,exercise.setup = "prepare-vowels"}
 eagleton_vowels <- is_vowel(eagleton_letters)
 eagleton_vowels
 ```
@@ -756,7 +830,12 @@ If every vowel counted as one syllable, then `sum(is_vowel(eagleton_letters))` w
 
 There are many ways to account for consecutive vowels. One way is to consider the numeric indices of the vowels: Notice that letters that are consecutive vowels will appear as consecutive `TRUE` values in the output of `is_vowel()`. This translates into consecutive indices of the `TRUE` values.
 
-```{r}
+```{r prepare-which, echo = FALSE}
+  eagleton_letters <- unlist(strsplit("eagleton", split = ""))
+  eagleton_vowels <- is_vowel(eagleton_letters)
+```
+
+```{r which, exercise = TRUE, exercise.setup = "prepare-which"}
 which(eagleton_vowels)
 ```
 
@@ -764,7 +843,7 @@ Based on the numeric indices alone, can you tell which vowels are consecutive?
 
 Consecutive vowels will have consecutive indices! One trick to find consecutive indices is to find the consecutive differences with the `diff()` function.
 
-```{r}
+```{r diff, exercise = TRUE, exercise.setup = "prepare-which"}
 diff(which(eagleton_vowels))
 ```
 
@@ -792,7 +871,7 @@ count_syllables <- function(word) {
 
 \newpage
 
-```{r}
+```{r count_syllables, exercise = TRUE}
 count_syllables("tom")
 count_syllables("horses")
 count_syllables("eagleton")
@@ -811,6 +890,9 @@ Success! We have found a way to compute each component of the Flesch reading sco
 
 Your task is to use the workflow and helper functions explained and provided in this section to write a `reading_ease()` function that will compute the Flesch reading ease score for an input text passage.
 
+
+
+
 ```{r, echo = FALSE}
 pre_process_text <- function(text) {
   text_sentences <- strsplit(text, split = "[.!?:;]")[[1]]
@@ -819,8 +901,7 @@ pre_process_text <- function(text) {
   words <- strsplit(text_sentences, split = " ")
   lapply(words, keep_words)
 }
-```
-```{r, echo = FALSE}
+
 reading_ease <- function(text) {
   words <- pre_process_text(text)
   asl <- mean(vapply(words, length, numeric(1)))
@@ -828,7 +909,9 @@ reading_ease <- function(text) {
   206.835 - (1.015 * asl) - (84.6 * asw)
 }
 ```
-```{r, linewidth = 80}
+
+
+```{r, echo = TRUE}
 waffles
 reading_ease(waffles)
 ```

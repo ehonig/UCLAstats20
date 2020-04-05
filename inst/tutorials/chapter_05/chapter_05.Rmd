@@ -2,7 +2,7 @@
 title: "Matrices"
 subtitle: "Chapter 5"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
@@ -22,29 +22,9 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
 options(width = 80)
-checker <- function(
-  label,
-  user_code,
-  solution_code,
-  check_code,
-  envir_result,
-  evaluate_result,
-  envir_prep,
-  ...
-) {
-  uc <- styler::style_text(user_code)
-  user_code <- paste(uc[uc != ""], collapse = "\n")
-  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
-  if (user_code == solution_code) {
-    list(message = learnr::random_praise(),
-         correct = TRUE, location = "append")
-  } else {
-    list(message = learnr::random_encouragement(),
-         correct = FALSE, location = "append")
-  }
-}
+
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
 A <- matrix(1:6, nrow = 2, ncol = 3)
 B <- matrix(1:9, nrow = 3, ncol = 3, byrow = TRUE)
@@ -72,7 +52,7 @@ Do not post, share, or distribute anywhere or with anyone without explicit permi
 
 \newpage
 
-# Learning Objectives {-}
+## Learning Objectives {-}
 
 After studying this chapter, you should be able to:
 
@@ -89,11 +69,11 @@ After studying this chapter, you should be able to:
 * Compute the inverse of a square matrix.
 
 
-# Basic Definitions and Functions
+## Basic Definitions and Functions
 
 Matrices play an important role in statistics, especially in multivariate analyses, such as multiple regression or estimating the covariance matrix for a collection of random variables (i.e., a random vector). We will not focus on linear algebra or matrix theory in this course, but we will introduce the `matrix` object in R and some important concepts related to them. Matrices provide intuition and a natural segue into working with data frames, possibly the most commonly used object in R to store rectangular data. Most of the syntax and functions that apply to matrices will also apply to data frames.
 
-## The `matrix()` Function
+### The `matrix()` Function
 
 A **matrix** is a two-dimensional (rectangular) array of values. In R, *every value in a matrix must be of the same type* (i.e., all numeric, character, logical). The **`matrix()`** function takes in a vector of values (called `data`) and arranges them into a matrix according to the desired number of rows (`nrow`) and number of columns (`ncol`).
 
@@ -131,7 +111,7 @@ matrix(1:4, nrow = 2, ncol = 5) # Incomplete recycling: warning thrown
 ```
 
 
-## The Dimension of a Matrix
+### The Dimension of a Matrix
 
 The **dimension** of a matrix (or any two-dimensional object) is the number of rows and the number of columns, often written as $\hbox{nrow} \times \hbox{ncol}$, read aloud as "nrow by ncol". For example, matrix $A$ is a $2 \times 3$ (2 by 3) matrix. A matrix is called **square** if the number of rows equals the number of columns.
 
@@ -183,30 +163,30 @@ question("How would you extract the number of rows from the output of `dim(A)`?"
 
 
 
-## The `cbind()` and `rbind()` Functions
+### The `cbind()` and `rbind()` Functions
 
 Another way to create a matrix is to use the **`cbind()`** and **`rbind()`** functions, which combine ("bind") columns and rows (respectively) into a matrix. Input each column or row values as a separate argument, as shown below:
 
 ```{r}
-# An alternative way to create the matrix A
+## An alternative way to create the matrix A
 cbind(c(1, 2), c(3, 4), c(5, 6))
-# An alternative way to create the matrix B
+## An alternative way to create the matrix B
 rbind(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
 ```
 
 If the number of columns or rows match in a way that makes sense, i.e., they are **conformable**, then `rbind()` and `cbind()` can also input two-dimensional objects and bind them together. Trying to combine matrices that are not conformable will produce an error.
 
 ```{r bind_mat, exercise = TRUE}
-# Bind the rows of A and B together (i.e., stack A on top of B)
+## Bind the rows of A and B together (i.e., stack A on top of B)
 
-# The below will give an error, because the number of rows are not conformable
+## The below will give an error, because the number of rows are not conformable
 cbind(A, B)
 ```
 
 ```{r bind_mat-solution}
-# Bind the rows of A and B together (i.e., stack A on top of B)
+## Bind the rows of A and B together (i.e., stack A on top of B)
 rbind(A, B)
-# The below will give an error, because the number of rows are not conformable
+## The below will give an error, because the number of rows are not conformable
 cbind(A, B)
 ```
 
@@ -217,12 +197,12 @@ cbind() # Append a column of 1's to matrix B
 ```
 
 
-## Matrices Are Two-Dimensional Vectors
+### Matrices Are Two-Dimensional Vectors
 
 The reason why every value in a matrix must be of the same type is because *all matrix objects are actually internally stored as vectors* in R. This can be verified by using the `mode()` function on a matrix.
 
 ```{r mode, exercise = TRUE}
-# Find out how matrix objects (i.e. matrix A) are stored in R with the above function
+## Find out how matrix objects (i.e. matrix A) are stored in R with the above function
 ```
 
 Matrices are just vectors with an additional **attribute** called dimension (`dim`). Vectors have no dimension attribute (i.e., vectors are not just one-dimensional matrices).
@@ -254,24 +234,24 @@ A # A is now a vector
 We can also give a vector the `dim` attribute in a similar way to convert a vector into a matrix.
 
 ```{r play_with_attributes_2, exercise = TRUE}
-# Assign the dim attribute to A (with 2 rows and 3 columns)
+## Assign the dim attribute to A (with 2 rows and 3 columns)
 attributes(A) <- list(dim = )
 A # A is a matrix again
 ```
 
 ```{r play_with_attributes_2-solution}
-# Assign the dim attribute to A (with 2 rows and 3 columns)
+## Assign the dim attribute to A (with 2 rows and 3 columns)
 attributes(A) <- list(dim = c(2, 3))
 A # A is a matrix again
 ```
 
 ```{r play_with_attributes_2-check}
-# Assign the dim attribute to A (with 2 rows and 3 columns)
+## Assign the dim attribute to A (with 2 rows and 3 columns)
 attributes(A) <- list(dim = c(2, 3))
 A # A is a matrix again
 ```
 
-# Naming Rows and Columns of Two-Dimensional Objects
+## Naming Rows and Columns of Two-Dimensional Objects
 
 Suppose we have data on a few employees at the Pawnee Parks and Recreation Department, shown in a data table below.
 
@@ -336,7 +316,7 @@ parks_mat
 Technically, these functions access the row and column name attributes of the input object. Setting names will add the `dimnames` attribute to the object.
 
 ```{r}
-# Check the attributes of parks_mat
+## Check the attributes of parks_mat
 ```
 
 The `attributes(parks_mat)` object is an example of a list object in R. We will go over the syntax and functions for lists in a later chapter. For now, notice that the `dimnames` attribute has two components. The first component is the vector of row names, and the second component is the vector of column names.
@@ -346,7 +326,7 @@ The `attributes(parks_mat)` object is an example of a list object in R. We will 
 ```{r dimnames_use, exercise = TRUE}
 dimnames(parks_mat) <- list(NULL, NULL) # Remove the row and column names
 parks_mat
-# Add the same names as before
+## Add the same names as before
 dimnames(parks_mat) <- list(c("Leslie", "Ron", "April"), c("Height", "Weight", "Income"))
 dimnames(parks_mat)
 ```
@@ -365,13 +345,13 @@ cbind("A" = 1:3, "B" = 4:6, "C" = 7:9)
 ```
 
 
-# Extracting Data From Two-Dimensional Objects
+## Extracting Data From Two-Dimensional Objects
 
 Recall that square brackets are used to extract specific parts of data from objects in R. Vectors are one-dimensional objects, so a single number inside of square brackets extracts that element from a vector.
 
 For two-dimensional objects, there are two index coordinates, corresponding to the row index and the column index. The index inside the square brackets needs to be an ordered pair, separated by a comma. For example, an index of `[i,j]` means to extract the entry in the `i`th row and `j`th column, also called the $(i,j)$th entry.
 
-## Numeric Indices
+### Numeric Indices
 
 Leaving one value blank means to extract all the values in that dimension. Positive, negative, and fractional indices work the same way as they do for vectors. The row and column indices are independent of each other, so a positive index for one can be mixed with a negative index for the other.
 
@@ -404,14 +384,14 @@ question("Although not how we should index elements, what does A[4] return? (A i
 
 
 
-## Logical Indices
+### Logical Indices
 
 Logical vectors can also be used for subsetting two-dimensional objects. The logical indices work the same way as they do for vectors. This can be a useful way to extract rows or columns that satisfy certain conditions.
 
 ```{r logi_subset, exercise = TRUE}
-# Which heights are above 65 inches?
+## Which heights are above 65 inches?
 tall_index <- parks_mat[, 1] > 65
-# Extract only the rows/observations for people who are taller than 65 inches
+## Extract only the rows/observations for people who are taller than 65 inches
 parks_mat[tall_index, ]
 ```
 
@@ -437,7 +417,7 @@ short_index <- parks_mat[, 1] <= 65
 parks_mat[short_index, ]
 ```
 
-## Named (Character) Indices
+### Named (Character) Indices
 
 If the rows or columns of a two-dimensional object are named, we can use the name as an index. Row names can only be used as a row index, and column names can only be used as a column index.
 
@@ -457,9 +437,9 @@ parks_mat[c("Leslie", "April"), "Weight"] # Extract the weight of Leslie and Apr
 
 **Note**: Notice that we do not need to know the numeric index for the observations or variables. Using names as indices can be useful if the object has many rows or columns and the numeric index is not as easy to use.
 
-# Matrix Operations
+## Matrix Operations
 
-## Entrywise Arithmetic Operations
+### Entrywise Arithmetic Operations
 
 Because matrices are stored as vectors, the usual arithmetic operations (`+`, `-`, `*`, `/`, `^`, `%%`, `%/%`) that apply to numeric vectors will also work for numeric matrices. Just like for vectors, arithmetic operations will be applied entrywise. However, for arithmetic operations between matrices to make sense, the matrices need to be conformable. We can only apply the usual arithmetic operators to matrices with the same dimensions (same number of rows and columns). The corresponding entries of the two matrices will be operated together.
 
@@ -482,7 +462,7 @@ If we try to apply the operators to matrices that are not conformable, R will th
 A * B # A and B are not conformable
 ```
 
-## Matrix Multiplication
+### Matrix Multiplication
 
 **Caution**: The entrywise multiplication performed using the regular multiplication `*` operator is *not* the way matrices are multiplied together in linear algebra.
 
@@ -538,7 +518,7 @@ question("Which of the following operations will NOT return an error? Choose all
 
 <!-- \newpage -->
 
-## The Identity Matrix
+### The Identity Matrix
 
 The **identity matrix** of size $n$, denoted by $I_n$ (or simply $I$ if the dimension is implicit) is an $n \times n$ square matrix with 1's in the main diagonal entries and 0 everywhere else. Formally, the $(i,j)$th entry of $I_n$ is 1 if $i = j$ and $0$ if $i \neq j$, written mathematically as
 $$
@@ -581,7 +561,7 @@ The `nrow` and `ncol` arguments can also be used to specify the dimensions for a
 diag(c(1, 2, 3), nrow = 3, ncol = 4)
 ```
 
-## The Inverse of a Matrix
+### The Inverse of a Matrix
 
 The **inverse** of an $n \times n$ square matrix $A$ is the unique $n \times n$ matrix, denoted by $A^{-1}$, such that
 $$A A^{-1} = A^{-1} A = I_n.$$
@@ -597,7 +577,7 @@ M
 M_inv <- solve(M) # Compute the inverse of M with the solve() function
 M_inv
 
-# Verify that M_inv is the inverse of M (BOTH WAYS)
+## Verify that M_inv is the inverse of M (BOTH WAYS)
 
 
 ```
@@ -608,7 +588,7 @@ M
 M_inv <- solve(M) # Compute the inverse of M with the solve() function
 M_inv
 
-# Verify that M_inv is the inverse of M (BOTH WAYS)
+## Verify that M_inv is the inverse of M (BOTH WAYS)
 M %*% M_inv
 M_inv %*% M
 ```
@@ -622,9 +602,9 @@ solve(B)
 `## number = 2.59052e-18`
 
 
-# Operations on Matrix Columns and Rows
+## Operations on Matrix Columns and Rows
 
-## The `apply()` Function
+### The `apply()` Function
 Suppose we want to compute the mean of each variable in the `parks_mat` matrix.
 ```{r}
 parks_mat
@@ -653,38 +633,38 @@ Similar to `vapply()`, the syntax of `apply()` is `apply(X, MARGIN, FUN, ...)`, 
 Using `apply()`, we can apply the `mean()` function to each column in `parks_mat` simultaneously with a single command.
 
 ```{r apply_mean, exercise = TRUE}
-# Compute the mean of every column of the parks_mat matrix
+## Compute the mean of every column of the parks_mat matrix
 apply(parks_mat,  ,na.rm = TRUE)
 ```
 
 ```{r apply_mean-hint}
-# Compute the mean of every column of the parks_mat matrix
+## Compute the mean of every column of the parks_mat matrix
 apply(parks_mat, 2, , na.rm = TRUE)
 ```
 
 ```{r apply_mean-solution}
-# Compute the mean of every column of the parks_mat matrix
+## Compute the mean of every column of the parks_mat matrix
 apply(parks_mat, 2, mean, na.rm = TRUE)
 ```
 
 To compute the mean of each row, we can change the margin argument `MARGIN` from `2` (columns) to `1` (rows).
 
 ```{r row_mean, exercise = TRUE}
-# Compute the mean of every row of the parks_mat matrix
+## Compute the mean of every row of the parks_mat matrix
 apply(parks_mat, , na.rm = TRUE)
 ```
 
 ```{r row_mean-hint}
-# Think about what we did for column means. What do we need to change?
+## Think about what we did for column means. What do we need to change?
 ```
 
 ```{r row_mean-solution}
-# Compute the mean of every row of the parks_mat matrix
+## Compute the mean of every row of the parks_mat matrix
 apply(parks_mat, 1, mean, na.rm = TRUE)
 ```
 
 ```{r row_mean-check}
-# Compute the mean of every row of the parks_mat matrix
+## Compute the mean of every row of the parks_mat matrix
 apply(parks_mat, 1, mean, na.rm = TRUE)
 ```
 
@@ -697,12 +677,12 @@ apply(parks_mat, 1, mean, na.rm = TRUE)
 **Note**: If the applied function in the `FUN` argument of `apply()` returns a single value, the output of the `apply()` function will be a vector. If the applied function returns a vector (with more than one element), then the output of `apply()` will be a matrix.
 
 ```{r range_apply, exercise = TRUE}
-# Compute the range (min and max) of every column of the parks_mat matrix
+## Compute the range (min and max) of every column of the parks_mat matrix
 apply(parks_mat, , na.rm = TRUE)
 ```
 
 ```{r range_apply-solution}
-# Compute the range (min and max) of every column of the parks_mat matrix
+## Compute the range (min and max) of every column of the parks_mat matrix
 apply(parks_mat, 2, range, na.rm = TRUE)
 ```
 
@@ -717,21 +697,21 @@ squared_devs <- function(x, na.rm = FALSE) {
   # This function inputs a vector and computes the squared deviations away from the mean.
   (x - mean(x, na.rm = na.rm))^2
 }
-# Apply the squared_devs() function to every column of the parks_mat matrix
+## Apply the squared_devs() function to every column of the parks_mat matrix
 apply(parks_mat, 2, squared_devs, na.rm = TRUE)
 ```
 
 The function can also be written directly into the `FUN` argument without having to save it as a separate object.
 
 ```{r make_a_func2, exercise = TRUE}
-# Creates the same object as apply(parks_mat, 2, squared_devs, na.rm = TRUE)
+## Creates the same object as apply(parks_mat, 2, squared_devs, na.rm = TRUE)
 apply(parks_mat, 2, function(x) {
   (x - mean(x, na.rm = TRUE))^2
 })
 ```
 
 
-# Final Quiz
+## Final Quiz
 
 ```{r final_quiz_1, echo = FALSE, warning=FALSE, comment = NA}
 matrix(1:10, nrow = 3, byrow = TRUE)

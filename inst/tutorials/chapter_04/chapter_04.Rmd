@@ -2,7 +2,7 @@
 title: "Flow Control Statements"
 subtitle: "Chapter 4"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
@@ -22,29 +22,9 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
 options(width = 80)
-checker <- function(
-  label,
-  user_code,
-  solution_code,
-  check_code,
-  envir_result,
-  evaluate_result,
-  envir_prep,
-  ...
-) {
-  uc <- styler::style_text(user_code)
-  user_code <- paste(uc[uc != ""], collapse = "\n")
-  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
-  if (user_code == solution_code) {
-    list(message = learnr::random_praise(),
-         correct = TRUE, location = "append")
-  } else {
-    list(message = learnr::random_encouragement(),
-         correct = FALSE, location = "append")
-  }
-}
+
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
 lost_nums <- c(4, 8, 15, 16, 23, 42)
 incomplete_nums <- c(4, 8, NA, 16, 23, NA)
@@ -67,7 +47,7 @@ Do not post, share, or distribute anywhere or with anyone without explicit permi
 
 \newpage
 
-# Learning Objectives {-}
+## Learning Objectives {-}
 
 After studying this chapter, you should be able to:
 
@@ -83,7 +63,7 @@ After studying this chapter, you should be able to:
 <!-- Formally, a scenario (or experiment) is called **random** if its outcome cannot be predicted with certainty. An **event** (or **random event**) is an outcome or set of outcomes from a random scenario. Even though random events cannot be predicted with certainty, there are patterns that emerge when observing a random scenario multiple times. Through modeling and summarizing data from random scenarios, we are able to learn how often different outcomes occur and get an idea of what outcomes are more common (or "typical") and what outcomes are unusual. -->
 
 
-# The `for()` Loop
+## The `for()` Loop
 
 One of the main tools in a statistician's toolkit is simulation of random experiments. Since simulations are done to observe patterns in behavior, not just a single instance, we often need to repeat operations over and over again. Rather than writing repetitive code, we can use a **loop** that repeats a chunk of code multiple times. We will discuss several **flow control** statements that control how many times commands in a loop are repeated.
 
@@ -116,7 +96,7 @@ As a simple example, we can create a `for()` loop that squares each entry in a v
 ```{r lost_nums_1, exercise = TRUE}
 lost_nums <- c(4, 8, 15, 16, 23, 42)
 
-# Let n cycle over the entries in lost_nums.
+## Let n cycle over the entries in lost_nums.
 for (n in lost_nums) {
   # For each iteration, print the square of n.
   print(n^2)
@@ -132,21 +112,21 @@ When `vector` represents an indexing set, it is common to use the letter `i` as 
 For example, to save the squares of the `lost_nums` vector, the loop above can be rewritten as follows:
 
 ```{r lost_nums_2, exercise = TRUE}
-# Create a vector to store the output from the for loop.
+## Create a vector to store the output from the for loop.
 lost_squares <- numeric(6)
 
-# Let i cycle over the numbers 1 to 6 (the length of lost_nums).
+## Let i cycle over the numbers 1 to 6 (the length of lost_nums).
 for (i in seq_len(6)) {
   # For the i-th iteration of the for loop, square the i-th entry of lost_nums
   # and save the output into the i-th entry of the lost_squares vector.
   lost_squares[i] <- lost_nums[i]^2
 }
-# Print the output from the for loop.
+## Print the output from the for loop.
 lost_squares
 ```
 
 
-## Example: The Fibonacci Sequence
+### Example: The Fibonacci Sequence
 
 Iterations in a loop sometimes depend on the results from previous iterations of the loop.
 
@@ -155,18 +135,18 @@ The **Fibonacci sequence** is a famous and well-studied sequence in mathematics.
 The `for()` loop below computes the first 12 Fibonacci numbers.
 
 ```{r fib_1, exercise = TRUE}
-# Create a vector to store the output from the for loop.
+## Create a vector to store the output from the for loop.
 fib <- numeric(12)
 fib[1:2] <- c(1, 1) # Initialize the sequence
 
-# Let i cycle over the numbers 3 to 12 (the indices for the remaining entries in fib).
+## Let i cycle over the numbers 3 to 12 (the indices for the remaining entries in fib).
 for (i in 3:12) {
   # For the i-th term in the Fibonacci sequence,
   # compute the sum of the (i-2) and (i-1) terms in the fib vector
   # and save the output into the i-th entry of the fib vector.
   fib[i] <- fib[i - 2] + fib[i - 1]
 }
-# Print the output from the for loop.
+## Print the output from the for loop.
 fib
 ```
 
@@ -188,7 +168,7 @@ question("Over what values does the above for loop index?",
          random_answer_order = TRUE)
 ```
 
-# The `if()` Statement
+## The `if()` Statement
 
 Recall that relational and Boolean operators produce logical vectors. A common use of logical vectors is as an index to extract only certain elements from an object that satisfy some condition or criterion. Using subsetting, we can apply different commands to different parts of an object.
 
@@ -306,7 +286,7 @@ cor_plot <- function(x, y, scatter = TRUE, ...) {
 **Side Note**: The **`...`** argument is used to pass optional arguments to functions used inside the main function. In this example, the `...` enables the `cor_plot()` function to pass arguments to the `plot()` function.
 
 
-## Basic Error Handling
+### Basic Error Handling
 
 The `if()` statement enables us to throw error or warning messages when function inputs are not specified as expected. For a motivating example, we will revisit the variance function we wrote in Chapter 2.
 
@@ -315,7 +295,7 @@ var_fn <- function(x) {
   sum((x - mean(x))^2) / (length(x) - 1)
 }
 
-# Test var_fn() by trying it on the lost_nums object
+## Test var_fn() by trying it on the lost_nums object
 var_fn()
 ```
 
@@ -328,7 +308,7 @@ var_fn(incomplete_nums)
 
 It would be helpful if our function could throw an error or a warning message if it cannot compute the variance properly.
 
-### The `stop()` Function
+#### The `stop()` Function
 
 The **`stop()`** function stops the execution of the current expression and throws an error message.
 
@@ -371,12 +351,12 @@ var_fn2 <- function(x) {
 var_fn2(incomplete_nums)
 ```
 
-### The `warning()` Function
+#### The `warning()` Function
 
 The **`warning()`** function throws a warning message but does not stop the execution of the current expression.
 
 ```{r warning_var, exercise = TRUE}
-# Note the similarity with the stop() function
+## Note the similarity with the stop() function
 var_fn3 <- function(x) {
   if (sum(is.na(x)) > 0) {
     warning("The input has NA values!")
@@ -395,7 +375,7 @@ Think about other things that can go wrong with this function, or what other fun
 - What if you wanted to first check for `NA` values, throw a warning if necessary, then remove the `NA` values before computing the variance?
 
 
-# The `while()` Loop
+## The `while()` Loop
 
 The `for()` loop repeats a set of commands a fixed number of times. In some scenarios, the number of times to repeat the commands is not known in advance, so a different type of loop needs to be used.
 
@@ -420,14 +400,14 @@ The `while()` loop is essentially a repeating `if` statement:
 A small example of a `while()` loop is given below.
 
 ```{r while_ex, exercise = TRUE}
-# Start with num = 1.
+## Start with num = 1.
 num <- 1
-# While num is less than or equal to 20, execute the following commands.
+## While num is less than or equal to 20, execute the following commands.
 while (num <= 20) {
   # Add 6 to num and assign the sum to num (replace the old num value).
   num <- num + 6
 }
-# Print the output from the while loop.
+## Print the output from the while loop.
 num
 ```
 
@@ -443,7 +423,7 @@ question("Why is the result larger than 20 if the loop only runs when `num` is l
 
 
 
-## Example: Fibonacci Revisited
+### Example: Fibonacci Revisited
 
 For a more complete example, we revisit the Fibonacci sequence.
 
@@ -452,13 +432,13 @@ Suppose we want to list all Fibonacci numbers less than 500. Without prior knowl
 The `while()` loop below computes all the Fibonacci numbers less than 500. Since the number of iterations is not fixed, it is not clear how to use indexing to refer to the current and previous terms in the sequence. Instead, notice the use of multiple variables to keep track of the two latest terms in the sequence.
 
 ```{r fibonacci_while, exercise = TRUE}
-# fib1 and fib2 will represent the two latest terms in the sequence.
+## fib1 and fib2 will represent the two latest terms in the sequence.
 fib1 <- 1 # Initialize fib1
 fib2 <- 1 # Initialize fib2
-# Create the vector to store the output from the while loop.
+## Create the vector to store the output from the while loop.
 full_fib <- c(fib1, fib2)
 
-# While the sum of the last two terms is less than 500, execute the following commands.
+## While the sum of the last two terms is less than 500, execute the following commands.
 while ( ) {
   # Save the latest term to old_fib2.
   old_fib2 <- 
@@ -469,18 +449,18 @@ while ( ) {
   # Save the previously latest term (now the second to last term) to fib1.
   fib1 <- 
 }
-# Print the output from the while loop.
+## Print the output from the while loop.
 
 ```
 
 ```{r fibonacci_while-solution}
-# fib1 and fib2 will represent the two latest terms in the sequence.
+## fib1 and fib2 will represent the two latest terms in the sequence.
 fib1 <- 1 # Initialize fib1
 fib2 <- 1 # Initialize fib2
-# Create the vector to store the output from the while loop.
+## Create the vector to store the output from the while loop.
 full_fib <- c(fib1, fib2)
 
-# While the sum of the last two terms is less than 500, execute the following commands.
+## While the sum of the last two terms is less than 500, execute the following commands.
 while (fib1 + fib2 < 500) {
   # Save the latest term to old_fib2.
   old_fib2 <- fib2
@@ -491,7 +471,7 @@ while (fib1 + fib2 < 500) {
   # Save the previously latest term (now the second to last term) to fib1.
   fib1 <- old_fib2
 }
-# Print the output from the while loop.
+## Print the output from the while loop.
 full_fib
 ```
 
@@ -508,7 +488,7 @@ The loop may appear complicated, but the main idea is explained here:
 
 <!-- \newpage -->
 
-# The `repeat` Loop and `break` Statements
+## The `repeat` Loop and `break` Statements
 
 The conditions for exiting a `for()` or `while()` loop are specified at the top of the loop: In a `for()` loop, the loop repeats until the fixed number of iterations are completed. In a `while()` loop, the loop repeats until the `condition` evaluates to `FALSE`. For some loops, it may be clearer not to include the exit condition at the top.
 
@@ -537,10 +517,10 @@ if (condition) {
 The small `while()` loop example can be written as a `repeat` loop:
 
 ```{r break_practice, exercise = TRUE}
-# Start with num = 1.
+## Start with num = 1.
 num <- 
 
-# Repeat the following commands.
+## Repeat the following commands.
 repeat{
   # Add 6 to num and assign the sum to num (replace the old num value).
   num <- 
@@ -549,15 +529,15 @@ repeat{
     break
   }
 }
-# Print the output from the repeat loop.
+## Print the output from the repeat loop.
 
 ```
 
 ```{r break_practice-solution}
-# Start with num = 1.
+## Start with num = 1.
 num <- 1
 
-# Repeat the following commands.
+## Repeat the following commands.
 repeat{
   # Add 6 to num and assign the sum to num (replace the old num value).
   num <- num + 6
@@ -566,17 +546,17 @@ repeat{
     break
   }
 }
-# Print the output from the repeat loop.
+## Print the output from the repeat loop.
 num
 ```
 
 **Side Note**: `repeat` loops can also be written as `while()` loops by using a `condition` that is always `TRUE` and including a `break` statement.
 
 ```{r rep_while, exercise = TRUE}
-# Start with num = 1.
+## Start with num = 1.
 num <- 1
 
-# While TRUE is TRUE (which is always), execute the following commands.
+## While TRUE is TRUE (which is always), execute the following commands.
 while (TRUE) {
   # Add 6 to num and assign the sum to num (replace the old num value).
   num <- num + 6
@@ -585,12 +565,12 @@ while (TRUE) {
     break
   }
 }
-# Print the output from the repeat loop.
+## Print the output from the repeat loop.
 num
 ```
 
 
-# When To Use Which Loop (and When Not To)
+## When To Use Which Loop (and When Not To)
 
 When executing a chunk of code multiple times, or iterating over an index, it is often natural to consider using a loop. However, depending on the problem, a loop may not be necessary.
 
@@ -603,7 +583,7 @@ A `for()` loop is used when the number of times a chunk of code is repeated is k
 In practice, the `repeat` loop is rarely used, but it may be useful when it is advantageous to exit a loop somewhere other than the top of the loop.
 
 
-# Quiz
+## Quiz
 ```{r final_quiz_1, echo = FALSE}
 question("Which of the following loops would be needed to keep multiplying a number by three until it reaches 10?",
          answer("if", correct = TRUE),

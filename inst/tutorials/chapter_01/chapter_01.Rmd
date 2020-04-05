@@ -2,7 +2,7 @@
 title: "Getting Started"
 subtitle: "Chapter 1"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
@@ -19,29 +19,9 @@ runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
 options(width = 80)
-checker <- function(
-  label,
-  user_code,
-  solution_code,
-  check_code,
-  envir_result,
-  evaluate_result,
-  envir_prep,
-  ...
-) {
-  uc <- styler::style_text(user_code)
-  user_code <- paste(uc[uc != ""], collapse = "\n")
-  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
-  if (user_code == solution_code) {
-    list(message = learnr::random_praise(),
-         correct = TRUE, location = "append")
-  } else {
-    list(message = learnr::random_encouragement(),
-         correct = FALSE, location = "append")
-  }
-}
+
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
 final_balance <- function(initial) {
   interest_rate <- 0.25 / 100
@@ -272,7 +252,7 @@ You can also get/set the working directory from the menu bar in R or RStudio.
 ### Quitting R
 
 To quit an R session, run the quit function **`q()`**:
-```{r quit,eval=FALSE, exercise = TRUE}
+```{r quit, eval=FALSE}
 q()
 ```
 
@@ -444,14 +424,14 @@ For an initial balance of \$5000, the final balance after 20 years at 0.25% inte
 
 Even the best programmers sometimes make mistakes. When you give R a command with a syntax mistake, R will return (or **throw**) an error message to tell you something is wrong. Here are some common errors associated with object assignment and recall:
 
-```{r,error=TRUE,eval=FALSE}
+```{r first_error, error=TRUE, exercise = TRUE}
 20_interest <- 1.0025^20 # This gives an error. Why?
 ```
 \begin{verbatim}
 ### Error: unexpected symbol in "20_interest"
 \end{verbatim}
 
-```{r,error=TRUE}
+```{r second_error, error=TRUE, exercise = TRUE}
 INTEREST_20 # This also gives an error. Why?
 ```
 
@@ -540,12 +520,13 @@ There are many built-in functions already in R. For example, consider the quit f
 ```{r quit_func, exercise = TRUE}
 q
 ```
+**WARNING:** Calling `q()` from within the notes will cause the notes to, well, quit, and then crash. You *can* do it, but you may lose your progress and have to start over.
 
 By typing the name of the quit function without parentheses, R shows us how the function is defined. There are three arguments: `save`, `status`, and `runLast`. Each argument has a default value specified by a single equal sign `=`: `"default"`, `0`, and `FALSE`, respectively. We typically call `q()` with empty parentheses so that the arguments are left with their default values.
 
 R function arguments can be matched positionally or by name. If we know the order of the arguments, we do not need to use the name in order to specify the arguments. However, it is typically better to use named arguments for clarity.
 
-```{r quit_exec, exercise = TRUE,eval=FALSE}
+```{r quit_exec, exercise = FALSE, eval=FALSE}
 q("no") # Sets the save argument to "no"
 q(save = "no") # Same thing (but clearer)
 
@@ -555,7 +536,7 @@ q(runLast = FALSE) # Same thing (but clearer)
 
 Notice that blank arguments do not erase the default values.
 
-```{r quit_wrong, exercise = TRUE,error=TRUE}
+```{r quit_wrong, exercise = FALSE, error=TRUE}
 q(FALSE) # This gives an error. Why?
 ```
 
