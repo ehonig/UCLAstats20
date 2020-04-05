@@ -2,7 +2,7 @@
 title: "Logical Expressions"
 subtitle: "Chapter 3"
 author: "Stats 20: Introduction to Statistical Programming with R"
-date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements:<br/>&nbsp;&nbsp;Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
+date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements: Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
 header-includes:
    - \usepackage{graphicx}
    - \usepackage{bm}
