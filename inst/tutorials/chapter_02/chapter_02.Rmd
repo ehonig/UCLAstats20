@@ -11,10 +11,10 @@ header-includes:
    - \usepackage{amsthm}
 output:
   learnr::tutorial:
-    number_sections: true
+    number_sections: false
     toc: true
     toc_depth: 3
-    progressive: true
+    progressive: false
 runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
