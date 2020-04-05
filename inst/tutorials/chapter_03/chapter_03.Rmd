@@ -1,0 +1,791 @@
+---
+title: "Logical Expressions"
+subtitle: "Chapter 3"
+author: "Stats 20: Introduction to Statistical Programming with R"
+date: "UCLA"
+header-includes:
+   - \usepackage{graphicx}
+   - \usepackage{bm}
+   - \usepackage{amsmath}
+   - \usepackage{amssymb}
+   - \usepackage{amsthm}
+output:
+  learnr::tutorial:
+    number_sections: true
+    toc: true
+    toc_depth: 3
+    progressive: true
+runtime: shiny_prerendered
+---
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+options(width = 80)
+checker <- function(
+  label,
+  user_code,
+  solution_code,
+  check_code,
+  envir_result,
+  evaluate_result,
+  envir_prep,
+  ...
+) {
+  uc <- styler::style_text(user_code)
+  user_code <- paste(uc[uc != ""], collapse = "\n")
+  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
+  if (user_code == solution_code) {
+    list(message = learnr::random_praise(),
+         correct = TRUE, location = "append")
+  } else {
+    list(message = learnr::random_encouragement(),
+         correct = FALSE, location = "append")
+  }
+}
+tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+first_ten <- 1:10
+first_five <- c(1, 2, 3, 4, 5)
+seq_five <- 1:5
+inf_fin <- c(7, -Inf, 8, NA, NaN, Inf)
+running_times <- c(51, 40, 57, 34, 47, 50, 50, 56, 41, 38)
+some_nums <-  c(4, 1, 2, 6, 8, 5, 3, 7)
+```
+
+```{js, echo=FALSE}
+$(function() {
+   $('.ace_editor').each(function( index ) {
+     ace.edit(this).setFontSize("20px");
+   });
+})
+```
+\newtheorem{question}{Question}
+
+\begin{center}
+All rights reserved, Michael Tsiang, 2017--2019.
+
+\includegraphics[width=0.1\textwidth]{by-nc-sa.png}
+
+Acknowledgements: Vivian Lew and Juana Sanchez
+\end{center}
+
+\newpage
+
+## Learning Objectives {-}
+
+After studying this chapter, you should be able to:
+
+* Use relational operators to compare values and create logical vectors.
+
+* Use logical vectors as vector indices for subsetting and assignment.
+
+* Use Boolean operators to combine logical expressions.
+
+<!-- \newpage -->
+
+## Relational Operators
+
+### Definitions
+
+It is often necessary in programming to test relations between values. A **relational operator** is a binary operator that compares values in vectors. Applying a relational operator will produce a logical expression, which returns `TRUE` if the expression is true and `FALSE` if the expression is false. Many logical expressions in R use these relational operators.
+
+A list of the relational operators in R is below:
+
+* `< ` \ : Less than
+
+* `> ` \ : Greater than
+
+* `<=` : Less than or equal to
+
+* `>=` : Greater than or equal to
+
+* `==` : Equal to
+
+* `!=` : Not equal to
+
+**Caution**: Notice that the logical comparison `==` uses a *double* equal sign, not a single equal sign. The single equal sign `=` is reserved for object assignment and setting default function arguments.
+
+Some examples:
+
+```{r rel_ops, exercise = TRUE}
+3 < 4 # Is 3 less than 4?
+
+7 > 7 # Is 7 (strictly) greater than 7?
+
+7 <= 7 # Is 7 less than or equal to 7?
+
+3 - 4 >= 0 # Is 3 - 4 greater than or equal to 0?
+
+TRUE == FALSE # Is TRUE equal to FALSE?
+
+9 * 3 != 2 # Is 9 * 3 not equal to 2?
+```
+
+**Note**: When comparing logical values, `TRUE` is coerced into `1` and `FALSE` is coerced into `0`.
+
+**Caution**: Be careful with tests of equality (`==` and `!=`). Because R uses finite (double) precision when storing numbers, rounding errors may produce unexpected results. A test of equality will only return `TRUE` if the two values are represented *exactly* in R.
+
+To illustrate this, consider this example:
+
+```{r round_error, exercise = TRUE}
+49 * (4 / 49) == 4 # Is 49 * (4 / 49) exactly equal to 4?
+```
+
+To help get around rounding errors when comparing values, it can be helpful to use the **`round()`** function, which rounds a numeric input. The second argument is called `digits`, which specifies the number of digits (decimal places) to use.
+
+```{r round_error_pt2, exercise = TRUE}
+pi # Outputs pi to 6 digits
+
+pi == 3.141593 # Is pi equal to 3.141593?
+
+round(pi, digits = 6) # Round pi to 5 digits
+
+round(pi, 6) == 3.141593 # Is rounded pi equal to 3.14159?
+
+round(49 * (4 / 49), 8) == 4 # Is 49 * (4 / 49) (rounded to 8 digits) equal to 4?
+```
+
+
+### Vectorization
+
+Relational operators are vectorized, meaning that the relational operator will be applied to each element of a vector individually.
+
+```{r vector_rel_ops, exercise = TRUE}
+## Is 3 or 8 greater than or equal to 3?
+>= 3
+
+## Is 1, 4, or 9 exactly equal to 9?
+== 9
+
+## Is 1, 4, or 9 not (exactly) equal to 9?
+!= 9
+```
+
+```{r vector_rel_ops-hint-1}
+"Use the 'c()' function"
+```
+
+```{r vector_rel_ops-hint-2}
+## Is 3 or 8 greater than or equal to 3?
+c(3, 8) >= 3
+```
+
+```{r vector_rel_ops-solution}
+## Is 3 or 8 greater than or equal to 3?
+c(3, 8) >= 3
+
+## Is 1, 4, or 9 exactly equal to 9?
+c(1, 4, 9) == 9
+
+## Is 1, 4, or 9 not (exactly) equal to 9?
+c(1, 4, 9) != 9
+```
+
+```{r vector_rel_ops-check}
+## Is 3 or 8 greater than or equal to 3?
+c(3, 8) >= 3
+
+## Is 1, 4, or 9 exactly equal to 9?
+c(1, 4, 9) == 9
+
+## Is 1, 4, or 9 not (exactly) equal to 9?
+c(1, 4, 9) != 9
+```
+
+When comparing vectors, the corresponding elements of each vector are compared.
+
+```{r multi_comp_vec, exercise = TRUE}
+## Is 3 less than 1, and is 8 less than 4?
+c(3, 8) < c(1, 4)
+```
+
+\newpage
+
+```{r trips_comp, exercise = TRUE}
+## Is 1 greater than 5, is 4 greater than 6, and is 9 greater than 7?
+
+```
+
+```{r trips_comp-hint}
+"Try using the concatinate c() function for elementwise comparison"
+"The first of each is compared, then the second of each, etc."
+```
+
+
+```{r trips_comp-solution}
+## Is 1 greater than 5, is 4 greater than 6, and is 9 greater than 7?
+c(1, 4, 9) > c(5, 6, 7)
+```
+
+
+### Recycling
+
+Relational operators also recycle vectors in the same way that arithmetic operators do.
+
+```{r recycle, exercise = TRUE}
+c(1, 4) == c(5, 3, 7, 4)
+
+c(1, 4, 9, 3) >= c(5, 4)
+
+c(1, 4, 9, 3, 8) > c(5, 6, 7)
+```
+
+**Question**: What values are being compared in these examples?
+
+Notice that the length of the logical output vector has the same length as the longer vector in the relational statement.
+
+
+### The `any()`, `all()`, and `identical()` Functions
+
+The relational operators compare vectors elementwise using vectorization, so the result from an input vector is a logical output vector. If we want to know if any or all of the individual logical values are `TRUE`, we can use the `any()` and `all()` functions.
+
+The **`any()`** function inputs a logical vector and returns `TRUE` if any of the values is `TRUE`. The **`all()`** function inputs a logical vector and returns `TRUE` if *all* of the values are `TRUE`.
+
+```{r any, exercise = TRUE}
+## Create a vector of the integers from 1 to 10
+first_ten <- 1:10
+first_ten
+
+## Are any of the values greater than 7?
+any(first_ten > 7)
+```
+```{r any_all, exercise = TRUE}
+## Are any of the values greater than 70?
+
+
+## Are all of the values greater than 70?
+
+
+## Are all of the values greater than 0?
+
+```
+
+```{r any_all-hint}
+"Try putting the any() and all() functions around the relational operator"
+```
+
+
+```{r any_all-solution}
+## Are any of the values greater than 70?
+any(first_ten > 70)
+
+## Are all of the values greater than 70?
+all(first_ten > 70)
+
+## Are all of the values greater than 0?
+all(first_ten > 0)
+```
+
+
+The `all()` function can be used to test whether two vectors are equal. For example:
+
+```{r all, exercise = TRUE}
+## Create a vector of the integers from 1 to 5 using c()
+first_five <- c(1, 2, 3, 4, 5)
+## Create a vector of the integers from 1 to 5 using :
+seq_five <- 1:5
+## Are all the elements of first_five == seq_five TRUE?
+all(first_five == seq_five)
+```
+
+Another test for vector equality is to use the `identical()`, which inputs any two R objects and returns `TRUE` if they are *exactly* identical. For example:
+
+```{r ident, exercise = TRUE}
+identical(seq(1, 10), 1:10)
+```
+
+This shows that the `seq()` function and the colon operator `:` do generate identical sequences.
+
+**Side Note**: Use caution with `identical()`. The `identical()` function tests whether two R objects are exactly identical objects in R, down to their storage mode and all their attributes. Notice the following example:
+
+```{r ident_issue, exercise = TRUE}
+first_five
+seq_five
+identical(first_five, seq_five)
+```
+
+The issue lies in the fact that `c()` generates floating point numbers (doubles), while `seq()` and `:` generate integers.
+
+```{r typeof, exercise = TRUE}
+typeof(first_five)
+typeof(seq_five)
+```
+
+This technical point seldom comes up in practice, but it is important to be aware of in case it causes an unexpected issue.
+
+
+### Special Values
+
+#### `NA`, `NULL`, and `NaN`
+
+The special values `NA`, `NULL`, and `NaN` are incomparable using relational operators.
+
+```{r spec_val, exercise = TRUE}
+c(7, NA, 4) > 6
+
+c(TRUE, FALSE) > NULL
+
+c(1, 4, 9) <= NaN
+```
+
+Since comparing special values is not possible, we instead are often interested in whether elements in a vector are special values or not. This is particularly useful in finding where entries in a dataset are missing values. The **`is.na()`**, **`is.nan()`**, and **`is.null()`** functions are used in this context.
+
+* The `is.na()` function inputs an object and outputs `TRUE` if the corresponding elements that are `NA` or `NaN`.
+
+* The `is.nan()` function inputs an object and outputs `TRUE` if the corresponding elements that are `NaN`.
+
+* The `is.null()` function inputs an object and outputs `TRUE` if the object is the `NULL` object.
+
+```{r is_na_nan_null, exercise = TRUE}
+is.na(c(7, NA, 4, NA, 3, Inf, NaN))
+
+is.nan(c(1, NaN, -4, Inf, NA))
+
+is.null(NULL)
+
+is.null(c(1, NULL, NA))
+```
+
+**Note**: Notice that `is.na()` and `is.nan()` are vectorized functions, but `is.null()` is not.
+
+```{r na_nan_null_quiz, echo = FALSE}
+question("How do I check if a value of the vector x is NA?",
+         answer("x == NA"),
+         answer("is.nan(x)"),
+         answer("is.na(x)", correct = TRUE),
+         answer("x * NA == NA"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+
+#### `Inf`
+
+Since infinity represents a value that is larger than any finite number, `Inf` can be compared against numbers in an expected and intuitive way.
+
+```{r inf_ex, exercise = TRUE}
+c(1, 4, Inf) < Inf
+
+-Inf < exp(100)
+
+exp(1000) == Inf
+```
+
+**Note**: Even though `exp(1000)` is not technically infinite, `exp(1000) == Inf` returns `TRUE`. Because R cannot represent extremely large values, the object `exp(1000)` itself returns `Inf`, so R interprets `exp(1000)` as being the same object as `Inf`.
+
+The vectorized functions **`is.infinite()`** and **`is.finite()`** can be used to test whether elements are infinite or finite. Test this on inf_fin.
+```{r inf_fin}
+inf_fin <- c(7, -Inf, 8, NA, NaN, Inf)
+
+## Which of inf_fin are infinite?
+
+
+## Which of inf_fin are finite?
+
+```
+
+```{r inf_fin-hint-1}
+"Try to use is.infinite and is.finite"
+```
+
+```{r inf_fin-hint-2}
+"Some values may result in FALSE for both operations. Think about why."
+```
+
+
+```{r inf_fin-solution}
+inf_fin <- c(7, -Inf, 8, NA, NaN, Inf)
+
+## Which of inf_fin are infinite?
+is.infinite(inf_fin)
+
+## Which of inf_fin are finite?
+is.finite(inf_fin)
+```
+
+```{r inf_fin-check}
+inf_fin <- c(7, -Inf, 8, NA, NaN, Inf)
+
+## Which of inf_fin are infinite?
+is.infinite(inf_fin)
+
+## Which of inf_fin are finite?
+is.finite(inf_fin)
+```
+
+```{r inf_fin_quiz, echo = FALSE}
+question("What values return FALSE for both is.infinite() and is.finite()?
+         Select all that apply.",
+         answer("NA", correct = TRUE),
+         answer("NaN", correct = TRUE),
+         answer("NULL"),
+         answer("Any logical vector"),
+         answer("Any character vector", correct = TRUE),
+         answer("Any numeric vector"),
+         answer("Inf and -Inf"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+## Logical Indexing
+
+### Subsetting
+
+Logical vectors can also be used as indices for subsetting. Using a logical index will extract every entry that corresponds to a `TRUE` value in the index vector.
+
+A common use of logical indices is to extract only certain elements that satisfy some condition or criterion. As an example, we will return to Chris Traeger's running times from the previous chapter.
+
+```{r log_sub, exercise = TRUE}
+## Input the data into R
+running_times <- c(51, 40, 57, 34, 47, 50, 50, 56, 41, 38)
+running_times
+
+## Is the running time longer than 40 (minutes)?
+running_times > 40
+## Extract only the running times that are longer than 40 (minutes)
+running_times[running_times > 40]
+```
+
+**Question**: How would we extract only Chris Traeger's running times that were at most 35 minutes?
+```{r max_35, exercise = TRUE}
+
+```
+
+```{r max_35-hint-1}
+"At most means use '<='"
+```
+
+```{r max_35-hint-2}
+"Combine it all into one line (see above code chunk for an example)"
+```
+
+
+```{r max_35-solution}
+running_times[running_times <= 35]
+```
+
+```{r max_35-check}
+running_times[running_times <= 35]
+```
+
+Another example:
+
+```{r even_times, exercise = TRUE}
+## Create a logical index
+logical_index <- (running_times %% 2) == 0
+logical_index
+## Extract the values corresponding to the TRUE values in logical_index
+running_times[logical_index]
+```
+
+**Question**: What kind of numbers in `running_times` will return `TRUE` from the `logical_index` command `(running_times %% 2) == 0`?
+
+```{r even_quiz, echo = FALSE}
+question("What kind of numbers in `running_times` will return `TRUE`
+         from the `logical_index` command `(running_times %% 2) == 0`?",
+         answer("odd numbers"),
+         answer("even numbers", correct = TRUE),
+         answer("prime numbers"),
+         answer("every other number in running_times"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+If the logical index vector is shorter than the given vector, the logical index will be recycled.
+
+```{r ev_oth, exercise = TRUE}
+## Create a logical index of length 2 with TRUE, then FALSE
+
+## Extract every other element from running_times
+
+```
+
+```{r ev_oth-solution}
+## Create a logical index of length 2 with TRUE, then FALSE
+every_other <- c(TRUE, FALSE)
+## Extract every other element from running_times
+running_times[every_other]
+```
+
+
+\newpage
+
+### The `which()` Function
+
+Logical indices give us a way to extract elements of a vector that satisfies a certain criterion. In some scenarios, we may just want to find the positions within the vector at which the condition is satisfied.
+
+The **`which()`** function inputs a logical vector and returns a numeric vector of the *indices* (or positions) of the `TRUE` values. That is, `which()` outputs which elements of the input vector are `TRUE`.
+
+```{r which_func, exercise = TRUE}
+## Is the running time at least 50 (minutes)?
+running_times >= 50
+
+## Which running times are at least 50 (minutes)?
+which(running_times >= 50)
+```
+
+**Question**: What is the output of `which(is.na(c(7,NA,4,NA,3,Inf,NaN)))`?
+```{r which_quiz, echo=FALSE}
+question("What is the output of `which(is.na(c(7,NA,4,NA,3,Inf,NaN)))`?",
+         answer("FALSE TRUE FALSE TRUE FALSE FALSE FALSE"),
+         answer("FALSE TRUE FALSE TRUE FALSE FALSE TRUE"),
+         answer("2 4"),
+         answer("2 4 7", correct = TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+We can also use the output of the `which()` function as an index for subsetting.
+
+```{r which_func_extract, exercise = TRUE}
+## Extract the running times that are at least 50 (minutes)
+running_times[which(running_times >= 50)]
+```
+
+
+## Boolean Operators (Combining Logical Expressions)
+
+<!-- `&`, `|`, `!`, `&&`, `||`, `xor()` -->
+
+So far, we have used each relational operator separately to create single logical expressions. Sometimes we want to combine two logical expressions to make a compound logical expression. The mathematical formalization for combining logical expressions is called **Boolean algebra**.
+
+The three main **Boolean operators** are **&** (and), **|** (or), and **!** (not). All three of these operators are vectorized.
+
+For example, suppose we have a vector of whole numbers (integers), in no particular order:
+
+```{r some_num, exercise = TRUE}
+some_nums <- c(4, 1, 2, 6, 8, 5, 3, 7)
+some_nums
+```
+
+Which entries in `some_nums` are greater than 3?
+
+```{r some_num_one, exercise = TRUE}
+
+```
+
+```{r some_num_one-hint, exercise = TRUE}
+"The operators are vectorized"
+```
+
+```{r some_num_one-solution, exercise = TRUE}
+some_nums > 3
+```
+
+Which entries in `some_nums` are less than 7?
+
+```{r some_num_two, exercise = TRUE}
+
+```
+
+```{r some_num_two-hint, exercise = TRUE}
+"The operators are vectorized"
+```
+
+```{r some_num_two-solution, exercise = TRUE}
+some_nums < 7
+```
+
+```{r some_num_two-check, exercise = TRUE}
+some_nums < 7
+```
+
+\newpage
+
+### The `&` (and) Operator
+
+Suppose we want to know which entries of `some_nums` are *both* greater than 3 AND less than 7. To do this in one line in R, we can use the **`&`** (**and**) operator that compares two (or more) logical expressions of the same length and outputs a logical vector that is `TRUE` if both expressions are simultaneously `TRUE` and `FALSE` otherwise (both are `FALSE` or only one is `TRUE`).
+
+```{r and_ops, exercise = TRUE}
+some_nums > 3 & some_nums < 7 # Which entries are greater than 3 AND less than 7?
+```
+
+
+### The `|` (or) Operator
+
+Suppose we want to know which entries of `some_nums` are less than 3 OR greater than 7 (or both). This is an **inclusive or**, which means only one of the condtions needs to be satisfied for the statement to be true. To do this in one line in R, we can use the **`|`** (**or**) operator that compares two (or more) logical expressions of the same length and outputs a logical vector that is `TRUE` if *at least one* expression is `TRUE` and `FALSE` only if both are `FALSE`.
+
+```{r or_one, exercise = TRUE}
+some_nums < 3 # Which entries are less than 3?
+```
+
+```{r or_two, exercise = TRUE}
+some_nums > 7 # Which entries are greater than 7?
+```
+
+```{r or_three, exercise = TRUE}
+some_nums < 3 | some_nums > 7 # Which entries are less than 3 OR greater than 7?
+```
+
+
+**Question**: Use either `&` or `|` to find which entries of `some_nums` are greater than 4 AND less than 6.
+
+```{r and_question, exercise = TRUE}
+
+```
+
+```{r and_question-hint-1, exercise = TRUE}
+"Use the & operator"
+```
+
+```{r and_question-hint-2, exercise = TRUE}
+"Remember how to subset using logical indices (i.e. TRUEs and FALSEs)"
+```
+
+```{r and_question-solution, exercise = TRUE}
+some_nums[some_nums > 4 & some_nums < 6]
+```
+
+```{r and_question-check, exercise = TRUE}
+some_nums[some_nums > 4 & some_nums < 6]
+```
+
+**Question**:  Use either `&` or `|` to find which entries of `some_nums` are less than 4 OR greater than 6.
+
+```{r or_question, exercise = TRUE}
+
+```
+
+```{r or_question-hint-1, exercise = TRUE}
+"Use the | (OR) operator"
+```
+
+```{r or_question-hint-2, exercise = TRUE}
+"Remember how to subset using logical indices (i.e. TRUEs and FALSEs)"
+```
+
+```{r or_question-solution, exercise = TRUE}
+some_nums[some_nums > 4 & some_nums < 6]
+```
+
+```{r or_question-check, exercise = TRUE}
+some_nums[some_nums > 4 & some_nums < 6]
+```
+
+
+### The `!` (not) Operator
+
+The exclamation point **`!`** is the **not** or **logical negation** operator that returns `TRUE` if the input is `FALSE` and `FALSE` if the input is `TRUE`. The exclamation operation is placed at the beginning of a logical statement or vector. Parentheses help clarify which expressions are being negated.
+
+```{r, nots, exercise = TRUE}
+!FALSE # Not FALSE
+
+!(some_nums < 3) # Which entries are NOT less than 3?
+
+!(some_nums < 3 | some_nums > 7) # Which entries are NOT (less than 3 OR greater than 7)?
+
+!(some_nums < 3) | some_nums > 7 # Which entries are (NOT less than 3) OR greater than 7?
+
+!(some_nums > 3 & some_nums < 7) # Which entries are NOT (greater than 3 AND less than 7)?
+```
+
+
+### The `&&` and `||` Operators
+
+The `&&` and `||` operators are similar to their respective `&` and `|` counterparts but with two key differences.
+
+* The `&&` and `||` operators are *not* vectorized. They will only compare the first element of each vector.
+
+* The `&&` and `||` operators use **short-circuit evaluation**: They will evaluate expressions from left to right and *only* evaluate the right expression if necessary. For example, if `A` is `TRUE`, then `A || B` will be `TRUE` regardless of the value of `B`, so `B` will not need to be evaluated for `A || B` to output `TRUE`. Short-circuit evaluation is particularly beneficial when `B` is complicated, slow to evaluate, or evaluating `B` will throw an error or a warning when `A` is `TRUE`.
+
+```{r double_ops, exercise = TRUE}
+c(TRUE, FALSE, TRUE) && c(FALSE, TRUE, TRUE)
+c(TRUE, FALSE, TRUE) || c(FALSE, TRUE, TRUE)
+x <- -5
+x < 0 | is.na(sqrt(x) > 2)
+x < 0 || is.na(sqrt(x) > 2)
+```
+
+These non-vectorized operators are generally preferred/recommended for flow control statements, such as in `if()` statements or `while()` loops, where single logical values are expected.
+
+
+### Boolean Algebra and Set Theory
+
+There is an important relationship between Boolean algebra and set theory. In statistics, we often represent events or collections of outcomes from random scenarios using set theory notation. The Boolean operators in logic correspond to the set theoretic operations we use to combine sets (or events).
+
+Suppose we interpret logical statements $A$ and $B$ as sets. The set "$A \hbox{ and } B$" consists of elements which are both in $A$ and in $B$. In set theory, $A \hbox{ and } B$ is called the **intersection** of $A$ and $B$, denoted by $A \cap B$. Similarly, "$A \hbox{ or } B$" is the set of elements that are in $A$ or in $B$ (or both), which is also called the **union** of $A$ and $B$, denoted by $A \cup B$. The set "not $A$" is called the **complement** of $A$, denoted by $A^c$.
+
+Since logical statements can only have two values (true and false), we can put all of the results from Boolean operations in a table, often called a **truth table**, given below.
+
+\medskip
+
+\begin{table}[htbp!]
+\centering
+\begin{tabular}{ccccccc}
+\hline
+Boolean & $A$ & $B$ & not $A$ & not $B$ & $A$ and $B$ & $A$ or $B$ \\
+R       & `A` & `B` & `!A` & `!B` & `A \& B` & `A | B` \\
+\hline
+ & `TRUE` & `TRUE` & `FALSE` & `FALSE` & `TRUE` & `TRUE` \\
+ & `TRUE` & `FALSE` & `FALSE` & `TRUE` & `FALSE` & `TRUE` \\
+ & `FALSE` & `TRUE` & `TRUE` & `FALSE` & `FALSE` & `TRUE` \\
+ & `FALSE` & `FALSE` & `TRUE` & `TRUE` & `FALSE` & `FALSE` \\
+ \hline
+\end{tabular}
+\caption{Truth table for Boolean operators}
+\end{table}
+
+## Chapter Quiz
+
+```{r final_quiz, echo=FALSE}
+question("What is the result of 49 * (4 / 49) == 4 ? Why?",
+         answer("TRUE because the 49's cancel out"),
+         answer("FALSE because R is masking an object"),
+         answer("FALSE because of rounding error", correct = TRUE),
+         answer("Nothing because we are assigning a variable to the value"),
+         answer("FALSE because R does not function properly for all maths"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+```{r final_quiz_2, echo=FALSE}
+question("What is the result of ((TRUE | NA) & (TRUE & NA)) | (NA | FALSE) ?",
+         answer("TRUE"),
+         answer("FALSE"),
+         answer("NA", correct = TRUE),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+```{r final_quiz_3, echo=FALSE}
+question("How do I subset the values of running times GREATER than 40?
+         Select all that apply
+         (note the level(s) of efficiency for each option).",
+         answer("running_times[running_times > 40]", correct = TRUE),
+         answer("running_times[which(running_times > 40)]"),
+         answer("running_times > 40"),
+         answer("which(running_times > 40)"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+
+<!-- ## The `&&` and `||` Operators -->
+
+<!-- The operators `&&` and `||` are similar to `&` and `|`, respectively, but  -->
+
+
+<!-- # Getting Help -->
+
+<!-- For help on a built-in function in R, use `?` followed by the name of the function, or apply the `help()` function. For example: -->
+
+<!-- ```{r} -->
+<!-- ?mean -->
+<!-- help(mean) -->
+<!-- ``` -->
+
+<!-- Help files in R are not always user friendly, but they are usually a great place to start understanding syntax and functionality. -->
+
+<!-- If you not know the name of the function, you can do a search with a double question mark `??` followed by the search term, or apply the `help.search()` function. The "fuzzy" search will search over all the available help files and return a list of any documentation that has an alias, concept, or title that matches the search term. For example: -->
+
+<!-- ```{r} -->
+<!-- ??regression -->
+<!-- ``` -->
+
+
+<!-- # Character Vectors -->
+
+<!-- Perhaps better to have a section on strings later? -->
+
+<!-- # Logical Vectors -->
+
+<!-- Relational operators and Boolean algebra in next section? -->

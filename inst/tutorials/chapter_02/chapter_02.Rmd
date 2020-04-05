@@ -1,0 +1,1199 @@
+---
+title: "Vectors"
+subtitle: "Chapter 2"
+author: "Stats 20: Introduction to Statistical Programming with R"
+date: "UCLA"
+header-includes:
+   - \usepackage{graphicx}
+   - \usepackage{bm}
+   - \usepackage{amsmath}
+   - \usepackage{amssymb}
+   - \usepackage{amsthm}
+output:
+  learnr::tutorial:
+    number_sections: true
+    toc: true
+    toc_depth: 3
+    progressive: true
+runtime: shiny_prerendered
+---
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE, warning = TRUE)
+options(width = 80)
+checker <- function(
+  label,
+  user_code,
+  solution_code,
+  check_code,
+  envir_result,
+  evaluate_result,
+  envir_prep,
+  ...
+) {
+  uc <- styler::style_text(user_code)
+  user_code <- paste(uc[uc != ""], collapse = "\n")
+  solution_code <- paste(styler::style_text(solution_code), collapse = "\n")
+  if (user_code == solution_code) {
+    list(message = learnr::random_praise(),
+         correct = TRUE, location = "append")
+  } else {
+    list(message = learnr::random_encouragement(),
+         correct = FALSE, location = "append")
+  }
+}
+tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+fib <- c(1, 1, 2, 3, 5, 8, 13)
+parks <- c("Leslie", "April", "Ron", "Tom", "Donna", "Jerry")
+true_dat <- c(TRUE, FALSE, TRUE, T, F)
+running_times <- c(51, 40, 57, 34, 47, 50, 50, 56, 41, 38)
+first_ten <- 1:10
+squared_dev <- function(x, c) {
+  (x - c)^2
+}
+variance <- function(x) {
+  n <- length(x)
+  xbar <- mean(x)
+  devs <- x - xbar
+  squared_devs <- devs^2
+  sum_squared_devs <- sum(squared_devs)
+  var_x <- sum_squared_devs / (n - 1)
+  var_x
+}
+variance2 <- function(x) {
+  sum((x - mean(x))^2) / (length(x) - 1)
+}
+```
+
+```{js, echo=FALSE}
+$(function() {
+   $('.ace_editor').each(function( index ) {
+     ace.edit(this).setFontSize("20px");
+   });
+})
+```
+\newtheorem{question}{Question}
+
+\begin{center}
+All rights reserved, Michael Tsiang, 2017--2019.
+
+\includegraphics[width=0.1\textwidth]{by-nc-sa.png}
+
+Acknowledgements: Vivian Lew and Juana Sanchez
+\end{center}
+
+\newpage
+
+## Learning Objectives {-}
+
+After studying this chapter, you should be able to:
+
+* Create vectors with the `c()` function.
+
+* Understand the distinction between numeric, character, and logical vectors.
+
+<!-- * Understand the mode hierarchy for vectors. -->
+
+* Extract values from a vector using subsetting.
+
+* Compute vector arithmetic in R.
+
+* Understand how R uses recycling in vector operations.
+
+* Understand how R uses vectorization.
+
+* Understand that R approximates numbers to identify and be aware of rounding errors.
+
+<!-- \newpage -->
+
+## The Essentials
+
+### Basic Definitions
+
+The most fundamental object in R is a **vector**, which is an ordered collection of values. The entries of a vector are also called *elements* or *components*. Single values (or **scalars**) are actually just vectors with a single element.
+
+The possible values contained in a vector can be of several basic data types, also known as (storage) **modes**: numeric, character, or logical. 
+
+* **Numeric** values are numbers (decimals).
+
+* **Character** values (also called **strings**) are letters, words, or symbols. Character values are always contained in quotation marks `""`.
+
+* **Logical** values are either `TRUE` or `FALSE` (must be in all caps), representing true and false values in formal logical statements.
+
+**Note**: The (capital) letters `T` and `F` are valid shorthand for `TRUE` and `FALSE`, respectively.
+
+The **`c()`** function is used to collect values into a vector. The `c` stands for concatenate or combine. Here are a few examples:
+
+```{r c_function, exercise = TRUE}
+c(1, 1, 2, 3, 5, 8, 13) # This is a numeric vector
+
+fib <- c(1, 1, 2, 3, 5, 8, 13) # Assign the vector to a named object
+fib
+
+parks <- c("Leslie", "April", "Ron", "Tom", "Donna", "Jerry") # This is a character vector
+parks
+
+true_dat <- c(TRUE, FALSE, TRUE, T, F) # This is a logical vector
+true_dat
+```
+
+The `c()` function can also concatenate vectors together by inputting vectors instead of single values.
+
+```{r multi_c, exercise = TRUE}
+c(c(1, 2), c(3, 4, 5)) # Can concatenate multiple vectors together
+```
+
+
+### The Length of a Vector
+
+The **length** of a vector is the number of elements in the vector. The **`length()`** function inputs a vector and outputs the length of the vector.
+
+Use the length() function to find the lengths of fib, parks, and true_dat.
+```{r length, exercise = TRUE}
+length(4) # A scalar/number is a vector of length 1
+
+
+
+```
+
+
+### The Mode Hierarchy
+
+In the examples above, we have created separate numeric, character, and logical vectors, where all the values in each vector are of the same type. A natural question is whether we can create a vector with mixed types.
+
+It turns out that the answer is *no*: Due to how R (internally) stores vectors, *every value in a vector must have the same type*.
+
+The **`mode()`** function inputs an object and outputs the type (or mode) of the object. This is a general function that can be applied to all objects, not just vectors.
+
+```{r modes, exercise = TRUE}
+mode(fib)
+mode(parks)
+mode(true_dat)
+```
+
+When values of different types are concatenated into a single vector, the values are **coerced** into a single type.
+
+**Question**: What is the output for the following commands?
+
+* `mode(c(fib,parks))`
+
+* `mode(c(fib,true_dat))`
+
+* `mode(c(parks,true_dat))`
+
+* `mode(c(fib,parks,true_dat))`
+
+```{r modes_quiz, echo = FALSE}
+question("Which concatinations produce numeric vectors?",
+         answer("mode(c(fib, true_dat))", correct = TRUE),
+         answer("mode(c(fib, pakrs))"),
+         answer("mode(c(parks,true_dat))"),
+         answer("mode(c(fib,parks,true_dat))"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+These questions highlight the **mode hierarchy**:
+
+\begin{center}
+logical < numeric < character
+\end{center}
+
+That is:
+
+* Combining logical and numeric vectors will result in a numeric vector.
+
+* Combining numeric and character vectors will result in a character vector.
+
+* Combining logical and character vectors will result in a character vector.
+
+* Combining logical, numeric, and character vectors will result in a character vector.
+
+```{r mode_hierarchy_quiz, echo = FALSE}
+hierarchy <- c(
+    "logical",
+    "numeric",
+    "character"
+  )
+
+## question_rank(
+##   "Sort the modes from lowest to highest in terms of hierarchy",
+##   answer(hierarchy, correct = TRUE),
+##   answer(rev(hierarchy), correct = FALSE, message = "Other direction!"),
+##   allow_retry = TRUE
+## )
+```
+
+
+**Note**: When logical values are coerced into numeric values, `TRUE` becomes `1` and `FALSE` becomes `0`.
+
+The reason why knowing the types of our R objects is important is because we want to apply functions to the objects in order to describe, visualize, or do analysis on them. Just like in mathematics, functions in R are all about input and output. Functions will expect inputs (arguments) in a certain form and will give outputs in other forms, such as other R objects (vectors, matrices, data frames, etc.) or plots. In addition, some functions will change their output depending on the input.
+
+As you become more familiar with R, it is important to know what type your objects are and what functions are available to you for working with those objects.
+
+
+## Sequences and Repeated Patterns
+
+R has some handy built-in functions for creating vectors of sequential or repeated values. One common use of sequences in statistics is to generate the category labels (or **levels**) for a designed experiment.
+
+### The `seq()` Function
+
+The **`seq()`** function creates a sequence of evenly spaced numbers with specified start and end values. The start and end values determine whether the sequence is increasing or decreasing. The first argument is the `from` or starting value, and the second argument is the `to` or end value.  By default, the optional argument by is set to `by = 1`, which means the numbers in the sequence are incrementally increased by 1.
+
+```{r seq, exercise = TRUE}
+seq(0, 5) # numbers increase by 1
+seq(0, 10, by = 2) # numbers now increase by 2
+```
+
+The `seq()` function can make decreasing sequences by specifying the `from` argument to be greater than the `to` argument. By default, the `by` argument will automatically change to `by = -1`. Make a sequence from 5 to 0 by -1, and from 10 to 0 by -3
+
+```{r backward_seq, exercise = TRUE}
+
+
+```
+
+```{r backward_seq-hint}
+"Think about which number comes first vs. second in the seq() function"
+```
+
+```{r backward_seq-solution}
+seq(5, 0)
+seq(10, 0, by = -3)
+```
+
+Notice that `seq(10,0,by=-3)` stops at the smallest number in the sequence greater than the `to` argument.
+
+To obtain a sequence of numbers of a given length, use the optional `length` (or `length.out`) argument. The incremental increase (or decrease) will be calculated automatically.
+
+```{r seq_and_length, exercise = TRUE}
+seq(0, 1, length = 11)
+```
+
+We could also specify the increment and length instead of providing the end value.
+
+```{r seq_options, exercise = TRUE}
+seq(10, 55, length = 10)
+
+seq(10, by = 5, length = 10) # The same sequence
+```
+
+A shorthand for the default `seq()` with unit increment (`by = 1` or `-1`) is to use the colon `:` operator. Use the colon operator for the equivalent sequence of `seq(0, 5)` and `seq(pi, 10)`
+
+```{r colon_operator, exercise = TRUE}
+
+
+```
+
+
+```{r colon_operator-solution}
+0:5
+pi:10
+```
+
+#### Example: Arithmetic Sequences
+
+A common type of sequence in mathematics is the arithmetic sequence. An *arithmetic sequence* or *arithmetic progression* is a sequence of numbers such that the difference between consecutive terms is constant. A (finite) arithmetic sequence is determined by the starting point $a$, the common difference (or step size) $d$, and the number of points $n$. The sequence is then given by
+$$a, a + d, a + 2d, a + 3d, \ldots, a + (n-1) d.$$
+We can use `seq()` or `:` to create arithmetic sequences.
+
+For example, suppose $a = 1$, $d = 2$, and $n = 10$.
+
+```{r arith_seq, exercise = TRUE}
+a <- 1
+d <- 5
+n <- 10
+a + (0:(n - 1)) * d
+```
+
+**Side Note**: Notice that semicolons `;` can be used to separate commands on a single line. This can be useful for saving space when assigning multiple constants at once.
+
+**Caution**: Notice the use of parentheses in the command `0:(n-1)`. The colon `:` operator takes precedence over multiplication and subtraction in the order of operations, but it does not take precedence over exponents. It is always recommended to use parentheses to make the order of operations explicit.
+
+```{r seq_quiz, echo = FALSE}
+question("Which of the following produces 2, 6, 10, 14? Select all that apply",
+         answer("seq(2, 14, by = 4)", correct = TRUE),
+         answer("2:14, by = 4"),
+         answer("seq(2, 14, length.out = 4)", correct = TRUE),
+         answer("seq(2, 14, length.out = 3"),
+         answer("seq(2, length.out = 3, by = 4"),
+         answer("seq(to = 14, length.out = 4, by = 4", correct = TRUE),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+
+### The `rep()` Function
+
+The **`rep()`** function creates a vector of repeated values. The first argument, generically called `x`, is the vector of values we want to repeat. The second argument is the `times` argument that specifies how many times we want to repeat the values in the `x` vector.
+
+The `times` argument can be a single value (repeats the whole vector) or a vector of values (repeats each individual value separately). If the length of the `times` vector is greater than 1, the vector needs to have the same length as the `x` vector. Each element of `times` correponds to the number of times to repeat the corresponding element in `x`.
+
+```{r rep,exercise=TRUE}
+rep(3, 10) # Repeat the value 3, 10 times
+
+rep(c(1, 2), 5) # Repeat the vector c(1,2), 5 times
+
+rep(c(1, 2), c(4, 3)) # Repeat the value 1, 4 times, and the value 2, 3 times
+
+rep(c(5, 3, 1), c(1, 3, 5)) # Repeat c(5,3,1), c(1,3,5) times
+```
+
+```{r rep-hint}
+"The times argument in rep() is vectorized"
+```
+
+```{r rep-solution}
+rep(3, 10) # Repeat the value 3, 10 times
+
+rep(c(1, 2), 5) # Repeat the vector c(1,2), 5 times
+
+rep(c(1, 2), c(4, 3)) # Repeat the value 1, 4 times, and the value 2, 3 times
+
+rep(c(5, 3, 1), c(1, 3, 5)) # Repeat c(5,3,1), c(1,3,5) times
+```
+
+**Question**: How is `rep(c(1,2),5)` different from `rep(c(1,2),c(5,5))`?
+```{r rep_quiz, echo=FALSE}
+question("What does `rep(c(1,2),3)` produce? `rep(c(1,2),c(3,3))`?",
+         answer("1 2 1 2 1 2 ; 1 1 1 2 2 2", correct = TRUE),
+         answer("1 1 1 2 2 2 ; 1 2 1 2 1 2"),
+         answer("1 2 3 ; 1 2 3 3"),
+         answer("1 2 3 3 ; 1 2 3"),
+         answer("1 1 1 2 2 2 ; 1 1 1 2 2 2"),
+         answer("1 2 3 ; 1 2 3"),
+         answer("1 2 1 2 1 2 ; 1 2 1 2 1 2"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+**Question**: Why does `rep(c(5,3,1),c(1,3))` give an error?
+
+We can also combine `seq()` and `rep()` to construct more interesting patterns.
+
+```{r seq_rep, exercise = TRUE}
+rep(seq(2, 20, by = 2), 2)
+
+rep(seq(2, 20, by = 2), rep(2, 10))
+```
+
+
+**Note**: The `rep()` function works with vectors of any mode, including character and logical vectors. This is particularly useful for creating vectors that represents categorical variables.
+
+```{r other_rep, exercise = TRUE}
+rep(c("long", "short"), c(2, 3))
+
+rep(c(TRUE, FALSE), c(6, 4))
+```
+
+
+## Extracting and Assigning Vector Elements
+
+### Subsetting
+
+Square brackets are used to extract specific parts of data from objects in R. Extracting data this way is also called **subsetting**. We input the index of the element(s) we want to extract.
+
+To illustrate subsetting, we will consider the following example.
+
+To keep his body in (literally perfect) shape, Chris Traeger runs 10k every day. His running times (in minutes) for the last ten days are:
+
+\begin{center}
+51, 40, 57, 34, 47, 50, 50, 56, 41, 38
+\end{center}
+
+We first input the data into R as a vector and save it as the `running_times` object.
+
+```{r run_time, exercise = TRUE}
+## Input the data into R
+running_times <- c(51, 40, 57, 34, 47, 50, 50, 56, 41, 38)
+## Print the values
+running_times
+```
+
+\newpage
+
+#### Positive Indices
+
+Recall that the `[1]` in front of the output is an index, telling us that `r running_times[1]` is the first element of the vector `running_times`. By counting across the vector, we can see, for example, that the 5th element of `running_times` is `r running_times[5]`. More efficiently, we can extract just the 5th element by typing `running_times[5]`.
+
+```{r fifth_element, exercise = TRUE}
+## Extract the 5th element
+
+```
+
+```{r fifth_element-solution}
+## Extract the 5th element
+running_times[5]
+```
+
+
+To extract multiple values at once, we can input a vector of indices:
+
+```{r multi_extract, exercise = TRUE}
+## Extract the 3rd and 7th elements
+
+## Extract the 4th through 8th elements
+
+```
+
+```{r multi_extract-hint-1}
+"Use the c() function for the third and seventh elements"
+```
+
+```{r multi_extract-hint-2}
+"Use the colon : operator when extracting the 4th to 8th elements"
+```
+
+```{r multi_extract-solution}
+## Extract the 3rd and 7th elements
+running_times[c(3, 7)]
+## Extract the 4th through 8th elements
+running_times[4:8]
+```
+
+```{r multi_extract-check}
+## Extract the 3rd and 7th elements
+running_times[c(3, 7)]
+## Extract the 4th through 8th elements
+running_times[4:8]
+```
+
+Reordering the indices will reorder the elements in the vector:
+
+```{r rev_extract, exercise = TRUE}
+running_times[8:4] # Return the 4th through 8th elements in reverse order
+```
+
+#### Negative Indices
+
+Negative indices allow us to avoid certain elements, extracting all elements in the vector *except* the ones with negative indices.
+
+```{r neg_index, exercise = TRUE}
+running_times[-4] # Return all elements except the 4th one
+running_times[-c(1, 5)] # Return all elements except the 1st and 5th
+running_times[-(1:4)] # Return all elements except the first four
+```
+
+**Note**: Notice that `-(1:4)` is not the same as `-1:4`.
+
+Using a zero index returns nothing. A zero index is not commonly used, but it can be useful to know for more complicated expressions.
+
+```{r vecotr_index, exercise = TRUE}
+index_vector <-  # Create a vector of indices from 0 to 5 using the colon operator
+running_times[index_vector] # Extract the values corresponding to the index.vector
+```
+
+```{r vecotr_index-solution}
+index_vector <- 0:5 # Create a vector of indices from 0 to 5 using the colon operator
+running_times[index_vector] # Extract the values corresponding to the index.vector
+```
+
+**Caution**: Do not mix positive and negative indices.
+
+```{r running_index_error, exercise = TRUE}
+running_times[c(-1, 3)]
+```
+
+The issue with indices of mixed signs is that R does not know the order in which the subsetting should occur: Do we want to return the third element before or after removing the first one?
+
+**Question**: How could we code returning the third element of `running_times` after removing the first one?
+
+#### Fractional Indices
+
+Always use integer valued indices. Fractional indices will be truncated towards 0.
+
+```{r frac_index, exercise = TRUE}
+running_times[1.9] # Returns the 1st element (1.9 truncated to 1)
+running_times[-1.9] # Returns everything except the 1st element (-1.9 truncated to -1)
+running_times[0.5] # Returns an empty vector (0.5 truncated to 0)
+```
+
+**Note**: The output `numeric(0)` is a numeric vector of length zero.
+
+#### Blank Indices
+
+Subsetting with a blank index will return everything. Verify this below with two lines of code using running_times.
+
+```{r blank_index, exercise = TRUE}
+
+ # Same output
+```
+
+```{r blank_index-hint}
+"To make a blank index, use back-to-back brackets (i.e. [])"
+```
+
+
+```{r blank_index-solution}
+running_times
+running_times[] # Same output
+```
+
+```{r blank_index-check}
+running_times
+running_times[] # Same output
+```
+Blank indices will be important later (when we have ordered indices).
+
+<!-- ### Logical Indices -->
+
+<!-- Logical vectors can also be used as indices. Using a logical index will extract every entry that corresponds to a `TRUE` value in the index vector. -->
+
+<!-- ```{r} -->
+<!-- logical.index <- rep(c(TRUE,FALSE),5) -->
+<!-- logical.index -->
+<!-- running_times[logical.index] -->
+<!-- ``` -->
+
+
+```{r subset_quiz, echo = FALSE}
+running <- c(1, 4, 6, 123, 3)
+question("Which of the following returns 6 4 3 as the output?",
+         answer("running[c(2, 3, 5)]"),
+         answer("running[c(3, 2, 5)]", correct = TRUE),
+         answer("running[2, 3, 5]"),
+         answer("running[]"),
+         answer("That cannot be the output since 6 comes after 4
+                when creating the vector"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+### Assigning Values to an Existing Vector
+
+Suppose Chris Traeger made a mistake in recording his running times. On his fourth run, he ran 10k in 43 minutes, not 34 minutes. Rather than reentering all of his running times, how can we modify the existing `running_times` vector?
+
+R allows us to assign new values to existing vectors by again using the assignment operator `<-`. Rather than specifying a new object name on the left of the assignment, we can put the element or elements in the named vector that we want to change.
+
+```{r assign_val, exercise = TRUE}
+## Display Chris Traeger's running times
+running_times
+## Assign 43 to the 4th element of the running_times vector
+running_times[4] <- 43
+## Verify that the running_times vector has been updated
+running_times
+```
+
+If Chris found that the last two values were also incorrect, we can reassign multiple values at once using vector indices.
+
+```{r change9_10, exercise = TRUE}
+## Assign 42 to the 9th element and 37 to the 10th element
+
+## Verify that the running_times vector has been updated
+running_times
+```
+
+```{r change9_10-hint-1}
+"Think about how you would subset a vector using the colon operator"
+```
+
+```{r change9_10-hint-2}
+"Think about how to make a vector with two values using the concatinate c() function"
+```
+
+
+```{r change9_10-solution}
+## Assign 42 to the 9th element and 37 to the 10th element
+running_times[9:10] <- c(42, 37)
+## Verify that the running_times vector has been updated
+running_times
+```
+
+```{r change9_10-check}
+## Assign 42 to the 9th element and 37 to the 10th element
+running_times[9:10] <- c(42, 37)
+## Verify that the running_times vector has been updated
+running_times
+```
+
+**Note**: The original value of 34 in the `running_times` vector has been overwritten, so reassigning values to an existing object is irreversible. Depending on the situation, it might be beneficial to first make a copy of the original data as a separate object before making changes This ensures that the original data is still retrievable if there is a mistake in the modifications.
+
+**Caution**: You cannot use this syntax to create a new object. For example, the following code will not work:
+
+```{r new_subset,error=TRUE, exercise = TRUE}
+bad[1:2] <- c(4, 8)
+```
+
+The reason why this gives an error is that extracting or assigning individual vector elements using square brackets is actually done through functions (remember: everything is a function call). R cannot apply the extract/assign function to a vector that does not exist. The vector needs to be created first.
+
+The following code fixes the issue:
+
+```{r good_vec, exercise = TRUE}
+good <- numeric(2) # Create an empty vector of length 2
+good[1:2] <- c(4, 8)
+good
+```
+
+**Note**: The `numeric()`, `character()`, and `logical()` functions can create empty vectors of a specified length for their respective modes. The default elements will all be `0`, `""`, and `FALSE`, respectively.
+
+```{r empty_vecs, exercise = TRUE}
+ # Create a numeric vector of length 3
+ # Create a character vector of length 5
+ # Create a logical vector of length 4
+```
+
+```{r empty_vecs-hint}
+"Think about which function creates which type of specified vector"
+```
+
+
+```{r empty_vecs-solution}
+numeric(3) # Create a numeric vector of length 3
+character(5) # Create a character vector of length 5
+logical(4) # Create a logical vector of length 4
+```
+
+Creating empty or blank vectors will be important when working with for and while loops.
+
+
+## Vector Arithmetic
+
+Arithmetic can be done on numeric vectors using the usual arithmetic operations. The operations are applied elementwise, i.e., to each individual element.
+
+For example, if we want to convert Chris Traeger's running times from minutes into hours, we can divide all of the elements of `running_times` by 60.
+
+```{r running_hrs, exercise = TRUE}
+## Divide the running times by 60
+running_times_in_hours <- 
+## Print the running_times_in_hours vector
+running_times_in_hours
+```
+
+\newpage
+
+Here are some other examples:
+
+```{r make_vecs, exercise = TRUE}
+## Create a vector of the integers from 1 to 10
+first_ten <- 1:10
+## Subtract 5 from each element
+first_ten - 5
+## Square each element
+first_ten^2
+```
+
+Arithmetic operations can also be applied between two vectors. Just like with scalars, the binary operators work element-by-element.
+
+For example:
+
+```{r x_and_y_math, exercise = TRUE}
+x <- c(1, 3, 5) # Create a sample x vector
+y <- c(2, 4, 3) # Create a sample y vector
+## Add x and y
+
+## Multiply x and y
+
+## Exponentiate x by y
+
+```
+
+```{r x_and_y-hint}
+"Think of x and y as single values (vectors work the same in this situation)"
+```
+
+
+```{r x_and_y_math-solution}
+x <- c(1, 3, 5) # Create a sample x vector
+y <- c(2, 4, 3) # Create a sample y vector
+## Add x and y
+x + y
+## Multiply x and y
+x * y
+## Exponentiate x by y
+x^y
+```
+
+```{r x_and_y_math-check}
+x <- c(1, 3, 5) # Create a sample x vector
+y <- c(2, 4, 3) # Create a sample y vector
+## Add x and y
+x + y
+## Multiply x and y
+x * y
+## Exponentiate x by y
+x^y
+```
+
+Symbolically, if $x = (x_1,x_2,x_3)$ and $y = (y_1,y_2,y_3)$ are vectors, then vector arithmetic in R would output:
+
+* $x + y = (x_1 + y_1, x_2 + y_2, x_3 + y_3)$
+
+* $x - y = (x_1 - y_1, x_2 - y_2, x_3 - y_3)$
+
+* $x * y = (x_1 * y_1, x_2 * y_2, x_3 * y_3)$
+
+* $x/y = (x_1/y_1, x_2/y_2, x_3/y_3)$
+
+* $x^y = (x_1^{y_1}, x_2^{y_2}, x_3^{y_3})$
+
+**Side Note**: This is *not* how vector operations work in vector calculus or linear algebra. In those fields, only addition and subtraction can be applied between vectors. Standard multiplication, division, and exponentiation do not make sense.
+
+
+### Recycling
+
+When applying arithmetic operations to two vectors of different lengths, R will automatically **recycle**, or repeat, the shorter vector until it is long enough to match the longer vector.
+
+For example:
+
+```{r recycling_1, exercise = TRUE}
+c(1, 3, 5) + c(5, 7, 0, 2, 9, 11)
+c(1, 3, 5, 1, 3, 5) + c(5, 7, 0, 2, 9, 11) # This is the same computation that R did
+```
+
+The basic arithmetic involving a vector and a scalar (i.e., a vector of length one) is implicitly using recycling.
+
+```{r recycling_2, exercise = TRUE}
+c(1, 3, 5) + 5
+c(1, 3, 5) + c(5, 5, 5) # This is the computation that R did
+```
+
+**Caution**: When the length of the longer vector is a multiple of the length of the smaller one, R does not give any indication that it needed to recycle the shorter vector. It is up to the user to know how the operation is interpreted by R.
+
+If the length of the longer vector is not a multiple of the length of the smaller one, the operation will still be executed, but R will also return a warning. The warning is meant to alert the user in case the mismatched vector lengths are due to a mistake in the code.
+
+```{r recycle_warning, exercise = TRUE}
+c(1, 3, 5) + c(5, 7, 0, 2, 9)
+c(1, 3, 5, 1, 3) + c(5, 7, 0, 2, 9) # This is the computation that R did
+```
+
+**Note**: Notice the difference between warnings and errors. When a warning is given, R still executes the preceding command. When an error is given, R does not execute the preceding command.
+
+```{r recycling_quiz, echo=FALSE}
+question("What is the output of c(6, 7, 2) + c(3, 2, 1, 4)?",
+         answer("9 9 3 4, no warning"),
+         answer("9 9 3 4, with warning"),
+         answer("9 9 3 10, no warning"),
+         answer("9 9 3 10, with warning", correct = TRUE),
+         answer("25"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+
+**Side Note**: Recycling is not done in vector calculus or linear algebra. Vectors are required to have the same length (i.e., be of the same dimension) to be added or subtracted.
+
+
+## Vectorization
+
+Suppose we have a function that we want to apply to all elements of a vector. In many cases, functions in R are **vectorized**, which means that applying a function to a vector will automatically apply the function to each individual element in the vector.
+
+Vector arithmetic actually implements vectorized operations. Thus, any function created using vectorized operations is also vectorized. For example:
+
+```{r sq_dev, exercise = TRUE}
+squared_dev <- function(x, c) {
+  # This function inputs a vector x and a scalar c
+  # and outputs a vector of squared deviations from c.
+  (x - c)^2
+}
+## Compute squared deviations from 0
+squared_dev(x = 1:5, c = 0)
+## Compute squared deviations from 3
+squared_dev(x = 1:5, c = 3)
+```
+
+Notice how `squared_dev()` is a vectorized function built out of two vectorized arithmetic operations.
+
+The built-in mathematical functions we considered in the previous chapter are also vectorized (Try the three functions on the vector 1:30 below:
+
+```{r built_in_math, exercise = TRUE}
+sqrt()
+log()
+exp()
+```
+
+**Note**: The `e+` notation in the output of `exp(1:30)` represents scientific notation. The value for `exp(30)` means `r round(exp(30)/1e13,6)` $\times 10^{13}$.
+
+Clever use of vectorized operations and functions can make computations in R more efficient than using a loop (discussed in a later chapter) to apply functions individually to each element.
+
+## Basic Numeric Summary Functions
+
+### Built-In Functions
+
+In statistics, one of the first steps in analyzing a numeric variable is to summarize the numeric data with descriptive statistics, such as a measure of center and a measure of spread.
+
+There are many built-in functions to compute numeric summaries (summary statistics) for numeric vectors. Some of the most common ones are given below.
+
+* **`sum(x)`** computes the sum of the values of `x`
+
+* **`mean(x)`** computes the mean of `x`
+
+* **`sd(x)`** computes the standard deviation of `x`
+
+* **`var(x)`** computes the variance of `x`
+
+* **`median(x)`** computes the median of `x`
+
+* **`IQR(x)`** computes the interquartile range of `x`
+
+* **`min(x)`** computes the minimum value of `x`
+
+* **`max(x)`** computes the maximum value of `x`
+
+* **`range(x)`** computes the range (difference between the min and max) of `x`
+
+* **`diff(x)`** computes consecutive differences of `x`
+
+* **`cumsum(x)`** computes the cumulative sum of `x`
+
+* **`sort(x)`** orders the values of `x` (increasing order by default)
+
+* **`fivenum(x)`** computes the five-number summary of `x`
+
+* **`summary(x)`** computes a few summary statistics of `x`
+
+For example:
+
+```{r mean_sd, exercise = TRUE}
+## Compute the mean of the running times
+
+## Compute the standard deviation of the running times
+
+```
+
+```{r mean_sd-hint}
+"Use the mean() and sd() functions"
+```
+
+
+```{r mean_sd-solution}
+## Compute the mean of the running times
+mean(running_times)
+## Compute the standard deviation of the running times
+sd(running_times)
+```
+
+```{r mean_sd-check}
+## Compute the mean of the running times
+mean(running_times)
+## Compute the standard deviation of the running times
+sd(running_times)
+```
+
+### Example: Coding a Variance Function
+
+As an exercise, we can verify the `var()` function by coding a variance function ourselves.
+
+The standard formula for the sample variance of a sample of values $x_1,x_2,\ldots,x_n$ is given by
+$$s^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2,$$
+where $\displaystyle{\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i}$ is the sample mean.
+
+A step-by-step function to compute variance is shown below. Notice the use of vectorization within the body of the function.
+
+```{r var_func, exercise = TRUE}
+variance <- function(x) {
+  # This function inputs a vector x and outputs the variance of x.
+
+  # Compute the sample size
+  n <- length(x)
+
+  # First compute the mean of x.
+  xbar <- mean(x) # Or sum(x)/length(x)
+
+  # Compute each deviation from the mean of x.
+  devs <- x - xbar
+
+  # Compute the squared deviations from the mean.
+  squared_devs <- devs^2
+
+  # Sum the squared deviations together.
+  sum_squared_devs <- sum(squared_devs)
+
+  # Divide the sum of squared deviations by n-1.
+  var_x <- sum_squared_devs / (n - 1)
+
+  # Output var.x
+  var_x
+}
+```
+
+**Note**: Notice that we assigned the sample size (`length(x)`) and mean (`mean(x)`) to their own objects inside the `variance()` function. If a computed value needs to be used more than once, it is more computationally efficient to compute them once and assign them to an object name. This saves the computer from having to recompute these values multiple times throughout the function or program.
+
+The `variance()` function codes every step of the variance formula explicitly for illustrative purposes. Once you are more comfortable with vectorization and how to translate between a mathematical formula and R code, the function can be written more compactly with less object assignments. For example, the entire body of the variance function can be written in one line:
+
+```{r var_func_2, exercise = TRUE}
+variance2 <- function(x) {
+  # This function inputs a vector x and outputs the variance of x.
+  sum((x - mean(x))^2) / (length(x) - 1)
+}
+```
+
+The added space inside the `sum()` function is not necessary, but it is included here for clarity.
+
+We can verify that these functions both give us the same answer as the built-in `var()` function. Try all three functions on the running_times vector.
+
+```{r var_check, exercise=TRUE}
+
+
+
+```
+
+
+```{r var_check-solution}
+var(running_times)
+variance(running_times)
+variance2(running_times)
+```
+
+
+## Technical Subtleties
+
+### Special Values
+
+There are a few special values to be aware of in R.
+
+#### `NA`
+
+One of the most common special values in R is the **`NA`** object. `NA` is used to represent missing or unknown values (NA stands for "not available"). The `NA` value has a logical mode by default, but it can be coerced into any other mode as needed.
+
+For example, suppose Chris Traeger got the flu and missed a day of running between his fifth and sixth recorded runs. To keep the ordering in his running times, we could insert a missing value into the `running_times` vector.
+
+```{r na_run, exercise = TRUE}
+running_times <- c(running_times[1:5], NA, running_times[6:10])
+running_times
+```
+
+Missing values are important to identify and deal with for many statistical reasons. Some functions will not compute the correct value when `NA` values are present. For example, try mean() and sd() on the new running_times vector:
+
+```{r na_mean, exercise = TRUE}
+running_times <- c(running_times[1:5], NA, running_times[6:10])
+
+
+```
+
+```{r na_mean-solution}
+running_times <- c(running_times[1:5], NA, running_times[6:10])
+mean(running_times)
+sd(running_times)
+```
+
+
+One way to handle missing values for many built-in functions is to include the argument **`na.rm = TRUE`**, which removes `NA` values from the computations. Do this for the mean() and sd() functions on the running_times vector:
+
+```{r narm_mean, exercise = TRUE}
+running_times <- c(running_times[1:5], NA, running_times[6:10])
+
+
+```
+
+```{r narm_mean-solution}
+running_times <- c(running_times[1:5], NA, running_times[6:10])
+mean(running_times, na.rm = TRUE)
+sd(running_times, na.rm = TRUE)
+```
+
+
+#### `NULL`
+
+The **`NULL`** object (in all caps) is used to represent an empty, undefined, or nonexistent value. It has its own special mode called NULL.
+
+```{r null_is_nada, exercise = TRUE}
+nada <- NULL
+mode(nada)
+length(nada)
+```
+
+**Note**: The use of NULL is distinct from the use of NA. NULL represents that the value does not exist, whereas NA represents a value that is existent but unknown or missing.
+
+#### `NaN`
+
+The **`NaN`** object is a numeric value used to represent an indeterminate form (NaN stands for "not a number"). Some functions will give a warning when an `NaN` is returned, as this typically occurs when a mathematically illegal operation has been attempted. For example:
+
+```{r nan,warning=TRUE, exercise = TRUE}
+0 / 0
+log(-1)
+```
+
+
+#### `Inf`
+
+The **`Inf`** object is a numeric value used to represent infinity ($\infty$). This value is returned when a mathematical expression is actually infinite (more precisely, has an infinite limit) or is a number too large for R to store (somewhere around $10^{310}$).
+
+```{r inf, exercise = TRUE}
+1 / 0 # Infinity
+log(0) # Negative infinity
+exp(1000) # A non-infinite but very large number
+```
+
+```{r special_values_quiz, echo=FALSE}
+question("What will sqrt(-1) produce?",
+         answer("NA"),
+         answer("NaN", correct = TRUE),
+         answer("-Inf"),
+         answer("Inf"),
+         answer("NULL"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+
+### Approximate Storage of Numbers
+
+#### Floating Point Representation
+
+Computers are unable to represent all real numbers with infinite precision. For example, a computer is unable to store the true value of the irrational number $\pi \approx `r pi`$. While a computer is technically able to represent rational numbers exactly, it is more common to use an approximate representation.
+
+Humans represent numbers and perform arithmetic calculations using the decimal number system. In decimal representation, a positive number $a$ is expressed as
+$$r = \sum_k a_k 10^k,$$
+where $a_k \in \{0,1,2,\ldots,9\}$ are the digits of $a$, and $10$ is the base of the number system.
+
+For example, the number 5413.29 can be expressed as
+$$5413.29 = 5 \times 10^3 + 4 \times 10^2 + 1 \times 10^1 + 3 \times 10^0 + 2 \times 10^{-1} + 9 \times 10^{-2}.$$
+R, and most other computer programming languages, use **floating point representation**, which is a binary (base 2) variation on scientific notation.
+
+For example, consider a number written to four significant digits as $6.926 \times 10^{-4}$. This approximate representation could represent any true value between 0.00069255 and 0.00069265. In floating point representation, the significant digits are written in binary notation, and the power of 10 is replaced by a power of 2.
+
+In the binary number system, digits are either 0 or 1. So $6.926 \times 10^{-4}$ is written as $1.011_2 \times 2^{-11}$. The subscript of 2 in $1.011_2$ denotes base 2. The number $1.011_2$ represents
+$$1.011_2 = 1 \times 2^0 + 0 \times 2^{-1} + 1 \times 2^{-2} + 1 \times 2^{-3} = 1.375.$$
+Even though $6.926 \times 10^{-4}$ is written as $1.011_2 \times 2^{-11}$, they are not identical representations. It turns out that four binary digits have less precision than four decimal digits. The representation of $1.011_2 \times 2^{-11}$ could represent any true value between about about 0.000641 and 0.000702. The number $6.926 \times 10^{-4}$ actually does not have an exact binary representation in a finite number of digits.
+
+The standard precision in R, known as **double precision** in computer science, is 53 binary digits (or bits), which is equivalent to about 15 or 16 decimal digits. Floating point numbers using double precision are sometimes called **doubles**. Whole numbers, or **integers**, are often stored using 32 bit integer storage.
+
+**Note**: In some programming languages, integers and doubles are considered separate numeric types. R actually also has separate integer and double types, but R will automatically switch between them to make computations easier. The "numeric" mode in R is a synonym for the double type (both names exist in R as a historical artifact). The "integer" type is technically separate from numeric, but calling `mode()` on an integer vector will still return `"numeric"`.
+
+**Side Note**: The **`typeof()`** function returns the **internal storage type** of an input object. This is the same as the mode of an object, except that the integer and double types both have numeric modes. Use typeof() and mode() on both the vectors first_ten as well as on the stored value pi
+
+```{r mode_type, exercise = TRUE}
+
+
+
+
+```
+
+```{r mode_type-solution}
+typeof(first_ten)
+mode(first_ten)
+typeof(pi)
+mode(pi)
+```
+
+
+#### Rounding Errors
+
+The reason why we need to understand that numbers are stored approximately in R is that this inherent limitation of finite precision representations affects the accuracy of calculations. Any computations done on approximated numbers can accumulate **rounding errors**.
+
+For example, using exact arithmetic, we know that $(5/4) \times (4/5) = 1$, so $(5/4) \times (n \times 4/5) = n$, for any number $n$. However, this simple calculation in R already has rounding errors:
+
+```{r round_error, exercise = TRUE}
+n <- 1:10
+1.25 * (n * 0.8) - n
+```
+
+The exact answer should be 0 for all $n$, but we see that there are errors for some values of $n$. The errors in this example are essentially negligible (around $10^{-16}$), but they are important to be aware of and acknowledge. Rounding errors tend to occur in most computations, so long series of computations tend to accumulate larger errors than shorter ones.
+
+
+##### The Variance Function Revisited
+
+A common statistical example to illustrate the effect of rounding errors is in computing the variance.
+
+The standard formula for the variance requires calculating the sample mean $\bar{x}$ first and then the sum of squared deviations second, so the computer needs to cycle (or *pass*) over the data values twice. This is considered computationally expensive, since it requires storing the data values in the computer's memory between passes over the data.
+
+Through some algebraic manipulation, an alternate ``one-pass'' formula is given by
+$$s^2 = \frac{1}{n-1} \left(\sum_{i=1}^n x_i^2 - n\bar{x}^2\right).$$
+While this formula is mathematically equivalent and computationally less expensive, it can be numerically unstable when the variance is small relative to the mean. To illustrate this, we will first write the one-pass function.
+
+```{r round_error_1, exercise = TRUE}
+var_one <- function(x) {
+  # This function inputs a vector x
+  # and computes the one-pass formula for the variance of x.
+
+  # Compute the sample size.
+  n <- length(x)
+
+  # Output the variance of x.
+  (sum(x^2) - n * mean(x)^2) / (n - 1)
+}
+```
+
+This function will give the correct answer for small examples.
+
+```{r round_error_1_1, exercise = TRUE}
+var(first_ten) # Built-in function
+variance(first_ten) # Two-pass function
+var_one(first_ten) # One-pass function
+```
+
+Suppose we add a large value (like $10^{10}$) to every value in `first_ten`.
+
+**Question**: What happens to the mean when we add a large value to every value? What about to the variance?
+
+```{r mean_var, echo=FALSE}
+question("Which one(s) of the following is (are) affected by adding a large value to every value?",
+         answer("mean", correct = TRUE),
+         answer("variance"),
+         answer("standard deviation"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+```{r big_error, exercise = TRUE}
+## Add 10^10 to the first_ten vector and assign the result to the uhoh vector
+uhoh <- first_ten + 1e10
+## Compute the variance of uhoh
+var(uhoh) # Built-in function
+variance(uhoh) # Two-pass function
+var_one(uhoh) # One-pass function
+```
+
+Since the inner terms $\displaystyle{\sum_{i=1}^n x_i^2}$ and $n\bar{x}^2$ are very close when the $x_i$ values are large, then computing the difference results in a drastic loss of precision.
+
+**Caution**: Do not use the one-pass variance formula in practice.
+
+
+## Chapter Quiz
+```{r final_quiz_1, echo=FALSE}
+question("What is the output of 1:5 + 2?",
+         answer("1 2 3 4 5 6 7"),
+         answer("3 4 5 6 7", correct = TRUE),
+         answer("1 2 3 4 7"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+```{r final_quiz_2, echo=FALSE}
+question("In the vector c('Hi', 2, TRUE, NA), what type of NA is the NA?",
+         answer("NA"),
+         answer("Logical"),
+         answer("Numeric"),
+         answer("Character", correct = TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+```{r final_quiz_3, echo=FALSE}
+question("What is the output of sum(c(NA, TRUE, 7.3, -3), na.rm = TRUE)?",
+         answer("NA"),
+         answer("4.3"),
+         answer("5.3", correct = TRUE),
+         answer("The output is an error message"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+<!-- # Getting Help -->
+
+<!-- For help on a built-in function in R, use `?` followed by the name of the function, or apply the `help()` function. For example: -->
+
+<!-- ```{r} -->
+<!-- ?mean -->
+<!-- help(mean) -->
+<!-- ``` -->
+
+<!-- Help files in R are not always user friendly, but they are usually a great place to start understanding syntax and functionality. -->
+
+<!-- If you not know the name of the function, you can do a search with a double question mark `??` followed by the search term, or apply the `help.search()` function. The "fuzzy" search will search over all the available help files and return a list of any documentation that has an alias, concept, or title that matches the search term. For example: -->
+
+<!-- ```{r} -->
+<!-- ??regression -->
+<!-- ``` -->
+
+
+<!-- # Character Vectors -->
+
+<!-- Perhaps better to have a section on strings later? -->
+
+<!-- # Logical Vectors -->
+
+<!-- Relational operators and Boolean algebra in next section? -->
