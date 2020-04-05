@@ -260,6 +260,47 @@ A shorthand for the default `seq()` with unit increment (`by = 1` or `-1`) is to
 pi:10
 ```
 
+**Caution**: The colon `:` operator takes precedence over multiplication and subtraction in the order of operations, but it does not take precedence over exponents. It is always recommended to use parentheses to make the order of operations explicit.
+
+```{r colon_order, exercise = TRUE}
+n <- 5
+1:n - 1
+1:(n - 1)
+```
+
+
+#### The `seq_len()` Function
+
+The **`seq_len()`** function inputs a single `length.out` argument and generates the sequence of integers `1, 2, ..., length.out` unless `length.out = 0`, when it generates `integer(0)`.
+
+```{r seq_len_practice}
+seq_len(8)
+seq_len(10)
+seq_len(0)
+```
+
+Notice that the output of `1:n` and `seq_len(length.out = n)` are the same for positive integers `n`. However, if `n = 0`, then `seq_len(n)` will generate `integer(0)`, whereas `1:n` will produce the vector `1, 0`, which is often not the intended behavior when using the `1:n` notation (especially when used inside of functions). In addition, `seq_len()` does not allow for negative inputs. Try this with -5 as the input.
+
+```{r wrong_seq_len, exercise=TRUE}
+seq_len(-5)
+```
+
+Using `seq_len(n)` rather than the shorter `1:n` helps prevent unexpected results if `n` is incorrectly specified. When creating an integer sequence of possibly variable length, the `seq_len()` notation is recommended best practice over the colon operator `:`.
+
+
+#### The `seq_along()` Function
+
+The **`seq_along()`** function inputs a single `along.with` argument and generates the sequence of integers `1, 2, ..., length(along.with)`.
+
+```{r seq_along, exercise = TRUE}
+seq_along(100)
+seq_along(c(1, 3, 5, 7, 9))
+seq_along(c("friends", "waffles", "work"))
+```
+
+The `seq_along()` function can be useful for generating a sequence of indices for the input vector, which will be helpful when writing loops (as we will see in a later chapter).
+
+
 #### Example: Arithmetic Sequences
 
 A common type of sequence in mathematics is the arithmetic sequence. An *arithmetic sequence* or *arithmetic progression* is a sequence of numbers such that the difference between consecutive terms is constant. A (finite) arithmetic sequence is determined by the starting point $a$, the common difference (or step size) $d$, and the number of points $n$. The sequence is then given by
@@ -774,6 +815,75 @@ exp()
 **Note**: The `e+` notation in the output of `exp(1:30)` represents scientific notation. The value for `exp(30)` means `r round(exp(30)/1e13,6)` $\times 10^{13}$.
 
 Clever use of vectorized operations and functions can make computations in R more efficient than using a loop (discussed in a later chapter) to apply functions individually to each element.
+
+
+## The `vapply()` Function
+
+While many functions in R are vectorized by definition, there are also non-vectorized functions that we may want to apply to each element of a vector. One efficient way to vectorize a non-vectorized function is with the `vapply()` function.
+
+The **`vapply()`** function applies a function to each element of a vector (or a list, which will be discussed later). The syntax of `vapply()` is `vapply(X, FUN, FUN.VALUE, ...)`, where the arguments are:
+
+* `X`: A vector or a list.
+
+* `FUN`: The function to be applied.
+
+* `FUN.VALUE`: A "template" vector that specifies the type of return value you expect the `FUN` function to output.
+
+* `...`: Any optional arguments to be passed to the `FUN` function (for example, `na.rm = TRUE`).
+
+<!-- For example, since we know the `mean()` function returns a single numeric value, we would set `FUN.VALUE = numeric(1)`. -->
+
+<!-- ```{r} -->
+<!-- vapply(running_times, mean, numeric(1)) -->
+<!-- ``` -->
+
+<!-- **Note**: Vectorizing the `mean()` function here is meaningless. It is only used here for illustrative purposes. -->
+
+If the applied function in the `FUN` argument of `vapply()` returns a single value, the output of the `vapply()` function will be a vector. If the applied function returns a vector (with more than one element), then the output of `vapply()` will be a matrix (a two-dimensional array of values). We will learn more about matrices in a later chapter.
+
+### Example: Vectorizing a Non-Vectorized Function
+
+The **`isTRUE()`** function  is used to determine if the input object is identically equal to the logical value `TRUE`.
+
+```{r istrue1, exercise = TRUE}
+# Try isTRUE() on TRUE, FALSE, and NA
+isTRUE()
+isTRUE()
+isTRUE()
+```
+
+The `isTRUE()` function checks if the entire input object is `TRUE`, not the individual elements of the object, so the `isTRUE()` function is *not* vectorized.
+
+```{r istruecombo, exercise = TRUE}
+# What happens if we do isTRUE on the following vector?
+combo <- c(TRUE, FALSE, NA)
+
+```
+```{r istruecombo-solution}
+# What happens if we do isTRUE on the following vector?
+combo <- c(TRUE, FALSE, NA)
+isTRUE(combo)
+```
+
+The output is `FALSE` because the vector `c(TRUE, FALSE, NA)` is not the single value `TRUE`.
+
+In order to check whether each element of the vector is `TRUE`, we can vectorize the `isTRUE()` function with `vapply()`. Since the `isTRUE()` function returns a single logical value, we would set `FUN.VALUE = logical(1)`.
+
+```{r vapply_ex, ecercise = TRUE}
+vapply(c(TRUE, FALSE, NA), isTRUE, logical(1))
+```
+
+If the `FUN.VALUE` is set to a return type that is not what we are expecting, then `vapply()` will throw an error.
+
+```{r wrong_vapply, exercise = TRUE}
+# What happens if we said the function value to logical(3) instead?
+vapply(c(TRUE, FALSE, NA), isTRUE, logical(3))
+```
+
+<!-- A natural question that arises may be to ask why one would prefer `vapply()` over `sapply()`. At first glance, it appears that `sapply()` is more flexible and easier to use than `vapply()`. However, the flexibility of `sapply()` makes it dangerous when trying to ensure that your output has a specific length, dimension, and/or type. -->
+
+<!-- The strictness of `vapply()` imposed by requiring the `FUN.VALUE` argument helps in making sure that your output has exactly the structure you expect. The error that `vapply()` can throw is meant to alert the user of unexpected results. When a function has a predictable output structure, it is generally safer and thus often preferred to use `vapply()` over `sapply()`. -->
+
 
 ## Basic Numeric Summary Functions
 
