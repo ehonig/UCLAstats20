@@ -23,7 +23,10 @@ library(learnr)
 <<<<<<< HEAD
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 =======
+<<<<<<< HEAD
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE)
+=======
+>>>>>>> 0986172e9cd4048cd238cc66cea015f702810428
 >>>>>>> 0adfd896bf01128ee3d08ad68e825cebc9518672
 options(width = 80)
 
