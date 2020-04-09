@@ -1,7 +1,7 @@
 Package: UCLAstats20
 Type: Package
 Title: Stats 20 Homework Templates
-Version: 1.0
+Version: 1.0.1
 Author: Jake Elmstedt
 Maintainer: Jake Elmstedt <jake.elmstedt@gmail.com>
 Description: Two custom html_document templates for creating homework templates
