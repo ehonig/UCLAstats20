@@ -536,12 +536,12 @@ Subsetting with a blank index will return everything. Verify this below with two
 
 ```{r blank_index-solution}
 running_times
-running_times[] # Same output
+running_times[]
 ```
 
 ```{r blank_index-check}
 running_times
-running_times[] # Same output
+running_times[]
 ```
 Blank indices will be important later (when we have ordered indices).
 

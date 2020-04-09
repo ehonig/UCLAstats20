@@ -16,8 +16,8 @@ checker <- function(
   ...
 ) {
   tryCatch({
-    print(user_code)
-    print(solution_code)
+    # print(user_code)
+    # print(solution_code)
     user_code <- clean_input(user_code)
     solution_code <- clean_input(solution_code)
     uc <- styler::style_text(user_code)
