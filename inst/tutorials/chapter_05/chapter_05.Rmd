@@ -389,23 +389,18 @@ parks_mat[tall_index, ]
 **Question**: How can we use the `tall_index` vector to extract only the rows/observations for people in the data who are at most 65 inches tall?
 
 ```{r logi_subset_2, exercise = TRUE}
-short_index <- 
-
-```
-
-```{r logi_subset_2-hint}
-short_index <- parks_mat[, 1] <= 65
+tall_index <- parks_mat[, 1] > 65
 
 ```
 
 ```{r logi_subset_2-solution}
-short_index <- parks_mat[, 1] <= 65
-parks_mat[short_index, ]
+tall_index <- parks_mat[, 1] > 65
+parks_mat[!tall_index, ]
 ```
 
 ```{r logi_subset_2-check}
-short_index <- parks_mat[, 1] <= 65
-parks_mat[short_index, ]
+tall_index <- parks_mat[, 1] > 65
+parks_mat[!tall_index, ]
 ```
 
 ### Named (Character) Indices
