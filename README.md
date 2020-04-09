@@ -5,17 +5,17 @@ It has two main functions:
 2. It contains interactive versions of the course notes written by Dr Michael Tsiang.
 
 ## Installation
-Either run the commands:
+<!--Either run the commands:-->
 ```
 install.packages("devtools")
 library(devtools)
 install_github("elmstedt/UCLAstats20")
 ```
-Or download the file: `UCLAstats20_1.0.tar.gz` and run the command:
+<!--Or download the file: `UCLAstats20_1.0.tar.gz` and run the command:
 ```
 install.packages("<PATH TO FILE>/UCLAstats20_1.0.tar.gz", repos = NULL, type = "source")
 ```
-replacing `<PATH TO FILE>` with the location where you saved the file.
+replacing `<PATH TO FILE>` with the location where you saved the file.-->
 
 ## Use
 You must first load the package with `library("UCLAstats20")`
