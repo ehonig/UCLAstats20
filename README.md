@@ -5,6 +5,9 @@ It has two main functions:
 2. It contains interactive versions of the course notes written by Dr Michael Tsiang.
 
 ## Installation
+
+`**NOTE:** Windows users will need to install `R tools` from: https://cran.r-project.org/bin/windows/Rtools/ before installing the devtools` package.
+
 <!--Either run the commands:-->
 ```
 install.packages("devtools")
