@@ -512,6 +512,11 @@ We can also use the output of the `which()` function as an index for subsetting.
 running_times[which(running_times >= 50)]
 ```
 
+**Note**: In most cases, the `which()` function is unnecessary and redundant when used for subsetting. It is clearer and simpler to use the logical index itself instead of converting to a numeric index.
+
+```{r which_no, exercise=TRUE}
+running_times[running_times >= 50]
+```
 
 ## Boolean Operators (Combining Logical Expressions)
 
