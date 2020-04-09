@@ -6,7 +6,7 @@ It has two main functions:
 
 ## Installation
 
-`**NOTE:** Windows users will need to install `R tools` from: https://cran.r-project.org/bin/windows/Rtools/ before installing the devtools` package.
+**NOTE:** Windows users will need to install `R tools` from: https://cran.r-project.org/bin/windows/Rtools/ before installing the `devtools` package.
 
 <!--Either run the commands:-->
 ```
