@@ -246,8 +246,11 @@ The `tapply()` function splits the values of the vector `X` into groups, each gr
 
 As an example, we will consider the `hurricanes.RData` file, which has four objects `category`, `pressure`, `wind`, and `year`, containing measurements on 455 hurricanes that occurred between 2006 and 2011.
 
-```{r tapply_1, exercise = TRUE}
+```{r}
 load("hurricanes.RData") # Load the objects in the hurricanes data
+```
+
+```{r tapply_1, exercise = TRUE}
 category[1:10] # The Saffir-Simpson classification
 pressure[1:10] # Air pressure at the hurricane's center (in millibars)
 wind[1:10]     # Hurricane's maximum sustained wind speed (in knots)
@@ -286,7 +289,7 @@ tapply(pressure, list(category, year), mean)
 ```
 
 
-```{r q1, echo = FALSE}
+```{r q2, echo = FALSE}
 question("How would you find out how many observations are in each category?",
          answer("tapply(category, category, length)", correct = TRUE),
          answer("table(length)"),
