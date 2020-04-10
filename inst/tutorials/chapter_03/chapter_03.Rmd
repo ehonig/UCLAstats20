@@ -539,11 +539,11 @@ Which entries in `some_nums` are greater than 3?
 
 ```
 
-```{r some_num_one-hint, exercise = TRUE}
+```{r some_num_one-hint}
 "The operators are vectorized"
 ```
 
-```{r some_num_one-solution, exercise = TRUE}
+```{r some_num_one-solution}
 some_nums > 3
 ```
 
@@ -553,15 +553,15 @@ Which entries in `some_nums` are less than 7?
 
 ```
 
-```{r some_num_two-hint, exercise = TRUE}
+```{r some_num_two-hint}
 "The operators are vectorized"
 ```
 
-```{r some_num_two-solution, exercise = TRUE}
+```{r some_num_two-solution}
 some_nums < 7
 ```
 
-```{r some_num_two-check, exercise = TRUE}
+```{r some_num_two-check}
 some_nums < 7
 ```
 
@@ -599,19 +599,19 @@ some_nums < 3 | some_nums > 7 # Which entries are less than 3 OR greater than 7?
 
 ```
 
-```{r and_question-hint-1, exercise = TRUE}
+```{r and_question-hint-1}
 "Use the & operator"
 ```
 
-```{r and_question-hint-2, exercise = TRUE}
+```{r and_question-hint-2}
 "Remember how to subset using logical indices (i.e. TRUEs and FALSEs)"
 ```
 
-```{r and_question-solution, exercise = TRUE}
+```{r and_question-solution}
 some_nums[some_nums > 4 & some_nums < 6]
 ```
 
-```{r and_question-check, exercise = TRUE}
+```{r and_question-check}
 some_nums[some_nums > 4 & some_nums < 6]
 ```
 
@@ -621,19 +621,19 @@ some_nums[some_nums > 4 & some_nums < 6]
 
 ```
 
-```{r or_question-hint-1, exercise = TRUE}
+```{r or_question-hint-1}
 "Use the | (OR) operator"
 ```
 
-```{r or_question-hint-2, exercise = TRUE}
+```{r or_question-hint-2}
 "Remember how to subset using logical indices (i.e. TRUEs and FALSEs)"
 ```
 
-```{r or_question-solution, exercise = TRUE}
+```{r or_question-solution}
 some_nums[some_nums > 4 & some_nums < 6]
 ```
 
-```{r or_question-check, exercise = TRUE}
+```{r or_question-check}
 some_nums[some_nums > 4 & some_nums < 6]
 ```
 

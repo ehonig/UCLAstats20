@@ -167,18 +167,21 @@ rbind(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
 
 If the number of columns or rows match in a way that makes sense, i.e., they are **conformable**, then `rbind()` and `cbind()` can also input two-dimensional objects and bind them together. Trying to combine matrices that are not conformable will produce an error.
 
-```{r bind_mat, exercise = TRUE}
-## Bind the rows of A and B together (i.e., stack A on top of B)
+```{r rbind_mat, exercise = TRUE}
+# Bind the rows of A and B together (i.e., stack A on top of B)
 
-## The below will give an error, because the number of rows are not conformable
+```
+
+
+```{r cbind_mat, exercise = FALSE}
+# The below will give an error, because the number
+# of rows are not conformable
 cbind(A, B)
 ```
 
-```{r bind_mat-solution}
+```{r rbind_mat-solution}
 ## Bind the rows of A and B together (i.e., stack A on top of B)
 rbind(A, B)
-## The below will give an error, because the number of rows are not conformable
-cbind(A, B)
 ```
 
 **Side Note**: The `rbind()` and `cbind()` functions also use recycling when necessary. This is particularly useful when inserting a column or row of repeated values. For an application to statistics: In linear regression (especially multiple regression), the observed values of the predictor variable(s) are often organized into a matrix, called the design matrix. The design matrix typically has a column of 1's to account for the intercept term in the linear model. An example of appending a column of 1's is given below.
@@ -186,7 +189,6 @@ cbind(A, B)
 ```{r reg_mat, exercise = TRUE}
 cbind() # Append a column of 1's to matrix B
 ```
-
 
 ### Matrices Are Two-Dimensional Vectors
 
@@ -481,9 +483,12 @@ Written generally, if $A = \left[a_{ik}\right]_{m \times n}$ and $B = \left[b_{k
 
 Matrix multiplication is performed using the **`%*%`** operator.
 
-```{r mat_mult, exercise = TRUE}
+```{r mat_mult1, exercise = TRUE}
 A %*% C # Non-conformable error
+```
 
+
+```{r mat_mult2, exercise = TRUE}
 A %*% B # Matrix multiplication of A and B
 ```
 
@@ -620,7 +625,7 @@ Using `apply()`, we can apply the `mean()` function to each column in `parks_mat
 
 ```{r apply_mean, exercise = TRUE}
 ## Compute the mean of every column of the parks_mat matrix
-apply(parks_mat,  ,na.rm = TRUE)
+apply(parks_mat, , ,na.rm = TRUE)
 ```
 
 ```{r apply_mean-hint}
@@ -637,7 +642,7 @@ To compute the mean of each row, we can change the margin argument `MARGIN` from
 
 ```{r row_mean, exercise = TRUE}
 ## Compute the mean of every row of the parks_mat matrix
-apply(parks_mat, , na.rm = TRUE)
+apply(parks_mat, , , na.rm = TRUE)
 ```
 
 ```{r row_mean-hint}
@@ -664,7 +669,7 @@ apply(parks_mat, 1, mean, na.rm = TRUE)
 
 ```{r range_apply, exercise = TRUE}
 ## Compute the range (min and max) of every column of the parks_mat matrix
-apply(parks_mat, , na.rm = TRUE)
+apply(parks_mat, , , na.rm = TRUE)
 ```
 
 ```{r range_apply-solution}

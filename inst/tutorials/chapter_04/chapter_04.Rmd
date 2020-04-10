@@ -291,6 +291,12 @@ var_fn()
 ```
 
 What if the input vector contains `NA` values?
+```{r na_fn-setup}
+var_fn <- function(x) {
+  sum((x - mean(x))^2) / (length(x) - 1)
+}
+```
+
 
 ```{r na_fn, exercise = TRUE}
 incomplete_nums <- c(4, 8, NA, 16, 23, NA)
@@ -391,14 +397,16 @@ The `while()` loop is essentially a repeating `if` statement:
 A small example of a `while()` loop is given below.
 
 ```{r while_ex, exercise = TRUE}
-## Start with num = 1.
+# Start with num = 1.
 num <- 1
-## While num is less than or equal to 20, execute the following commands.
+# While num is less than or equal to 20,
+# execute the following commands.
 while (num <= 20) {
-  # Add 6 to num and assign the sum to num (replace the old num value).
+  # Add 6 to num and assign the sum to num
+  # (replace the old num value).
   num <- num + 6
 }
-## Print the output from the while loop.
+# Print the output from the while loop.
 num
 ```
 
@@ -423,43 +431,63 @@ Suppose we want to list all Fibonacci numbers less than 500. Without prior knowl
 The `while()` loop below computes all the Fibonacci numbers less than 500. Since the number of iterations is not fixed, it is not clear how to use indexing to refer to the current and previous terms in the sequence. Instead, notice the use of multiple variables to keep track of the two latest terms in the sequence.
 
 ```{r fibonacci_while, exercise = TRUE}
-## fib1 and fib2 will represent the two latest terms in the sequence.
+# fib1 and fib2 will represent the
+# two latest terms in the sequence.
 fib1 <- 1 # Initialize fib1
 fib2 <- 1 # Initialize fib2
-## Create the vector to store the output from the while loop.
+# Create the vector to store the
+# output from the while loop.
 full_fib <- c(fib1, fib2)
 
-## While the sum of the last two terms is less than 500, execute the following commands.
+# While the sum of the last two terms
+# is less than 500, execute the
+# following commands.
 while ( ) {
   # Save the latest term to old_fib2.
   old_fib2 <- 
-  # Compute the sum of the latest two terms and assign the sum to be the new latest term.
+  # Compute the sum of the latest two
+  # terms and assign the sum to be the
+  # new latest term.
   fib2 <- 
-  # Append the latest term to the end of the full_fib vector with all previous terms.
+  # Append the latest term to the end
+  # of the full_fib vector with all
+  # previous terms.
   full_fib <- 
-  # Save the previously latest term (now the second to last term) to fib1.
+  # Save the previously latest term
+  # (now the second to last term) to
+  # fib1.
   fib1 <- 
 }
-## Print the output from the while loop.
+# Print the output from the while loop.
 
 ```
 
 ```{r fibonacci_while-solution}
-## fib1 and fib2 will represent the two latest terms in the sequence.
+# fib1 and fib2 will represent the two
+# latest terms in the sequence.
 fib1 <- 1 # Initialize fib1
 fib2 <- 1 # Initialize fib2
-## Create the vector to store the output from the while loop.
+# Create the vector to store the output
+# from the while loop.
 full_fib <- c(fib1, fib2)
 
-## While the sum of the last two terms is less than 500, execute the following commands.
+# While the sum of the last two terms
+# is less than 500, execute the
+# following commands.
 while (fib1 + fib2 < 500) {
   # Save the latest term to old_fib2.
   old_fib2 <- fib2
-  # Compute the sum of the latest two terms and assign the sum to be the new latest term.
+  # Compute the sum of the latest two
+  # terms and assign the sum to be the
+  # new latest term.
   fib2 <- fib1 + fib2
-  # Append the latest term to the end of the full_fib vector with all previous terms.
+  # Append the latest term to the end
+  # of the full_fib vector with all
+  # previous terms.
   full_fib <- c(full_fib, fib2)
-  # Save the previously latest term (now the second to last term) to fib1.
+  # Save the previously latest term
+  # (now the second to last term) to
+  # fib1.
   fib1 <- old_fib2
 }
 ## Print the output from the while loop.
@@ -513,9 +541,11 @@ num <-
 
 ## Repeat the following commands.
 repeat{
-  # Add 6 to num and assign the sum to num (replace the old num value).
+  # Add 6 to num and assign the sum
+  # to num (replace the old num value).
   num <- 
-  # If num is greater than 20, break out of the loop.
+  # If num is greater than 20, break
+  # out of the loop.
   if ( ) {
     break
   }
@@ -525,38 +555,43 @@ repeat{
 ```
 
 ```{r break_practice-solution}
-## Start with num = 1.
+# Start with num = 1.
 num <- 1
 
-## Repeat the following commands.
+# Repeat the following commands.
 repeat{
-  # Add 6 to num and assign the sum to num (replace the old num value).
+  # Add 6 to num and assign the sum
+  # to num (replace the old num value).
   num <- num + 6
-  # If num is greater than 20, break out of the loop.
+  # If num is greater than 20,
+  # break out of the loop.
   if (num > 20) {
     break
   }
 }
-## Print the output from the repeat loop.
+# Print the output from the repeat loop.
 num
 ```
 
 **Side Note**: `repeat` loops can also be written as `while()` loops by using a `condition` that is always `TRUE` and including a `break` statement.
 
 ```{r rep_while, exercise = TRUE}
-## Start with num = 1.
+# Start with num = 1.
 num <- 1
 
-## While TRUE is TRUE (which is always), execute the following commands.
+# While TRUE is TRUE (which is always),
+# execute the following commands.
 while (TRUE) {
-  # Add 6 to num and assign the sum to num (replace the old num value).
+  # Add 6 to num and assign the sum to
+  # num (replace the old num value).
   num <- num + 6
-  # If num is greater than 20, break out of the loop.
+  # If num is greater than 20,
+  # break out of the loop.
   if (num > 20) {
     break
   }
 }
-## Print the output from the repeat loop.
+# Print the output from the repeat loop.
 num
 ```
 
