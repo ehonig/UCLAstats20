@@ -1,8 +1,11 @@
 Package: UCLAstats20
 Type: Package
 Title: Stats 20 Homework Templates
-Version: 1.0.1
-Author: Jake Elmstedt
+Version: 1.0.3
+Author@R: c(
+  person("Jake", "Elmstedt", email = "jake.elmstedt@gmail.com", role = c("aut", "cre")),
+  person("Michael", "Tsiang", email = "michael.tsiang@stat.ucla.edu", role = c("aut", "cre")),
+  person("Ethan", "Allavarpu", email = "ethanallavarpu@ucla.edu", role = c("ctb")))
 Maintainer: Jake Elmstedt <jake.elmstedt@gmail.com>
 Description: Two custom html_document templates for creating homework templates
     to use in Stats 20: Introduction to Statistical Programming with R course at
@@ -10,4 +13,5 @@ Description: Two custom html_document templates for creating homework templates
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Depends: rlang, shiny, learnr, styler, prettycode
+Imports: learnr, rlang, shiny, styler, prettycode, withr, rmarkdown
+RoxygenNote: 7.1.0

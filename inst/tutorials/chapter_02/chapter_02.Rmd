@@ -18,10 +18,7 @@ output:
 runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
-library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
-options(width = 80)
-tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+source("../../setup.R")
 fib <- c(1, 1, 2, 3, 5, 8, 13)
 parks <- c("Leslie", "April", "Ron", "Tom", "Donna", "Jerry")
 true_dat <- c(TRUE, FALSE, TRUE, T, F)

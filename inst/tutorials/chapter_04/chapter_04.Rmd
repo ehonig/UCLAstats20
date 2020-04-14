@@ -21,11 +21,7 @@ runtime: shiny_prerendered
 \newtheorem{question}{Question}
 
 ```{r setup, include=FALSE}
-library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
-options(width = 80)
-
-tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+source("../../setup.R")
 lost_nums <- c(4, 8, 15, 16, 23, 42)
 incomplete_nums <- c(4, 8, NA, 16, 23, NA)
 ```

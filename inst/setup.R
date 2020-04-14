@@ -1,3 +1,5 @@
+library(learnr)
+
 clean_input <- function(x) {
   x <- gsub("\r\n", "\n", x)
   x <- gsub("\\s*#.*?(\n|$)", "\n", x)
@@ -36,3 +38,12 @@ checker <- function(
   }
   )
 }
+
+knitr::opts_chunk$set(echo = TRUE,
+                      tidy.opts = list(width.cutoff = 60),
+                      tidy = "styler",
+                      warning = TRUE,
+                      comment = "")
+options(width = 80)
+tutorial_options(exercise.completion = FALSE,
+                 exercise.checker = checker)
