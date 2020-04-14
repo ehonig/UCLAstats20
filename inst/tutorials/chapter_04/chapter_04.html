@@ -161,7 +161,7 @@ $(function() {
 <li>Loops do <em>not</em> create local environments. Any objects created within a loop will appear in the global environment.</li>
 </ul>
 <p>As a simple example, we can create a <code>for()</code> loop that squares each entry in a vector.</p>
-<div class="tutorial-exercise" data-label="lost_nums_1" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="lost_nums_1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>lost_nums &lt;- c(4, 8, 15, 16, 23, 42)
 
 ## Let n cycle over the entries in lost_nums.
@@ -175,7 +175,7 @@ for (n in lost_nums) {
 <p>When <code>vector</code> represents an indexing set, it is common to use the letter <code>i</code> as the index, since it is consistent with using <span class="math inline">\(i\)</span> as an index in mathematics (like when we write “the <span class="math inline">\(i\)</span>th entry of a vector”).</p>
 <p><strong>Note</strong>: If we want to save the output we get from each iteration of a loop, we need to make an empty object <em>outside</em> the loop first as a place to store our output. Using the iteration number as the indexing set, we then can use subsetting to save the output from the <span class="math inline">\(i\)</span>th iteration of the loop into the <span class="math inline">\(i\)</span>th entry of the storage object.</p>
 <p>For example, to save the squares of the <code>lost_nums</code> vector, the loop above can be rewritten as follows:</p>
-<div class="tutorial-exercise" data-label="lost_nums_2" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="lost_nums_2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>## Create a vector to store the output from the for loop.
 lost_squares &lt;- numeric(6)
 
@@ -194,7 +194,7 @@ lost_squares</code></pre>
 <p>Iterations in a loop sometimes depend on the results from previous iterations of the loop.</p>
 <p>The <strong>Fibonacci sequence</strong> is a famous and well-studied sequence in mathematics. The first two terms in the sequence are 1 and 1, and each subsequent number is the sum of the previous two terms. For example, the third term is <span class="math inline">\(1+1 = 2\)</span>, the fourth term is <span class="math inline">\(1+2=3\)</span>, the fifth term is <span class="math inline">\(2+3=5\)</span>, etc.</p>
 <p>The <code>for()</code> loop below computes the first 12 Fibonacci numbers.</p>
-<div class="tutorial-exercise" data-label="fib_1" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="fib_1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>## Create a vector to store the output from the for loop.
 fib &lt;- numeric(12)
 fib[1:2] &lt;- c(1, 1) # Initialize the sequence
@@ -243,7 +243,7 @@ for (i in abcs) {
 <p><strong>Note</strong>: The logical expression in <code>condition</code> should evaluate to a single logical value. If a logical vector with more than one element is used, R will return a warning and only use the first element as the <code>condition</code>.</p>
 <p>For a simple example, consider the following <code>if-else</code> statement:</p>
 <p>Write an if-else statement that stores y as x if x &gt; 1, or y as x + 1 otherwise</p>
-<div class="tutorial-exercise" data-label="if_else" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="if_else" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>x &lt;- 1
 if () {
   
@@ -252,7 +252,7 @@ if () {
 }</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
-<div class="tutorial-exercise-support" data-label="if_else-hint-1" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="if_else-hint-1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>x &lt;- 1
 if (x &gt; 1) {
   
@@ -260,7 +260,7 @@ if (x &gt; 1) {
   
 }</code></pre>
 </div>
-<div class="tutorial-exercise-support" data-label="if_else-hint-2" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="if_else-hint-2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>x &lt;- 1
 if (x &gt; 1) {
   y &lt;- x
@@ -268,7 +268,7 @@ if (x &gt; 1) {
   
 }</code></pre>
 </div>
-<div class="tutorial-exercise-support" data-label="if_else-solution" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="if_else-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>x &lt;- 1
 if (x &gt; 1) {
   y &lt;- x
@@ -276,7 +276,7 @@ if (x &gt; 1) {
   y &lt;- x + 1
 }</code></pre>
 </div>
-<div class="tutorial-exercise-support" data-label="if_else-check" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="if_else-check" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>x &lt;- 1
 if (x &gt; 1) {
   y &lt;- x
@@ -287,7 +287,7 @@ if (x &gt; 1) {
 <p><strong>Question</strong>: What is the value of <code>y</code>?</p>
 <p><strong>Note</strong>: An <code>if</code> or <code>if-else</code> statement is similar to a function call in that the output from the last command in the body will be returned (if the command is executed). However, unlike functions, <code>if</code> and <code>if-else</code> statements do not create local environments.</p>
 <p>Using this fact, the above <code>if-else</code> statement can alternatively be written as follows:</p>
-<div class="tutorial-exercise" data-label="simpler_if_else" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="simpler_if_else" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>y &lt;- if (x &gt; 1) {
   x
 } else {
@@ -296,13 +296,13 @@ if (x &gt; 1) {
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
 <p><strong>Side Note</strong>: When the <code>if</code> and <code>else</code> sections contain single commands, the entire <code>if-else</code> statement can be written in one line with the curly braces omitted:</p>
-<div class="tutorial-exercise" data-label="poor_if_else" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="poor_if_else" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>y &lt;- if (x &gt; 1) x else x + 1</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
 <p>While this command is technically valid, clarity should always take precedence over compactness.</p>
 <p>The <code>if()</code> statement is often used inside functions to allow for optional features. As an example, we can create a function that computes the correlation between two numeric vectors that optionally draws a scatterplot of the data.</p>
-<div class="tutorial-exercise" data-label="expanded" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="expanded" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>cor_plot &lt;- function(x, y, scatter = TRUE, ...) {
   if (scatter) {
     # If scatter=TRUE, draw a scatterplot of x and y.
@@ -318,7 +318,7 @@ if (x &gt; 1) {
 <div id="section-basic-error-handling" class="section level3">
 <h3>Basic Error Handling</h3>
 <p>The <code>if()</code> statement enables us to throw error or warning messages when function inputs are not specified as expected. For a motivating example, we will revisit the variance function we wrote in Chapter 2.</p>
-<div class="tutorial-exercise" data-label="var_fn" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="var_fn" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>var_fn &lt;- function(x) {
   sum((x - mean(x))^2) / (length(x) - 1)
 }
@@ -328,12 +328,12 @@ var_fn()</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
 What if the input vector contains <code>NA</code> values?
-<div class="tutorial-exercise-support" data-label="na_fn-setup" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="na_fn-setup" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>var_fn &lt;- function(x) {
   sum((x - mean(x))^2) / (length(x) - 1)
 }</code></pre>
 </div>
-<div class="tutorial-exercise" data-label="na_fn" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="na_fn" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>incomplete_nums &lt;- c(4, 8, NA, 16, 23, NA)
 var_fn(incomplete_nums)</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
@@ -343,14 +343,14 @@ var_fn(incomplete_nums)</code></pre>
 <h4>The <code>stop()</code> Function</h4>
 <p>The <strong><code>stop()</code></strong> function stops the execution of the current expression and throws an error message.</p>
 <p>Use the <code>if</code> statement and the <code>stop()</code> function to correctly return an error for the function.</p>
-<div class="tutorial-exercise" data-label="stop_var" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="stop_var" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>var_fn2 &lt;- function(x) {
   sum((x - mean(x))^2) / (length(x) - 1)
 }
 var_fn2(incomplete_nums)</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
-<div class="tutorial-exercise-support" data-label="stop_var-hint" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="stop_var-hint" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>var_fn2 &lt;- function(x) {
   if (sum(is.na(x)) &gt; 0) {
     
@@ -359,7 +359,7 @@ var_fn2(incomplete_nums)</code></pre>
 }
 var_fn2(incomplete_nums)</code></pre>
 </div>
-<div class="tutorial-exercise-support" data-label="stop_var-solution" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="stop_var-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>var_fn2 &lt;- function(x) {
   if (sum(is.na(x)) &gt; 0) {
     stop(&quot;The input has NA values!&quot;)
@@ -368,7 +368,7 @@ var_fn2(incomplete_nums)</code></pre>
 }
 var_fn2(incomplete_nums)</code></pre>
 </div>
-<div class="tutorial-exercise-support" data-label="stop_var-check" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="stop_var-check" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>var_fn2 &lt;- function(x) {
   if (sum(is.na(x)) &gt; 0) {
     stop(&quot;The input has NA values!&quot;)
@@ -381,7 +381,7 @@ var_fn2(incomplete_nums)</code></pre>
 <div id="section-the-warning-function" class="section level4">
 <h4>The <code>warning()</code> Function</h4>
 <p>The <strong><code>warning()</code></strong> function throws a warning message but does not stop the execution of the current expression.</p>
-<div class="tutorial-exercise" data-label="warning_var" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="warning_var" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>## Note the similarity with the stop() function
 var_fn3 &lt;- function(x) {
   if (sum(is.na(x)) &gt; 0) {
@@ -416,7 +416,7 @@ var_fn3(incomplete_nums)</code></pre>
 <li><p>Repeat steps 1 and 2 until the <code>condition</code> evaluates to <code>FALSE</code>, when the loop stops.</p></li>
 </ol>
 <p>A small example of a <code>while()</code> loop is given below.</p>
-<div class="tutorial-exercise" data-label="while_ex" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="while_ex" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code># Start with num = 1.
 num &lt;- 1
 # While num is less than or equal to 20,
@@ -443,7 +443,7 @@ num</code></pre>
 <p>For a more complete example, we revisit the Fibonacci sequence.</p>
 <p>Suppose we want to list all Fibonacci numbers less than 500. Without prior knowledge, we do not know how long this list is, so a <code>for()</code> loop would not be ideal.</p>
 <p>The <code>while()</code> loop below computes all the Fibonacci numbers less than 500. Since the number of iterations is not fixed, it is not clear how to use indexing to refer to the current and previous terms in the sequence. Instead, notice the use of multiple variables to keep track of the two latest terms in the sequence.</p>
-<div class="tutorial-exercise" data-label="fibonacci_while" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="fibonacci_while" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code># fib1 and fib2 will represent the
 # two latest terms in the sequence.
 fib1 &lt;- 1 # Initialize fib1
@@ -474,7 +474,7 @@ while ( ) {
 # Print the output from the while loop.</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
-<div class="tutorial-exercise-support" data-label="fibonacci_while-solution" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="fibonacci_while-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code># fib1 and fib2 will represent the two
 # latest terms in the sequence.
 fib1 &lt;- 1 # Initialize fib1
@@ -530,7 +530,7 @@ full_fib</code></pre>
 }</code></pre>
 <p><strong>Note</strong>: <code>break</code> statements can also be used in <code>for()</code> and <code>while()</code> loops to specify alternative exit conditions.</p>
 <p>The small <code>while()</code> loop example can be written as a <code>repeat</code> loop:</p>
-<div class="tutorial-exercise" data-label="break_practice" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="break_practice" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>## Start with num = 1.
 num &lt;- 
 
@@ -548,7 +548,7 @@ repeat{
 ## Print the output from the repeat loop.</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label, user_code, solution_code, check_code, envir_result, ","    evaluate_result, envir_prep, ...) ","{","    tryCatch({","        user_code <- clean_input(user_code)","        solution_code <- clean_input(solution_code)","        uc <- styler::style_text(user_code)","        user_code <- paste(uc[uc != \"\"], collapse = \"\\n\")","        solution_code <- paste(styler::style_text(solution_code), ","            collapse = \"\\n\")","        if (user_code == solution_code) {","            list(message = learnr::random_praise(), correct = TRUE, ","                location = \"append\")","        }","        else {","            list(message = learnr::random_encouragement(), correct = FALSE, ","                location = \"append\")","        }","    }, error = function(e) {","        print(e)","    })","}"]}</script>
 </div>
-<div class="tutorial-exercise-support" data-label="break_practice-solution" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise-support" data-label="break_practice-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code># Start with num = 1.
 num &lt;- 1
 
@@ -567,7 +567,7 @@ repeat{
 num</code></pre>
 </div>
 <p><strong>Side Note</strong>: <code>repeat</code> loops can also be written as <code>while()</code> loops by using a <code>condition</code> that is always <code>TRUE</code> and including a <code>break</code> statement.</p>
-<div class="tutorial-exercise" data-label="rep_while" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="0">
+<div class="tutorial-exercise" data-label="rep_while" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code># Start with num = 1.
 num &lt;- 1
 
@@ -626,6 +626,7 @@ for (i in j) {
 </div> 
 <script type="application/shiny-prerendered" data-context="server-start">
 source("../../setup.R")
+
 lost_nums <- c(4, 8, 15, 16, 23, 42)
 incomplete_nums <- c(4, 8, NA, 16, 23, NA)
 </script>
@@ -662,7 +663,7 @@ output$`tutorial-exercise-fib_1-output` <- renderUI({
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "for_loop_quiz",     question = structure("Over what values does the above for loop index?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_d7396cf",         option = "a, b, c, d", value = "a, b, c, d", label = structure("a, b, c, d", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_912ec8c",         option = "1, 2, 3, 4", value = "1, 2, 3, 4", label = structure("1, 2, 3, 4", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_de24f23",         option = "a, c, e, f", value = "a, c, e, f", label = structure("a, c, e, f", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_c834334",         option = "1, 3, 5, 6", value = "1, 3, 5, 6", label = structure("1, 3, 5, 6", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "for_loop_quiz-answer", question = "for_loop_quiz"),     loading = structure("<strong>Loading:<\u002fstrong> \nOver what values does the above for loop index?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 704586861.671901, options = list()), class = c("learnr_radio", "tutorial_question")))
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "for_loop_quiz",     question = structure("Over what values does the above for loop index?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_e47b0fa",         option = "a, b, c, d", value = "a, b, c, d", label = structure("a, b, c, d", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_fbad981",         option = "1, 2, 3, 4", value = "1, 2, 3, 4", label = structure("1, 2, 3, 4", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_b8a3216",         option = "a, c, e, f", value = "a, c, e, f", label = structure("a, c, e, f", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7ba3a12",         option = "1, 3, 5, 6", value = "1, 3, 5, 6", label = structure("1, 3, 5, 6", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "for_loop_quiz-answer", question = "for_loop_quiz"),     loading = structure("<strong>Loading:<\u002fstrong> \nOver what values does the above for loop index?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 882471073.589067, options = list()), class = c("learnr_radio", "tutorial_question")))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -729,7 +730,7 @@ output$`tutorial-exercise-while_ex-output` <- renderUI({
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "while_quiz", question = structure("Why is the result larger than 20 if the loop only runs when <code>num<\u002fcode> is less than or equal to 20?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_1b2ce33",     option = "An error", value = "An error", label = structure("An error", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_bf6bf40",     option = "The number is changed after entering the loop",     value = "The number is changed after entering the loop",     label = structure("The number is changed after entering the loop", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_51ed1e2",     option = "The number is changed before entering the loop",     value = "The number is changed before entering the loop",     label = structure("The number is changed before entering the loop", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = NULL, post_message = NULL), ids = list(    answer = "while_quiz-answer", question = "while_quiz"), loading = structure("<strong>Loading:<\u002fstrong> \nWhy is the result larger than 20 if the loop only runs when <code>num<\u002fcode> is less than or equal to 20?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 830123716.113443, options = list()), class = c("learnr_radio", "tutorial_question")))
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "while_quiz", question = structure("Why is the result larger than 20 if the loop only runs when <code>num<\u002fcode> is less than or equal to 20?", html = TRUE, class = c("html", "character")), answers = list(structure(list(id = "lnr_ans_d14a609",     option = "An error", value = "An error", label = structure("An error", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_8b1b8f0",     option = "The number is changed after entering the loop",     value = "The number is changed after entering the loop",     label = structure("The number is changed after entering the loop", html = TRUE, class = c("html",     "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d13476f",     option = "The number is changed before entering the loop",     value = "The number is changed before entering the loop",     label = structure("The number is changed before entering the loop", html = TRUE, class = c("html",     "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer", "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html", "character")), try_again = structure("Try Again", html = TRUE, class = c("html", "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html", "character")), try_again = structure("Incorrect", html = TRUE, class = c("html", "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", "character")), message = NULL, post_message = NULL), ids = list(    answer = "while_quiz-answer", question = "while_quiz"), loading = structure("<strong>Loading:<\u002fstrong> \nWhy is the result larger than 20 if the loop only runs when <code>num<\u002fcode> is less than or equal to 20?\n<br/><br/><br/>", html = TRUE, class = c("html", "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 152391627.929037, options = list()), class = c("learnr_radio", "tutorial_question")))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -754,11 +755,11 @@ output$`tutorial-exercise-rep_while-output` <- renderUI({
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_checkbox", label = "final_quiz_1",     question = structure("Which of the following loops would be needed to keep multiplying a number by three until it reaches 10?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_8bcbae8",         option = "if", value = "if", label = structure("if", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9bd03a6",         option = "while", value = "while", label = structure("while", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_969d2fe",         option = "repeat", value = "repeat", label = structure("repeat", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_cf42292",         option = "for", value = "for", label = structure("for", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "final_quiz_1-answer", question = "final_quiz_1"),     loading = structure("<strong>Loading:<\u002fstrong> \nWhich of the following loops would be needed to keep multiplying a number by three until it reaches 10?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 603057996.719179, options = list()), class = c("learnr_checkbox", "tutorial_question")))
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_checkbox", label = "final_quiz_1",     question = structure("Which of the following loops would be needed to keep multiplying a number by three until it reaches 10?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_6cd36f4",         option = "if", value = "if", label = structure("if", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_7fca45d",         option = "while", value = "while", label = structure("while", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_2db8353",         option = "repeat", value = "repeat", label = structure("repeat", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_2ef6065",         option = "for", value = "for", label = structure("for", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "final_quiz_1-answer", question = "final_quiz_1"),     loading = structure("<strong>Loading:<\u002fstrong> \nWhich of the following loops would be needed to keep multiplying a number by three until it reaches 10?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 540043152.748523, options = list()), class = c("learnr_checkbox", "tutorial_question")))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "final_quiz_2",     question = structure("What is the output of the above loop?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_3def8b6",         option = "1 4 9", value = "1 4 9", label = structure("1 4 9", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_6906093",         option = "1 9 4", value = "1 9 4", label = structure("1 9 4", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_8cd1ed8",         option = "1 27 4", value = "1 27 4", label = structure("1 27 4", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_634819e",         option = "1 4 27", value = "1 4 27", label = structure("1 4 27", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d8fc98f",         option = "1 27 8", value = "1 27 8", label = structure("1 27 8", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9d80fc0",         option = "1 8 27", value = "1 8 27", label = structure("1 8 27", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "final_quiz_2-answer", question = "final_quiz_2"),     loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the output of the above loop?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 860765535.599175, options = list()), class = c("learnr_radio", "tutorial_question")))
+learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "final_quiz_2",     question = structure("What is the output of the above loop?", html = TRUE, class = c("html",     "character")), answers = list(structure(list(id = "lnr_ans_2e6dd75",         option = "1 4 9", value = "1 4 9", label = structure("1 4 9", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_608dfd6",         option = "1 9 4", value = "1 9 4", label = structure("1 9 4", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_601087b",         option = "1 27 4", value = "1 27 4", label = structure("1 27 4", html = TRUE, class = c("html",         "character")), correct = TRUE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d596c20",         option = "1 4 27", value = "1 4 27", label = structure("1 4 27", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_2a14b59",         option = "1 27 8", value = "1 27 8", label = structure("1 27 8", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer")), structure(list(id = "lnr_ans_9e0194e",         option = "1 8 27", value = "1 8 27", label = structure("1 8 27", html = TRUE, class = c("html",         "character")), correct = FALSE, message = NULL), class = c("tutorial_question_answer",     "tutorial_quiz_answer"))), button_labels = list(submit = structure("Submit Answer", html = TRUE, class = c("html",     "character")), try_again = structure("Try Again", html = TRUE, class = c("html",     "character"))), messages = list(correct = structure("Correct!", html = TRUE, class = c("html",     "character")), try_again = structure("Incorrect", html = TRUE, class = c("html",     "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html",     "character")), message = NULL, post_message = NULL), ids = list(        answer = "final_quiz_2-answer", question = "final_quiz_2"),     loading = structure("<strong>Loading:<\u002fstrong> \nWhat is the output of the above loop?\n<br/><br/><br/>", html = TRUE, class = c("html",     "character")), random_answer_order = TRUE, allow_retry = TRUE,     seed = 1976560321.57959, options = list()), class = c("learnr_radio", "tutorial_question")))
 </script>
  <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="dependencies">

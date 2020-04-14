@@ -1,11 +1,9 @@
-#' @importFrom rlang %||%
-NULL
-
 #' Read Chapter Notes
+#' 
+#' A window will display with the notes for the selected chapter.
+#' 
+#' @param chapter The number of the chapter to read. Currently an integer between 1 and 11.
 #'
-#' @param chapter The number of the chapter to read.
-#'
-#' @return A window will display with the notes for the selected chapter.
 #' @export
 notes <- function(chapter) {
   if (missing(chapter)) {

@@ -3,12 +3,6 @@ title: "Getting Started"
 subtitle: "Chapter 1"
 author: "Stats 20: Introduction to Statistical Programming with R"
 date: "UCLA^[All rights reserved<br/>Michael Tsiang 2020<br/>Acknowledgements: Vivian Lew and Juana Sanchez<br/>Do not post, share, or distribute anywhere or with anyone without explicit permission.]"
-header-includes:
-   - \usepackage{graphicx}
-   - \usepackage{bm}
-   - \usepackage{amsmath}
-   - \usepackage{amssymb}
-   - \usepackage{amsthm}
 output:
   learnr::tutorial:
     number_sections: false
@@ -19,7 +13,6 @@ runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
 source("../../setup.R")
-
 final_balance <- function(initial) {
   interest_rate <- 0.25 / 100
   years <- 20

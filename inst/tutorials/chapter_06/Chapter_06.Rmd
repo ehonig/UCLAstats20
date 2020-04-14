@@ -25,7 +25,7 @@ group <- factor(group)
 hurricanes <- factor(c(3, 1, 2, 5, 3, 3, 5), levels = c(1, 2, 3, 4, 5))
 month_day <- rep(month.name, c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31))
 f_month_day <- factor(month_day)
-load("hurricanes.RData")
+# load("hurricanes.RData")
 ```
 
 ```{js, echo=FALSE}
@@ -244,7 +244,7 @@ The `tapply()` function splits the values of the vector `X` into groups, each gr
 As an example, we will consider the `hurricanes.RData` file, which has four objects `category`, `pressure`, `wind`, and `year`, containing measurements on 455 hurricanes that occurred between 2006 and 2011.
 
 ```{r}
-load("hurricanes.RData") # Load the objects in the hurricanes data
+# load("hurricanes.RData") # Load the objects in the hurricanes data
 ```
 
 ```{r tapply_1, exercise = TRUE}

@@ -2,13 +2,9 @@
 % Please edit documentation in R/internal_learnr.R
 \name{run_tut}
 \alias{run_tut}
-\title{Custom run_tutorial function from learnr to accept and pass render_args.}
+\title{Custom run_tutorial function adapted from learnr to accept and pass render_args.}
 \usage{
-<<<<<<< HEAD
 run_tut(name = NULL, package = NULL, shiny_args = list(), render_args = NULL)
-=======
-run_tut(name = NULL, package = NULL, shiny_args = NULL, render_args = NULL)
->>>>>>> 0c62a69b8c57d47c6ebb7dfd382411accc3ce51a
 }
 \arguments{
 \item{name}{}
@@ -23,5 +19,5 @@ run_tut(name = NULL, package = NULL, shiny_args = NULL, render_args = NULL)
 
 }
 \description{
-Custom run_tutorial function from learnr to accept and pass render_args.
+Custom run_tutorial function adapted from learnr to accept and pass render_args.
 }

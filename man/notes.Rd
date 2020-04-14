@@ -7,11 +7,8 @@
 notes(chapter)
 }
 \arguments{
-\item{chapter}{The number of the chapter to read.}
-}
-\value{
-A window will display with the notes for the selected chapter.
+\item{chapter}{The number of the chapter to read. Currently an integer between 1 and 11.}
 }
 \description{
-Read Chapter Notes
+A window will display with the notes for the selected chapter.
 }
