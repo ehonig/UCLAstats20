@@ -19,6 +19,7 @@ runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
 source("../../setup.R")
+
 fib <- c(1, 1, 2, 3, 5, 8, 13)
 parks <- c("Leslie", "April", "Ron", "Tom", "Donna", "Jerry")
 true_dat <- c(TRUE, FALSE, TRUE, T, F)

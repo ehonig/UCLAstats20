@@ -19,6 +19,7 @@ runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
 source("../../setup.R")
+
 first_ten <- 1:10
 first_five <- c(1, 2, 3, 4, 5)
 seq_five <- 1:5
