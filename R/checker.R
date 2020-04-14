@@ -5,6 +5,21 @@ clean_input <- function(x) {
   gsub("\n$|^\n", "", x)
 }
 
+#' Check User Answer
+#'
+#' @param label 
+#' @param user_code 
+#' @param solution_code 
+#' @param check_code 
+#' @param envir_result 
+#' @param evaluate_result 
+#' @param envir_prep 
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 checker <- function(
   label,
   user_code,

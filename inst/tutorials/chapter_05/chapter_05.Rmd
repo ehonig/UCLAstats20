@@ -22,6 +22,7 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
+library(UCLAstats20)
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 options(width = 80)
 
@@ -173,7 +174,7 @@ If the number of columns or rows match in a way that makes sense, i.e., they are
 ```
 
 
-```{r cbind_mat, exercise = FALSE}
+```{r cbind_mat, error = TRUE, exercise = FALSE}
 # The below will give an error, because the number
 # of rows are not conformable
 cbind(A, B)
