@@ -19,11 +19,36 @@ runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
-library(learnr)
-knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
-options(width = 80)
+source("../../setup.R")
+library(MASS)
+data(trees)
+data(geyser)
+parks_mat <- cbind(c(62, 71, 66), c(115, 201, 119), c(4000, NA, 2000))
+rownames(parks_mat) <- c("Leslie", "Ron", "April")
+colnames(parks_mat) <- c("Height", "Weight", "Income")
+parks_df <- data.frame(
+  "Name" = c("Leslie", "Ron", "April"), "Height" = c(62, 71, 66),
+  "Weight" = c(115, 201, 119), "Income" = c(4000, NA, 2000)
+)
+L <- list(
+  1:10, 
+  matrix(1:6, nrow = 2, ncol = 3), 
+  parks_df, 
+  list(1:5, matrix(1:9, nrow = 3, ncol = 3))
+)
+names(L) <- c("Vector", "Matrix", "Data Frame", "List")
+which_median <- function(x) {
+  which(x == median(x))
+}
+```
 
-tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+
+```{js, echo=FALSE}
+$(function() {
+   $('.ace_editor').each(function( index ) {
+     ace.edit(this).setFontSize("20px");
+   });
+})
 ```
 
 ## Learning Objectives {-}
@@ -56,24 +81,21 @@ A **package** in R is a collection of functions, data, and documentation encapsu
 
 To load and access an installed package in an R session, we use the **`library()`** function and input the name of the package we want to use (without quotations). For example, to load the `MASS` package:
 
-```{r}
+```{r load_library, exercise = TRUE}
 library(MASS)
 ```
 
 The `library()` function will throw an error if you try to load a package that has not been installed on your computer.
 
-```{r, error=TRUE, eval=FALSE}
+```{r wrong_library, exercise = TRUE}
 library(whoops)
 ```
-```{r, echo = FALSE}
-cat("Error in library(whoops) : there is no package called 'whoops'")
-```
 
 
-The **`search()`** function outputs R's current **search path**, which allows us to see what packages are currently loaded.
+The **`search()`** function outputs R's current **search path**, which allows us to see what packages are currently loaded. Do this in the code chunk below:
 
-```{r}
-search()
+```{r search_func, exercise = TRUE}
+
 ```
 
 **Note**: The packages and environments in the search path are where R will look into when trying to use objects and functions. If R tries to run a command and is unable to find an object or function in the search path, it will throw an error. The order of the search path is the order of the packages and environments in which R will search for objects. For example, the global environment `".GlobalEnv"` is first in the search path, so R will always look for objects in the global environment first before trying to find objects in other packages. This is why assigning `pi` to a value will mask the built-in `pi` object in base R.
@@ -100,9 +122,9 @@ You can also install packages in R or RStudio from the menu bar.
 
 ### Getting Help
 
-For help on a built-in function in R, use `?` followed by the name of the function, or apply the `help()` function. For example:
+For help on a built-in function in R, use `?` followed by the name of the function, or apply the `help()` function. Try this with the `mean` function below:
 
-```{r}
+```{r help_mean, exercise=TRUE}
 ?mean
 help(mean) # Same thing as ?
 ```
@@ -111,7 +133,7 @@ Help files in R, collectively called **R documentation**, are not always user fr
 
 If you do not know the name of the function, you can do a search with a double question mark `??` followed by the search term, or apply the `help.search()` function. The "fuzzy" search will search over all the available help files and return a list of any documentation that has an alias, concept, or title that matches the search term. For example:
 
-```{r}
+```{r deep_search, exercise=TRUE}
 ??regression
 help.search("regression") # Same thing as ??
 ```
@@ -131,12 +153,24 @@ Both built-in and contributed packages in R contain datasets. The **`data()`** f
 
 For example, there are many examples of datasets in the `datasets` package. The `datasets` package is part of base R, so the data objects actually can be used as if they are built-in objects in R (like `pi`). In particular, the objects can be called and used without loading them with the `data()` function. Other packages need to be loaded first with the `library()` function before data objects can be used.
 
-```{r data1}
+```{r data1, exercise=TRUE}
 data(trees) # Load the trees object
 ls() # The trees object has been added to the workspace
 ```
 
-**Question**: How  can we find out what type of trees were measured for this dataset?
+
+```{r help_quiz, echo=FALSE}
+question("How  can we find out what type of trees were measured for this dataset?",
+         answer("help(trees)", correct = TRUE),
+         answer("?trees", correct = TRUE),
+         answer("trees"),
+         answer("Google it"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
+
 
 The `data()` function has a second functionality that allows us to list the available datasets in a specific package. We can type the name of the package in the `package` argument of the `data()` function.
 
@@ -146,25 +180,45 @@ data(package = "MASS") # List the available datasets in the MASS package
 
 The `MASS` package contains a dataset called `geyser`. We first load the package (if it has not yet been loaded for the current R session), then load the dataset.
 
-```{r,error=TRUE}
+```{r geyser, exercise = TRUE}
 library(MASS) # Load the MASS package (if it was not loaded already)
 data(geyser) # Load the geyser object
 ```
 
 **Question**: Which geyser was measured for this dataset? When was this data collected?
 
+```{r q_help, exercise=TRUE}
+
+```
+
+```{r geyser_q, echo=FALSE}
+question("When was this data collected?",
+         answer("1985", correct = TRUE),
+         answer("1990"),
+         answer("1995"),
+         answer("2000"),
+         answer("None of the other options"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
 
 ### The `head()` and `tail()` Functions
 
 It is generally helpful to print/return a dataset to get an idea of how the data is organized. For objects with many values (or datasets with many observations), it may not be useful to print the entire object. The **`head()`** function outputs the first few values of the input object. For vectors, `head()` will output the first few elements. For two-dimensional objects (like data frames and matrices), `head()` will output the first few rows.
 
-```{r}
+```{r first_head, exercise=TRUE}
 head(trees) # Return the first few values of the trees object
 ```
 
 The second argument in `head()` is the size `n`, which controls how many values to output. By default, `n=6`, so `head()` returns the first six values (or rows). A negative `n` argument will return all but the last `n` values.
 
-```{r}
+```{r head_function, exercise = TRUE}
+head(trees, n = ) # Return the first 3 rows
+head(1:20, n = ) # Return all values except the last 8
+```
+
+```{r head_function-solution}
 head(trees, n = 3) # Return the first 3 rows
 head(1:20, n = -8) # Return all values except the last 8
 ```
@@ -173,7 +227,7 @@ Similarly, the **`tail()`** function outputs the last few values (or rows) of th
 
 \newpage
 
-```{r}
+```{r tail_ex, exercise = TRUE}
 tail(geyser) # Return the last few (default is 6) rows
 tail(1:20, n = -5) # Return all values except the first 5
 ```
@@ -204,7 +258,7 @@ April & 66 & 119 & 2000 \\
 
 Recall that we used the `matrix()` function to create a matrix of the numeric values in the table.
 
-```{r}
+```{r parks_matrix, exercise=TRUE}
 parks_mat <- cbind(c(62, 71, 66), c(115, 201, 119), c(4000, NA, 2000))
 rownames(parks_mat) <- c("Leslie", "Ron", "April")
 colnames(parks_mat) <- c("Height", "Weight", "Income")
@@ -213,7 +267,7 @@ parks_mat
 
 The `data.frame()` function inputs multiple vectors of the same length and outputs a data frame with each column corresponding to the vectors (in order). We can set column (variable) names by typing the name of the column in quotation marks.
 
-```{r}
+```{r parks_data_frame, exercise=TRUE}
 parks_df <- data.frame(
   "Name" = c("Leslie", "Ron", "April"), "Height" = c(62, 71, 66),
   "Weight" = c(115, 201, 119), "Income" = c(4000, NA, 2000)
@@ -223,23 +277,28 @@ parks_df
 
 For the `parks_df` object, the `Name` variable is a column in the data frame, not the row name. The `Name column has a different type than the other columns.
 
-We can also use `data.frame()` to convert (coerce) matrices into data frames. By converting `parks_mat` into a data frame, the row and column names are preserved.
+We can also use `data.frame()` to convert (coerce) matrices into data frames. By converting `parks_mat` into a data frame, the row and column names are preserved. Try this below
 
-```{r}
+```{r mat_to_df, exercise=TRUE}
+
+```
+
+```{r mat_to_df-solution}
 data.frame(parks_mat)
 ```
+
 
 Many of the same basic functions for matrices also work for data frames.
 
 * The `dim()` function outputs the dimension of the input data frame.
 
-```{r}
+```{r dims, exercise=TRUE}
 dim(parks_df)
 ```
 
 * The `rownames()`, `colnames()`, and `dimnames()` functions return row and column names.
 
-```{r}
+```{r named, exercise =TRUE}
 rownames(parks_df)
 colnames(parks_df)
 dimnames(parks_df)
@@ -249,13 +308,13 @@ dimnames(parks_df)
 
 * The `cbind()` function combines (binds) columns of data frames together. The vectors or data frames should contain the same number of rows/observations (values will be automatically recycled otherwise).
 
-```{r}
+```{r cbind_trick, exercise = TRUE}
 cbind(parks_df, "Age" = c(34, 49, 20))
 ```
 
 * The `rbind()` combines rows of data frames together. Since different values in rows are allowed to be different types, added rows are typically either data frames or lists. Merging rows from two data frames can get complicated, though, because the names of the columns in each data frame should correspond to the names in the other.
 
-```{r}
+```{r rbind_a_man, exercise=TRUE}
 ## Create a data frame with a new observation
 ron_dunn <- data.frame("Name" = "Ron", "Height" = 74, "Weight" = 194, "Income" = 5000)
 rbind(parks_df, ron_dunn)
@@ -265,25 +324,78 @@ rbind(parks_df, list("Ron", 74, 194, 5000)) # Same thing
 
 **Question**: What is different about the command `rbind(parks_df, c("Ron", 74, 194, 5000))`?
 
+```{r quiz_time, echo=FALSE}
+question("What is different about the command `rbind(parks_df, c('Ron', 74, 194, 5000))`?",
+         answer("There is no difference"),
+         answer("It will return an error"),
+         answer("'Ron' will become 'NA'"),
+         answer("Everything becomes numeric mode"),
+         answer("Everything becomes character mode", correct=TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
 
 ### Extracting Data from Data Frames
 
 #### Square Brackets
 
-Since data frames are two-dimensional objects, we can use the same methods for extracting and reassigning values from matrices on data frames. In particular, we can use square brackets with an ordered pair of indices, corresponding to the row index and the column index, separated by a comma. For example, an index of `[i, j]` means to extract the entry in the `i`th row and `j`th column, also called the $(i,j)$th entry. Logical and named indices will also work as expected.
+Since data frames are two-dimensional objects, we can use the same methods for extracting and reassigning values from matrices on data frames. In particular, we can use square brackets with an ordered pair of indices, corresponding to the row index and the column index, separated by a comma. For example, an index of `[i, j]` means to extract the entry in the `i`th row and `j`th column, also called the $(i,j)$th entry. Logical and named indices will also work as expected. Try this with `parks_df` below:
 
-```{r}
+```{r extract_1, exercise=TRUE}
+ # Extract the first row
+ # Remove the first column
+ # Remove the second row and extract the third column
+ # Extract the Names column with named indices
+ # Extract the third entry from the Income column with logical indexing for the third entry and named indexing for the Income column
+```
+
+```{r extract_1-hint-1}
+parks_df[1, ] # Extract the first row
+parks_df[, -1] # Remove the first column
+ # Remove the second row and extract the third column
+ # Extract the Names column with named indices
+ # Extract the third entry from the Income column with logical indexing for the third entry and named indexing for the Income column
+```
+
+```{r extract_1-hint-2}
 parks_df[1, ] # Extract the first row
 parks_df[, -1] # Remove the first column
 parks_df[-2, 3] # Remove the second row and extract the third column
-parks_df[, "Name"] # Extract the Names column
-parks_df[c(FALSE, FALSE, TRUE), "Income"] # Extract the third entry from the Income column
+parks_df[, "Name"] # Extract the Names column with named indices
+ # Extract the third entry from the Income column with logical indexing for the third entry and named indexing for the Income column
+```
+
+```{r extract_1-hint-3}
+parks_df[1, ] # Extract the first row
+parks_df[, -1] # Remove the first column
+parks_df[-2, 3] # Remove the second row and extract the third column
+parks_df[, "Name"] # Extract the Names column with named indices
+parks_df[c(FALSE, FALSE, TRUE), ] # Extract the third entry from the Income column with logical indexing for the third entry and named indexing for the Income column
+```
+
+```{r extract_1-solution}
+parks_df[1, ] # Extract the first row
+parks_df[, -1] # Remove the first column
+parks_df[-2, 3] # Remove the second row and extract the third column
+parks_df[, "Name"] # Extract the Names column with named indices
+parks_df[c(FALSE, FALSE, TRUE), "Income"] # Extract the third entry from the Income column with logical indexing for the third entry and named indexing for the Income column
+```
+
+```{r extract_1-check}
+parks_df[1, ] # Extract the first row
+parks_df[, -1] # Remove the first column
+parks_df[-2, 3] # Remove the second row and extract the third column
+parks_df[, "Name"] # Extract the Names column with named indices
+parks_df[c(FALSE, FALSE, TRUE), "Income"] # Extract the third entry from the Income column with logical indexing for the third entry and named indexing for the Income column
 ```
 
 **Note**: Data frames consist of columns of vectors. When the output contains multiple columns, the output remains a data frame (so it can still allow for columns of different types). When the output contains only one column, the output becomes a vector. To preserve the data structure when subsetting, include the argument `drop = FALSE` in the square brackets.
 
-```{r}
+```{r practicing_drop_arg, exercise=TRUE}
+class(parks_df[, "Name"])
 parks_df[, "Name", drop = FALSE] # The output will stay as a data frame
+class(parks_df[, "Name", drop = FALSE])
 ```
 
 The `drop = FALSE` argument also works when subsetting single rows or columns from matrix objects.
@@ -299,7 +411,7 @@ There are many ways to extract data from objects in R, depending on the type of 
 
 For data frames and lists, the columns/components can be extracted using **double square brackets `[[]]`**, either referring to the components by numeric index or by name.
 
-```{r}
+```{r double_trouble_index, exercise=TRUE}
 parks_df[[1]] # Extract the first column (which is Name)
 parks_df[["Height"]] # Extract the Height column
 parks_df[[3]][1] # Extract the first element of the third column (Weight)
@@ -310,7 +422,7 @@ parks_df[[3]][1] # Extract the first element of the third column (Weight)
 
 For data frames (and lists) where the columns of the object typically have names, the **`$`** operator is an efficient way to extract a single column. The left side of the `$` contains the data frame we want to extract from, and the right side contains the name of the column to extract. 
 
-```{r}
+```{r mo_money_mo_problems, exercise=TRUE}
 parks_df$Height # Extract the Height column from parks_df
 parks_df$Income # Extract the Income column from parks_df
 ```
@@ -319,12 +431,9 @@ When multiple data frames in the workspace have the same variable name inside, i
 
 **Note**: The `$` operator is also able to add a new column (of the same length) to an existing data frame. This can be an alternative to `cbind()`.
 
-```{r}
+```{r time_waits_for_none, exercise=TRUE}
 parks_df # Does not have the Age variable
 parks_df$Age <- c(34, 49, 20) # Add the Age variable to the parks_df object
-```
-
-```{r}
 parks_df
 ```
 
@@ -377,10 +486,18 @@ When referring to a data frame many times, typing the name of the data frame eve
 
 The **`with()`** function allows us to reference variable names inside a data frame without brackets or the `$` operator. The first argument of `with()` is the data frame we want to use, and the second argument is the command we want to run using the input data frame.
 
-```{r}
+```{r were_all_in_this_with_each_other, exercise=TRUE}
 with(parks_df, Height) # Output the Height variable from parks_df
 
-with(parks_df, Weight > 110) # Which weights in parks_df are greater than 110?
+ # Which weights in parks_df are greater than 110? Answer as a logical vector
+
+ # Compute the mean of the heights
+```
+
+```{r were_all_in_this_with_each_other-solution}
+with(parks_df, Height) # Output the Height variable from parks_df
+
+with(parks_df, Weight > 110) # Which weights in parks_df are greater than 110? Answer as a logical vector
 
 with(parks_df, mean(Height)) # Compute the mean of the heights
 ```
@@ -393,12 +510,27 @@ with(parks_df, mean(Height)) # Compute the mean of the heights
 
 * Objects created or reassigned inside the local environment inside `with()` will not appear in the global environment.
 
-```{r}
+```{r to_britain, exercise=TRUE}
+parks_mat
+parks_df
 with(parks_df, {
   height_in_cm <- Height * 2.54 # Convert heights into cm
   tall_cm_index <- height_in_cm > 165 # Find the heights taller than 165 cm
   Name[tall_cm_index] # Output the names of the people who are taller than 165 cm
 })
+```
+
+```{r with_quiz, echo=FALSE}
+question("Which of the following objects remain after the above code chunk is run?",
+         answer("parks_df", correct = TRUE),
+         answer("tall_cm_index"),
+         answer("Name"),
+         answer("Height"),
+         answer("height_in_cm"),
+         answer("None of these options"),
+         answer("parks_mat", correct = TRUE),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
 ```
 
 
@@ -413,7 +545,7 @@ It can be important to know both the class and mode of objects in R. Many functi
 
 The **`class()`** function inputs any R object and outputs the class of the object. For vectors, the `class()` function will differentiate between integer and double (numeric) types.
 
-```{r}
+```{r parks_mat_df_class_mode, exercise=TRUE}
 ## The class and mode of a data frame
 class(parks_df)
 mode(parks_df)
@@ -438,7 +570,7 @@ mode(1:9)
 
 A **list** is an ordered collection of objects. Lists are possibly the most flexible objects in R. Each component in a list can be *any* other object in R, including vectors, matrices, data frames, functions, and even other lists.
 
-```{r}
+```{r making_a_list, exercise=TRUE}
 L <- list(
   1:10, 
   matrix(1:6, nrow = 2, ncol = 3), 
@@ -454,20 +586,25 @@ Since lists are generic vectors, a few of the basic functions that work for vect
 
 * The concatenation function **`c()`** for vectors can also be used to concatenate lists together.
 
-```{r}
+```{r concetenate_a_list, exercise=TRUE}
 char_vec <- c("Pawnee Rules", "Eagleton Drools")
 c(L, list(char_vec))
 ```
 
 * The **`length()`** function, applied to a list, will return the number of (top level) components in the list.
 
-```{r}
+```{r length_list, exercise=TRUE}
+# How many components are in list L? Use length().
+
+```
+```{r length_list-solution}
+# How many components are in list L? Use length().
 length(L)
 ```
 
 * The **`names()`** function can be used to assign or return the names of the components in a list.
 
-```{r}
+```{r naming_lists, exercise=TRUE}
 names(L) <- c("Vector", "Matrix", "Data Frame", "List")
 names(L)
 L
@@ -475,18 +612,30 @@ L
 
 The names can also be set when creating a list by typing the names of each component in quotation marks.
 
-```{r}
+```{r double_trouble, exercise=TRUE}
 list("Vector" = 1:10, "Matrix" = matrix(1:6, nrow = 2, ncol = 3))
 ```
 
 **Note**: The `names()` function can also be used to add names to elements of vectors. For data frames, `names()` is interchangeable with `colnames()`.
 
-```{r}
+```{r name_part_3, exercise-TRUE}
 first_five <- 1:5
 names(first_five) <- c("One", "Two", "Three", "Four", "Five")
 first_five
 
 names(parks_df) # Same as colnames(parks_df)
+```
+
+
+```{r rowname_quiz, echo=FALSE}
+question("How do you change the names of the rows in parks_df?",
+         answer("names()"),
+         answer("colnames()"),
+         answer("Add a column"),
+         answer("Not possible"),
+         answer("rownames()", correct = TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
 ```
 
 
@@ -498,7 +647,7 @@ The double square brackets `[[]]` and `$` operator are two ways of extracting da
 
 The double square brackets `[[]]` denote the index of the top level components in the list object. Double square brackets can thus be used to extract individual components from a list.
 
-```{r}
+```{r double_index, exercise=TRUE}
 L[[1]] # A vector of length 10
 L[[2]] # A 2x3 matrix
 L[[2]][, 1] # The first column of the 2x3 matrix
@@ -515,23 +664,38 @@ L[[-1]]
 
 The first component of the `L[[4]]` list is a vector and the second component is a $3 \times 3$ matrix. To access the $3 \times 3$ matrix component, we would use `[[2]]`, applied to the `L[[4]]` object:
 
-```{r}
+```{r double_double, exercise=TRUE}
 L[[4]][[2]] # The 3x3 matrix inside the L[[4]] list
 ```
 
-**Question**: How can we extract the third column of the `L[[4]][[2]]` matrix?
+```{r matrix_q, echo=FALSE}
+question("How can we extract the third column of the `L[[4]][[2]]` matrix?",
+         answer("L[4][2][3]"),
+         answer("L[[4]][[2]][[3]]"),
+         answer("L[[4]][[2]][3]"),
+         answer("L[[4]][[2]][, 3]", correct = TRUE),
+         answer("L[[4]][[2]][3, ]"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
 
 <!-- \newpage -->
 
 If a list contains a list component inside, it is often called a **recursive list**. For recursive lists with many lists nested inside other lists, using multiple sets of double square brackets to access the nested list components can be confusing and cumbersome. We can instead use **recursive indexing** by inputting a vector index (of length greater than 1) in double square brackets. The $i$th element of the vector index will refer to the $i$th level component to extract.
 
-```{r}
+```{r recur_index, exercise=TRUE}
 ## Extract the 2nd component of the 4th component of L
 L[[c(4, 2)]] # Same as L[[4]][[2]]
 L[[c(4, 2, 3)]] # Same as L[[4]][[2]][[3]]
 ```
 
-**Question**: Why does `L[[c(4, 2, 3)]]` not output the third column of `L[[c(4, 2)]]`?
+```{r whats_wrong}
+question("Why does `L[[c(4, 2, 3)]]` not output the third column of `L[[c(4, 2)]]`?",
+         answer("It gives the third row instead"),
+         answer("It takes only the third element", correct = TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
 
 Using a recursive index with too many indices will result in an error.
 
@@ -544,7 +708,7 @@ L[[c(4, 2, 3, 1)]]
 
 When the components of a list have names, the **`$`** operator can be used to extract a single component. The left side of the `$` contains the list we want to extract from, and the right side contains the name of the component to extract.
 
-```{r}
+```{r dolla_dolla, exercise=TRUE}
 L$Vector
 L$Matrix
 L$`Data Frame`
@@ -557,7 +721,7 @@ For lists with many components, or components with long names, the first few let
 
 Since the name of every component of the `L` list starts with a different letter, then we only need to type the first letter for the `$` operator to know which component to extract.
 
-```{r}
+```{r short_dolla, exercise=TRUE}
 L$D # Data Frame
 L$L # List
 ```
@@ -566,7 +730,7 @@ L$L # List
 
 **Note**: Just like for data frames (which are lists), the `$` operator is also able to add a new component to an existing list.
 
-```{r}
+```{r add_more, exercise=TRUE}
 L$Function <- mean
 names(L) # Function has been added to the list
 
@@ -575,7 +739,7 @@ L$Function(L$Vector) # Compute mean of the Vector component using the Function c
 
 To remove a component from a list (or a column from a data frame), set the component to `NULL`.
 
-```{r}
+```{r removal, exercise=TRUE}
 L$Function <- NULL
 L
 ```
@@ -587,17 +751,29 @@ L
 
 As lists are generic vectors, single square brackets `[]` can also be used to subset from lists. One key difference between single square brackets `[]` and double square brackets `[[]]` is that the single square bracket always outputs a list object while the double square bracket outputs the component object inside.
 
-```{r}
+```{r single_v_double, exercise=TRUE}
 L[1]
 L[[1]]
 ```
 
 Single square brackets behave the same way for lists as you would expect with (atomic) vectors. They allow you to subset multiple components of a list with numeric, character, or logical indices.
 
-```{r}
+```{r single_index, exercise=TRUE}
 L[-c(1, 4)]
 L[c("Vector", "List")]
 L[c(TRUE, FALSE)]
+```
+
+
+```{r do_you_remember, echo=FALSE}
+L
+question("What does L[[-c(1, 3)]] return?",
+         answer("The matrix and the list within the list"),
+         answer("Everything"),
+         answer("An error", correct = TRUE),
+         answer("The third element of every component of the list except the first vector"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
 ```
 
 
@@ -605,7 +781,7 @@ L[c(TRUE, FALSE)]
 
 Recall that a function in R is vectorized if applying the function to an object will automatically apply the function to individual components of the object. For (atomic) vectors, vector arithmetic is implements operations element-by-element.
 
-```{r}
+```{r simple_vector, exercise=TRUE}
 c(1, 2, 3) + c(2, 3, 4)
 ```
 
@@ -619,7 +795,7 @@ We will start with some generic vectorized functions that provide useful summari
 
 For a quick overview of any object in R, the **`str()`** function returns a compact display of the internal **structure** of the input object. As an example, we will apply this function to the `trees` data in the `datasets` package.
 
-```{r}
+```{r structure, exercise=TRUE}
 str(trees) # Display the structure of the trees object
 ```
 
@@ -640,7 +816,12 @@ L <- list(
 )
 str(L)
 ```
-```{r}
+```{r list_structure, exercise=TRUE}
+# Use str() on list L
+
+```
+```{r list_structure-solution}
+# Use str() on list L
 str(L)
 ```
 
@@ -648,7 +829,7 @@ str(L)
 
 We previously used the **`summary()`** function to compute a few standard summary statistics on numeric vectors.
 
-```{r}
+```{r sum_body_once_told_me, exercise=TRUE}
 summary(trees$Volume)
 ```
 
@@ -656,10 +837,20 @@ The `summary()` function is an example of a **polymorphic** function in that it 
 
 For data frames, the `summary()` function will compute summary statistics for each column in the data frame. If the column is a character or factor vector, the `summary()` output will adapt and return frequencies. For lists, the `summary()` function will return the length, class attribute, and mode of each component.
 
-```{r}
+```{r test_sum, exercise=TRUE}
 summary(trees)
 summary(parks_df)
 summary(L)
+```
+
+
+```{r sum_and_str, echo=FALSE}
+question("How can I see the mean value for each numeric column in parks_df?",
+         answer("str(parks_df)"),
+         answer("summary(parks_df)", correct = TRUE),
+         answer("mean(parks_df, na.rm = TRUE)"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
 ```
 
 
@@ -672,7 +863,7 @@ One of the most widely used features of R is the **`apply`** family of functions
 
 Recall that the **`apply()`** function is used to apply a function to the rows or columns (the **margins**) of matrices or data frames.
 
-```{r}
+```{r test_apply, exercise=TRUE}
 ## Compute the mean of every column of the trees data frame
 apply(trees, 2, mean)
 ## Compute the mean of every row of the trees data frame
@@ -689,7 +880,27 @@ apply(trees, 2, range)
 
 **Question**: What does `apply(parks_df, 2, mean)` output? Why does this command not give the results we intended? How can we find the mean of each of the numeric columns in `parks_df` using `apply()`?
 
+```{r apply_df, exercise=TRUE}
+apply(parks_df, 2, mean)
+```
+
+```{r apply_df-solution}
+apply(parks_df[, -1], 2, mean)
+apply(parks_df[, -1], 2, mean, na.rm = TRUE)
+```
+
+
 **Question**: How is `summary(trees)` different from `apply(trees, 2, summary)`?
+
+```{r summary_and_apply, exercise = TRUE}
+summary(trees)
+apply(trees, 2, summary)
+```
+```{r summary_and_apply-solution}
+class(summary(trees))
+class(apply(trees, 2, summary))
+```
+
 
 
 #### The `lapply()` Function
@@ -706,29 +917,46 @@ The syntax of `lapply()` is `lapply(X, FUN, ...)`, where the arguments are:
 
 Note that there is no margin argument like in `apply()`, as lists have a single index.
 
-```{r}
+```{r lapply_1, exercise=TRUE}
 ## Return the class of each component in the L list
 lapply(L, class)
 ```
 
 **Note**: Since data frames are (stored as) lists, `lapply()` also works for data frames.
 
-```{r}
+```{r df_lapply, exercise=TRUE}
 ## Compute the range (min and max) of every column of the trees data frame
 lapply(trees, range)
 ```
 
 **Question**: How is `apply(trees, 2, range)` different from `lapply(trees, range)`?
 
+```{r q_question, exercise=TRUE}
+apply(trees, 2, range)
+lapply(trees, range)
+```
+
+
 The list output from `lapply()` is particularly useful when the result from each component may have a different length (or even a different dimension or class).
 
 \newpage
 
-```{r}
+```{r double_sub, exercise=TRUE}
 which_median <- function(x) {
   which(x == median(x))
 }
 lapply(trees, which_median)
+```
+
+```{r lappy_quiz, echo=FALSE}
+question("Which type of objects can be used in both apply() and lapply()?",
+         answer("matrix"),
+         answer("list"),
+         answer("vector"),
+         answer("numeric"),
+         answer("data frame", correct = TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
 ```
 
 
@@ -746,7 +974,7 @@ The **`sapply()`** function is a **wrapper** function for `lapply()`, meaning th
 
 By using `lapply()`, we found the class of each component of list `L`. Notice the difference when using `sapply()`.
 
-```{r}
+```{r sapply_time, exercise=TRUE}
 sapply(L, class)
 ```
 
@@ -754,13 +982,19 @@ The output of each application of the `class()` function is a single character v
 
 Just like `lapply()`, `sapply()` also works for data frames.
 
-```{r}
+```{r df_sapply, exercise=TRUE}
 sapply(trees, range)
 ```
 
 **Note**: Notice that `sapply(trees, range)` gives the same output as `apply(trees, 2, range)`. Since a data frame is stored as a list with the column vectors as its components, `sapply()` applies functions to the components of `trees` as a list, and `apply()` with `MARGIN = 2` applies functions to the columns of the coerced matrix version of `trees` (`as.matrix(trees)`). The output is the same in this case. However, since `lapply()` and `sapply()` do not coerce data frames into having columns of the same type, certain functions may produce different results.
 
 **Question**: How is `apply(parks_df, 2, mean)` different from `sapply(parks_df, mean)`?
+
+```{r avs, exercise=TRUE}
+apply(parks_df, 2, mean)
+sapply(parks_df, mean)
+```
+
 
 
 #### The `vapply()` Function
@@ -771,13 +1005,13 @@ The `vapply()` function is similar to `sapply()`, except that it requires the `F
 
 For example, since we know the `class()` function returns a single character value, we would set `FUN.VALUE = character(1)`.
 
-```{r}
+```{r vapply, exercise=TRUE}
 vapply(trees, class, character(1))
 ```
 
 Since the `range()` function returns a numeric vector of length 2, we would set `FUN.VALUE = numeric(2)`.
 
-```{r}
+```{r vapply2, exercise=TRUE}
 vapply(trees, range, numeric(2))
 ```
 
@@ -790,4 +1024,40 @@ vapply(trees, mean, numeric(2))
 A natural question that arises may be to ask why one would prefer `vapply()` over `sapply()`. At first glance, it appears that `sapply()` is more flexible and easier to use than `vapply()`. However, the flexibility of `sapply()` makes it dangerous when trying to ensure that your output has a specific length, dimension, and/or type.
 
 The strictness of `vapply()` imposed by requiring the `FUN.VALUE` argument helps in making sure that your output has exactly the structure you expect. The error that `vapply()` can throw is meant to alert the user of unexpected results. When a function has a predictable output structure, it is generally safer and thus often preferred to use `vapply()` over `sapply()`.
+
+# Final Chapter Quiz
+```{r q1, echo=FALSE}
+question("How do I get the numbers 1, 2, 3?",
+         answer("tail(1:10, -7)"),
+         answer("head(1:10, -3)"),
+         answer("head(1:10, 3)", correct = TRUE),
+         answer("tail(10:1, 3)", correct = TRUE),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+```{r q2, echo=FALSE}
+which_median
+trees
+apply(trees, 2, which_median)
+question("The which_median function and trees data frame are shown above. Which of the following answers produces the output underneath the data frame?",
+         answer("apply(trees, 2, which_median)", correct=TRUE),
+         answer("lapply(trees, which_median)", correct = TRUE),
+         answer("sapply(trees, which_median)"),
+         answer("vapply(trees, which_median, numeric(2)"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
+
+```{r q3, echo=FALSE}
+L
+question("How do I extract Leslie's weight from the data frame in list L?",
+         answer("L[[3]][1, 3]", correct = TRUE),
+         answer("L$`Data Frame`$Weight[1]", correct = TRUE),
+         answer("L[[c(3, 3, 1)]]", correct = TRUE),
+         answer("L[3][1][3]"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
 
