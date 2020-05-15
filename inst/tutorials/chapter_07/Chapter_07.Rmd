@@ -1043,7 +1043,7 @@ apply(trees, 2, which_median)
 question("The which_median function and trees data frame are shown above. Which of the following answers produces the output underneath the data frame?",
          answer("apply(trees, 2, which_median)", correct=TRUE),
          answer("lapply(trees, which_median)", correct = TRUE),
-         answer("sapply(trees, which_median)"),
+         answer("sapply(trees, which_median)", correct = TRUE),
          answer("vapply(trees, which_median, numeric(2)"),
          allow_retry = TRUE,
          random_answer_order = TRUE)
