@@ -524,7 +524,7 @@ is_vowel <- function(letter) {
 ```
 
 ```{r vowels-hint}
-Use the %in% operatir as described above
+Use the %in% operator as described above
 ```
 
 ```{r vowels-solution}
