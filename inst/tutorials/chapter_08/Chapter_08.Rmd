@@ -327,7 +327,7 @@ Since the `foreign` package was written in 2000, newer versions of SPSS, Stata, 
 
 The `haven` package is part of the **`tidyverse`**, a system of R packages designed by Hadley Wickham (creator of `ggplot2` and current Chief Scientist at RStudio), to improve data management, exploration, and visualization in R.
 
-# Quiz Time
+## Quiz Time
 ```{r q1, echo=FALSE}
 question("Which of the following saves and reads RData files?",
          answer("dump/source"),

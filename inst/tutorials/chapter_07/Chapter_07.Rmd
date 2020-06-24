@@ -1025,7 +1025,7 @@ A natural question that arises may be to ask why one would prefer `vapply()` ove
 
 The strictness of `vapply()` imposed by requiring the `FUN.VALUE` argument helps in making sure that your output has exactly the structure you expect. The error that `vapply()` can throw is meant to alert the user of unexpected results. When a function has a predictable output structure, it is generally safer and thus often preferred to use `vapply()` over `sapply()`.
 
-# Final Chapter Quiz
+## Final Chapter Quiz
 ```{r q1, echo=FALSE}
 question("How do I get the numbers 1, 2, 3?",
          answer("tail(1:10, -7)"),
