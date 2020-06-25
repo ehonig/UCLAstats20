@@ -112,6 +112,16 @@ set.seed(20)
 sample(1:10) # Same as sample(10)
 
 ## Choose 5 numbers out of the numbers 1 to 10.
+sample(1:10, size = )
+```
+
+```{r set_seed-solution}
+## Set the seed for reproduceability
+set.seed(20)
+## Rearrange the numbers from 1 to 10.
+sample(1:10) # Same as sample(10)
+
+## Choose 5 numbers out of the numbers 1 to 10.
 sample(1:10, size = 5)
 ```
 
@@ -138,6 +148,22 @@ coins
 ## Summarize the results of the 20 coin flips.
 table(coins)
 ```
+
+```{r coins_quiz, echo=FALSE}
+question("In the preceding code chunk, if the first two flips are heads, what is the probability of tails on the third flip?",
+         answer("80%"),
+         answer("20%", correct = TRUE),
+         answer("50%"),
+         answer("0%"),
+         answer("100%"),
+         answer("81-99%"),
+         answer("1-19%"),
+         answer("21-49%"),
+         answer("51-79$"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
 
 **Note**: In order to flip 20 coins from a vector of length 2, we must specify `replace = TRUE`. This makes sense, since we always have the choices `"H"` or `"T"` for every flip. If `replace = FALSE`, R will throw an error.
 
@@ -189,12 +215,22 @@ replicate(n = 20, {
 replicate(n = 2, which(sample(10, size = 8) > 5))
 ```
 
+```{r replicateq, echo=FALSE}
+question("If the function returns six values for each repetition (i.e. the output of expr is a length-6 vector) and we repeat it 12 times (n = 12), what is the final output?",
+         answer("a length-6 list"),
+         answer("a length-12 list"),
+         answer("a matrix with 6 columns and 12 rows"),
+         answer("a matrix with 12 columns and 6 rows", correct = TRUE),
+         answer("a length-6 vector"),
+         answer("a length-12 vector"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
 
 #### Example: MEGA Millions
 
 MEGA Millions is a nationwide lottery game in which players pick five numbers from 1 to 70 and one MEGA number from 1 to 25. The six winning numbers are drawn at random, and a player wins the grand prize if all six numbers are chosen correctly.
-
-Suppose we are interested in the probability that all six of the winning numbers are greater than 20. The MEGA Millions game is played twice a week. Rather than observing the lottery in real-time, we can simulate the winning numbers many times using a `for()` loop to estimate how often the winning numbers are all greater than 20.
 
 ```{r mega_millions, exercise = TRUE}
 M <- 10000 # Number of repetitions
@@ -231,6 +267,53 @@ table(all_over_20) / M
 
 **Question**: How can this `replicate()` command be modified to store the winning numbers from each simulated draw?
 
+```{r replicate_millions, exercise=TRUE}
+set.seed(9999)
+M <- 10000
+all_over_20 <- replicate(n = M, {
+  winning <- c(sample(70, size = 5), sample(25, size = 1))
+  all(winning > 20)
+})
+table(all_over_20) / M
+```
+
+```{r replicate_millions-hint-1}
+set.seed(9999)
+M <- 10000
+all_over_20 <- replicate(n = M, {
+  c(sample(70, size = 5), sample(25, size = 1))
+})
+table(all_over_20) / M
+```
+
+```{r replicate_millions-hint-2}
+set.seed(9999)
+M <- 10000
+all_over_20 <- replicate(n = M, {
+  c(sample(70, size = 5), sample(25, size = 1))
+})
+all_over_20
+```
+
+```{r replicate_millions-solution}
+set.seed(9999)
+M <- 10000
+all_over_20 <- replicate(n = M, {
+  c(sample(70, size = 5), sample(25, size = 1))
+})
+all_over_20
+```
+
+```{r replicate_millions-check}
+set.seed(9999)
+M <- 10000
+all_over_20 <- replicate(n = M, {
+  c(sample(70, size = 5), sample(25, size = 1))
+})
+all_over_20
+```
+
+
 ## Simulating Random Sampling
 
 ### Simple Random Sampling
@@ -257,6 +340,8 @@ college
 dim(college)
 ```
 
+How many students are in this data set?
+
 \newpage
 
 To implement simple random sampling with the `sample()` function, we will use two steps:
@@ -276,12 +361,24 @@ college[sample_index, ]
 
 **Question**: How would you compute the proportion of college students in the sample (i.e., the sample proportion) who live off campus?
 
+```{r offcamp, exercise=TRUE}
+
+```
+```{r offcamp-hint}
+college$OnCampus == "N"
+```
+```{r offcamp-solution}
+mean(college$OnCampus == "N")
+```
+```{r offcamp-check}
+mean(college$OnCampus == "N")
+```
 
 ### Simulating Sampling Distributions
 
 We want to illustrate the sampling variability (also called sample-to-sample variability) of the sample proportion. That is, when we take different random samples, how does the sample proportion of students who live on campus vary from sample to sample?
 
-We can use a `for()` loop to simulate sampling many (10000) random samples of size 30 from the population of students in the `college` data. For each random sample, we will compute the proportion of the sample who live on campus.
+We can use a `for()` loop or `replicate()` to simulate sampling many (10000) random samples of size 30 from the population of students in the `college` data. For each random sample, we will compute the proportion of the sample who live on campus.
 
 <!-- ```{r} -->
 <!-- # We first create objects for common quantities. -->
@@ -313,14 +410,70 @@ phats <- replicate(M, {
 
 The distribution of the `phats` vector is an approximation to the sampling distribution of the sample proportion for samples of size $n = 30$.
 
-```{r hist, exercise = TRUE, fig.align='center', fig.asp=1, out.width='100%', cache=TRUE}
+```{r hist, exercise = TRUE, fig.align='center', fig.asp=1, out.width='100%'}
 hist(phats,
   prob = TRUE, breaks = 25, xlab = expression(hat(p)),
   main = "Histogram of Sample Proportions", col = "blue", density = 30
 )
 ```
 
-**Question**: How can the above code be modified to simulate the sampling distribution of the mean cumulative GPA for the students at the College of the Midwest?
+**Question**: How can the above code be modified to simulate the sampling distribution of the mean cumulative GPA for the students at the College of the Midwest? Add a blue vertical line for the mean of the sampling distribution and a red vertical line for the true mean GPA.
+
+```{r gpa, exercise=TRUE, fig.align='center', fig.asp=1, out.width='100%'}
+## We first create objects for common quantities.
+n <- 30 # The sample size
+N <- nrow(college) # The population size
+M <- 10000 # Number of samples/repetitions
+
+set.seed(9999)
+phats <- replicate(M, {
+  index <- sample(N, size = n)
+  sample_i <- college[index, ]
+  mean(sample_i$OnCampus == "Y")
+})
+hist(phats,
+  prob = TRUE, breaks = 25, xlab = expression(hat(p)),
+  main = "Histogram of Sample Proportions", col = "blue", density = 30
+)
+```
+```{r gpa-hint}
+## We first create objects for common quantities.
+n <- 30 # The sample size
+N <- nrow(college) # The population size
+M <- 10000 # Number of samples/repetitions
+
+set.seed(9999)
+phats <- replicate(M, {
+  index <- sample(N, size = n)
+  sample_i <- college[index, ]
+  mean(sample_i$OnCampus == "Y")
+})
+hist(phats,
+  prob = TRUE, breaks = 25, xlab = expression(hat(p)),
+  main = "Histogram of Sample Proportions", col = "blue", density = 30
+)
+abline(v = mean(phats), col = "blue")
+abline(v = mean(college$CumGpa), col = "red")
+```
+```{r gpa-solution}
+## We first create objects for common quantities.
+n <- 30 # The sample size
+N <- nrow(college) # The population size
+M <- 10000 # Number of samples/repetitions
+
+set.seed(9999)
+phats <- replicate(M, {
+  index <- sample(N, size = n)
+  sample_i <- college[index, ]
+  mean(sample_i$CumGpa)
+})
+hist(phats,
+  prob = TRUE, breaks = 25, xlab = expression(hat(p)),
+  main = "Histogram of Sample Proportions", col = "blue", density = 30
+)
+abline(v = mean(phats), col = "blue")
+abline(v = mean(college$CumGpa), col = "red")
+```
 
 
 ## Simulating From Probability Models
@@ -350,6 +503,14 @@ The **`runif()`** function generates samples from continuous uniform distributio
 runif(10)
 
 ## Generate 20 uniform numbers between -5 and 5.
+runif(20, min = , max = )
+```
+
+```{r runif-solution}
+## Generate 10 uniform numbers between 0 and 1.
+runif(10)
+
+## Generate 20 uniform numbers between -5 and 5.
 runif(20, min = -5, max = 5)
 ```
 
@@ -359,7 +520,7 @@ Suppose a local bus arrives every 12 minutes. If you arrive at the bus stop at a
 
 Assuming the same conditions every day, we can simulate 10000 days of waiting for the bus using `runif()` and plot the results in a histogram.
 
-```{r bus, exercise = TRUE, fig.align='center', fig.asp=1, out.width='100%', cache=TRUE}
+```{r bus, exercise = TRUE, fig.align='center', fig.asp=1, out.width='100%'}
 ## Set the seed for reproduceability
 set.seed(24601)
 ## Generate 10000 uniform numbers between 0 and 12.
@@ -369,7 +530,33 @@ hist(wait_times, prob = TRUE, xlab = "Waiting Times (in minutes)", col = "purple
 mean(wait_times)
 ```
 
-**Question**: How can we estimate the probability of waiting between 4 and 10 minutes for the bus?
+**Question**: How can we estimate the probability of waiting between 4 and 10 minutes for the bus? Use the variable `wait_times`.
+
+```{r wait, exercise = TRUE}
+## Set the seed for reproduceability
+set.seed(24601)
+## Generate 10000 uniform numbers between 0 and 12.
+wait_times <- runif(10000, 0, 12)
+
+mean(wait_times >=4 & wait_times<=10)
+```
+```{r wait-solution}
+## Set the seed for reproduceability
+set.seed(24601)
+## Generate 10000 uniform numbers between 0 and 12.
+wait_times <- runif(10000, 0, 12)
+
+mean(wait_times >=4 & wait_times<=10)
+```
+```{r wait-check}
+## Set the seed for reproduceability
+set.seed(24601)
+## Generate 10000 uniform numbers between 0 and 12.
+wait_times <- runif(10000, 0, 12)
+
+mean(wait_times >=4 & wait_times<=10)
+```
+
 
 
 \newpage
@@ -413,7 +600,20 @@ The `dnorm()` function can be used to visualize the normal density curve. It is 
 
 Suppose we simulate drawing a sample of 500 weights from a population that follows a normal distribution with a mean weight of 127 pounds and a standard deviation of 11.6 pounds. We can plot the histogram of the weights in the sample and superimpose the normal density curve over it.
 
-```{r dnorm, exercise = TRUE, fig.align='center', fig.asp=1, out.width='100%', cache=TRUE}
+```{r dnorm, exercise = TRUE, fig.align='center', fig.asp=1, out.width='100%'}
+## Set the seed for reproduceability
+set.seed(321)
+## Sample 500 random numbers from N(127,11.6).
+weights <- rnorm(500, , )
+## Plot the weights on a histogram.
+hist(weights, prob = TRUE,
+     xlab = "Weights (in pounds)", main = "Histogram of Normal Weights"
+)
+## Add the N(127,11.6) density curve.
+curve(dnorm(x, , ), lwd = 2, col = "blue", add = TRUE)
+```
+
+```{r dnorm-solution}
 ## Set the seed for reproduceability
 set.seed(321)
 ## Sample 500 random numbers from N(127,11.6).
@@ -449,9 +649,32 @@ pnorm(69, 68, 2) - pnorm(66.5, 68, 2)
 
 **Question**: For any normal distribution, what is the probability of drawing a value within 2 standard deviations of the mean?
 
+```{r scratchcode, exercise=TRUE}
+
+```
+
+
+```{r twosds, echo = FALSE}
+question("For any normal distribution, what is the probability of drawing a value within 2 standard deviations of the mean?",
+         answer("2"),
+         answer("4"),
+         answer("0.5"),
+         answer("1"),
+         answer("0.9973"),
+         answer("0.1823"),
+         answer("0.8413"),
+         answer("0.9772"),
+         answer("0.6827"),
+         answer("0.9545", correct = TRUE),
+         answer("It depends on the mean and standard deviation"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
 **Note**: The `pnorm()` function computes the area under the `dnorm()` density curve. The plot below visualizes the output of `pnorm()`. The goldenrod shaded region is `pnorm(q, mean, sd)`, which is the area under `dnorm(x, mean, sd)` to the left of the value `q`.
 
-```{r curve, exercise = TRUE,fig.align='center',fig.asp=1,out.width='100%',cache=TRUE}
+```{r curve, exercise = TRUE,fig.align='center',fig.asp=1,out.width='100%',}
 ## Shade the dnorm(x,0,1) curve from -4 to 1.5 in goldenrod.
 ## The type="h" argument draws vertical lines ("h" stands for "height").
 ## The xaxt="n" argument suppresses the labels on the x-axis.
@@ -483,11 +706,23 @@ qnorm(0.975)
 qnorm(c(0.05, 0.95), mean = 68, sd = 2) # Can input a vector of probabilities
 ```
 
-For example, we can compute the 0.99 quantile (i.e., the 99th percentile) for the weights of a population that follows a normal distribution with a mean of 127 pounds and a standard deviation of 11.6 pounds.
+For example, we can compute the 0.99 quantile (i.e., the 99th percentile) and 0.13 quantile (i.e., the 13th percentile) for the weights of a population that follows a normal distribution with a mean of 127 pounds and a standard deviation of 11.6 pounds.
 
 ```{r q99, exercise = TRUE}
-## The 0.99 quantile of N(127,11.6)
-qnorm(0.99, 127, 11.6)
+## The 0.99 quantile and 0.13 quantile of N(127,11.6)
+
+```
+```{r q99-hint}
+## The 0.99 quantile and 0.13 quantile of N(127,11.6)
+qnorm(c(0.99, 0.13), , )
+```
+```{r q99-solution}
+## The 0.99 quantile and 0.13 quantile of N(127,11.6)
+qnorm(c(0.99, 0.13), 127, 11.6)
+```
+```{r q99-check}
+## The 0.99 quantile and 0.13 quantile of N(127,11.6)
+qnorm(c(0.99, 0.13), 127, 11.6)
 ```
 
 <!-- \newpage -->
@@ -516,6 +751,17 @@ quantile(trees$Height, 0.85)
 quantile(trees$Height, c(0.05, 0.95))
 ```
 
+```{r quantquiz, echo=FALSE}
+question("Which of the following would yield the same result as quantile(data)?",
+         answer("quantile(data, c(0.05, 0.12))"),
+         answer("quantile(data, c(0, 0.25, 0.5, 0.75, 1))", correct = TRUE),
+         answer("quantile(data, c(1, 2, 3, 4))"),
+         answer("quantile(data, c(0.68, 0.95, 0.997))"),
+         answer("quantile(data, c(-3, -2, -1, 0, 1, 2, 3))"),
+         answer("quantile(data, c(0.0015, 0.025, 0.16, 0.84, 0.975, 0.9985))"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
 
 ### Simulating from Other Known Distributions
 
@@ -576,3 +822,42 @@ In each of these functions, we need to specify the `size` and `prob` parameters,
 There are also `r`, `d`, `p`, and `q` functions for `unif` (uniform), `chisq` (Chi-squared), `f` (F), `exp` (Exponential), `pois` (Poisson), `gamma` (Gamma), and other parametric families.
 
 **Side Note**: `r` stands for random, `d` stands for density, `p` stands for probability (distribution function), and `q` stands for quantile.
+
+
+## Chapter Quiz
+```{r q1, echo=FALSE}
+question("If I want to create a sampling distribution of means that does NOT need to be replicable, which functions / flow statements would I use?",
+         answer("sample()", correct = TRUE),
+         answer("set.seed()"),
+         answer("for()", correct = TRUE),
+         answer("replicate()", correct = TRUE),
+         answer("dnorm()"),
+         answer("pnorm()"),
+         answer("qnorm()"),
+         answer("rnorm()"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+```{r q2, echo=FALSE}
+question("Which two functions act as 'inverses' of one another?",
+         answer("dnorm()"),
+         answer("pnorm()", correct = TRUE),
+         answer("qnorm()", correct = TRUE),
+         answer("rnorm()"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+```{r q3, echo=FALSE}
+question("If I want to create a 95% confidence interval for a population mean from a sample size of greater than 30, which of the following functions, if any, would I use?",
+         answer("dnorm()"),
+         answer("pnorm()"),
+         answer("qnorm()"),
+         answer("rnorm()"),
+         answer("dt()"),
+         answer("pt()"),
+         answer("qt()", correct = TRUE),
+         answer("rt()"),
+         answer("No function needed"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
