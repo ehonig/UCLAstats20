@@ -28,6 +28,8 @@ knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "
 options(width = 80)
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
 births <- read.csv("births.csv")
+library(ggplot2)
+diamonds_table <- with(diamonds, table(cut, color))
 ```
 
 ```{js, echo=FALSE}
@@ -71,7 +73,7 @@ A **histogram** is a plot which groups values from a single numeric variable int
 
 The **`hist()`** function creates histograms. The first argument (generically called `x`) specifies a numeric vector that represents the numeric variable we want to visualize. There are a myriad of optional arguments that can be used to control the details of the plot. We will first consider the `hist()` funtion with its default settings.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r treehist,fig.align='center',fig.asp=1,out.width='100%', exercise=TRUE}
 hist(trees$Girth)
 ```
 
@@ -105,9 +107,9 @@ Other components are not specific to histograms (or the `hist()` function) but a
 
 The best way to understand the common arguments in plotting functions is to change the default values and see how the plot responds. Documentation for the common arguments is found on the `?par` help page.
 
-As an example, we can modify several arguments of `hist(trees$Girth)`.
+As an example, we can modify several arguments of `hist(trees$Girth)`. Play around with the below code to see how each argument affects the others.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r modifyhist,fig.align='center',fig.asp=1,out.width='100%', exercise = TRUE}
 hist(
   trees$Girth,
   breaks = 10,
@@ -121,6 +123,17 @@ hist(
 ```
 
 **Side Note**: Note that we can split a label or title into two lines by including the **newline** character **`"\n"`**.
+
+```{r histquiz, echo=FALSE}
+question("How would I change the range of values displayed on the y-axis?",
+         answer("ylim", correct = TRUE),
+         answer("xlab"),
+         answer("ylab"),
+         answer("xlim"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
 
 
 ### Boxplots
@@ -151,13 +164,13 @@ births <- read.csv("births.csv")
 ```
 
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r birthbox,fig.align='center',fig.asp=1,out.width='100%', exercise=TRUE}
 boxplot(births$weight)
 ```
 
 By default, the boxplot is drawn vertically (the number line is drawn on the $y$-axis). To draw the boxplot horizontally, set the argument **`horizontal = TRUE`**.
 
-**Question**: Notice that the `boxplot()` function does not print $x$-labels, $y$-labels, or a main title. How can we create a boxplot that has these labels?
+**Question**: Notice that the `boxplot()` function does not print $x$-labels, $y$-labels, or a main title. How can we create a boxplot that has these labels? Try doing so in the above code chunk.
 
 
 #### Two-Dimensional Input
@@ -170,6 +183,18 @@ boxplot(trees)
 
 **Caution**: Creating plots of different variables on a single plot is a quick way to visualize the center and spread for each distribution. However, since side-by-side boxplots are drawn on the same scale, use caution when comparing distributions. If the variables are measured using different units, then their distributions will not be directly comparable unless the values are converted to the same units (like $z$-scores).
 
+```{r zscorequiz, echo=FALSE}
+question("How do we find a z-score?",
+         answer("Subtract the mean"),
+         answer("Subtract mean and divide by standard deviation", correct = TRUE),
+         answer("Fit a Normal distribution"),
+         answer("Subtract the median and divide by standard deviation"),
+         answer("Divide by variance"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
 
 #### Formula Input
 
@@ -179,7 +204,7 @@ For boxplots, `y` will represent a numeric variable and `x` will represent a cat
 
 As an example, we will use the `births` data frame to compare the distributions of weights between premature babies and full term babies in the data. A premature baby is one born more than three weeks before the baby is due (i.e., born before 37 weeks). The `Premie` variable in `births` is a binary factor. The level `Yes` means the baby was premature, and the level `No` means the baby was carried to term. Using formula notation, the `boxplot()` function will split the `weight` variable by the two levels of the `Premie` factor.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r boxform1,fig.align='center',fig.asp=1,out.width='100%', exercise=TRUE}
 boxplot(births$weight ~ births$Premie)
 ```
 
@@ -187,17 +212,37 @@ From the side-by-side boxplots, the typical weight for premature babies is lower
 
 **Note**: If both variables in the formula are inside a single data frame, the formula notation lets us omit the `$` notation by including the **`data`** argument that specifies the data frame that contains the variables (similar to how the `with()` function works).
 
-```{r,fig.align='center',fig.asp=1,out.width='100%',eval=FALSE}
+```{r boxform2,fig.align='center',fig.asp=1,out.width='100%',exercise=TRUE}
 boxplot(weight ~ Premie, data = births) # Produces the same boxplot
 ```
 
 **Caution**: The `data` argument only works in conjunction with a formula input. It cannot be used to omit the `$` notation when plotting a single variable.
 
-```{r,error=TRUE}
+```{r boxerror, exercise=TRUE}
 boxplot(weight, data = births) # Will throw an error
+
+# How do you fix this?
+boxplot()
 ```
 
-**Question**: How can we compute the summary statistics for the distributions of `weight` split according to the `Premie` variable?
+**Question**: How can we compute the summary statistics for the distributions of `weight` split according to the `Premie` variable? Type the code in the chunk below.
+
+```{r sum, exercise = TRUE}
+with(births, )
+```
+
+```{r sum-hint}
+with(births, tapply())
+```
+
+```{r sum-solution}
+with(births, tapply(weight, Premie, summary))
+```
+
+```{r sum-check}
+with(births, tapply(weight, Premie, summary))
+```
+
 
 
 ### Bar Plots
@@ -212,7 +257,7 @@ The **`barplot()`** function creates bar plots. The first argument, called `heig
 
 If the `height` argument is a numeric vector, the `barplot()` function will return a (simple) bar plot.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r barplot1, exercise = TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 premie_freqs <- table(births$Premie) # Summarize factor
 premie_freqs
 barplot(premie_freqs)
@@ -222,7 +267,7 @@ barplot(premie_freqs)
 
 If the `height` argument is a numeric matrix, the `barplot()` function will return a stacked (or segmented) bar plot. The matrix input typically represents a two-way (contingency) table for two categorical variables. Each bar of the plot corresponds to a column of `height`, and the values in the column correspond to the heights of the stacked sub-bars.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r stacked, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 library(ggplot2) # Load ggplot2 package
 data(diamonds) # Load diamonds data
 diamonds_table <- with(diamonds, table(cut, color)) # Create two-way table of cut and color
@@ -232,7 +277,7 @@ barplot(diamonds_table)
 
 To create a side-by-side bar plot instead of a stacked bar plot, set the optional argument **`beside = TRUE`**.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r beside, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 barplot(diamonds_table, beside = TRUE)
 ```
 
@@ -240,10 +285,9 @@ The differently shaded sub-bars correspond to the levels of the `cut` factor. To
 
 The same arguments that control the shading and color of histogram bars in `hist()` also work for `barplot()`.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r color, exercise= TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 barplot(diamonds_table, legend = TRUE, density = 40, col = 1:5)
 ```
-
 
 ### Scatterplots and the `plot()` Function
 
@@ -255,13 +299,13 @@ The **`plot()`** function is one of the most versatile functions in R. Its basic
 
 The basic syntax for `plot()` is `plot(x, y, ...)`, where `x` and `y` are numeric vectors of the same length.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r plot1, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot(trees$Height, trees$Girth)
 ```
 
 The numeric vectors can alternatively be specified using formula notation `y ~ x`, where `y` is treated as the response variable and `x` is treated as the explanatory variable.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%',eval=FALSE}
+```{r plot2, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%',eval=FALSE}
 ## These produce the same plot
 plot(trees$Girth ~ trees$Height)
 plot(Girth ~ Height, data = trees) # The data argument can only be used with a formula!
@@ -269,9 +313,10 @@ plot(Girth ~ Height, data = trees) # The data argument can only be used with a f
 
 **Caution**: Notice that the placement of `x` and `y` in the formula notation is reversed from using `x` and `y` as separate arguments: `plot(x,y)` is the same as `plot(y ~ x)`, and it is *not* the same as `plot(x ~ y)`.
 
+
 **Side Note**: If the input of `plot()` is a single numeric vector, `plot()` will create a scatterplot of the values in the vector against its index.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r single, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2)
 ```
 
@@ -283,22 +328,33 @@ Like all high level functions in base graphics, the `plot()` function has many o
 
 * **`cex`**: The `cex` argument controls the size of text or points on the plot. The value corresponds to the amount by which text and symbols should be scaled relative to the default of `cex=1`. For example, `cex=1.5` means to make the points 150% of the default size, and `cex=0.75` means to make the points 75% of the default size.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r super, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2, type = "b", pch = 2, cex = 1.3, col = "blue")
 ```
 
+
+```{r plotquiz, echo=FALSE}
+question("Which of the following yields the plot of y = x for x from 1 to 10 (by 1)?",
+         answer("plot((1:10)^2)", correct = TRUE),
+         answer("plot(1:10, (1:10)^2)", correct = TRUE),
+         answer("plot(1:10 ~ (1:10)^2)"),
+         answer("plot((1:10)^2 ~ 1:10)"),
+         answer("plot((1:10)^2, 1:10)"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
 
 #### Data Frame Input
 
 For datasets with several variables, we may be interested in understanding relationships between each pair of variables. The **`pairs()`** function inputs a matrix or data frame and outputs a **scatterplot matrix**, which is a grid (matrix) of scatterplots to visualize every pairwise relationship between variables in the data frame. The $ij$-th scatterplot plots the $i$th column against the $j$th column.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r dataplot,exercise=TRUE, fig.align='center',fig.asp=1,out.width='100%'}
 pairs(trees)
 ```
 
 If we apply the `plot()` function to a data frame, the `plot()` function gives the same output as `pairs()`.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%',eval=FALSE}
+```{r dataplot2, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot(trees) # Same as pairs(trees)
 ```
 
@@ -330,7 +386,7 @@ There are numerous low level plot functions in base graphics that add components
 
 **Caution**: Low level plot functions can *only* be used if there is already a plot open. If you run a low level plot command when there is not a plot already open, R will give you an error.
 
-```{r,error=TRUE}
+```{r wrong, exercise=TRUE}
 points(0, 0) # Try plotting the point (0,0) without opening a plot first
 ```
 
@@ -338,14 +394,14 @@ points(0, 0) # Try plotting the point (0,0) without opening a plot first
 
 The **`points()`** function is used to add points to an existing plot. Similar to the basic form of `plot()`, the syntax is `points(x, y, ...)`, where `x` and `y` are numeric vectors that correspond to the coordinates of the points to add. The same optional arguments common to `plot()` can be used to specify the color, size, and type of the points.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r plotpt, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot(Girth ~ Height, data = trees)
 points(c(65, 70, 75), c(12, 17, 20), pch = 4, col = "red", cex = 1.5)
 ```
 
 The coordinate pairs can alternatively be specified using a a two-column matrix or data frame, a list with two components called `x` and `y`, or a formula `y ~ x`.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r plotptmat, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 coords_mat <- cbind(c(65, 70, 75), c(12, 17, 20))
 plot(Girth ~ Height, data = trees)
 points(coords_mat, type = "b", pch = 5, col = "purple", cex = 1.5)
@@ -353,7 +409,16 @@ points(coords_mat, type = "b", pch = 5, col = "purple", cex = 1.5)
 
 As an example, we can use `points()` to note which trees have an above average (mean) volume.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r volhigh, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
+## Find the observations (trees) with an above average (mean) volume
+volume_index <- 
+## Plot the tree girths against height
+plot(Girth ~ Height, data = trees)
+## Add a blue + to the observations with an above average volume
+points(Girth ~ Height, data = trees[volume_index, ], pch = "+", col = "blue", cex = 1.5)
+```
+
+```{r volhigh-solution,fig.align='center',fig.asp=1,out.width='100%'}
 ## Find the observations (trees) with an above average (mean) volume
 volume_index <- with(trees, Volume > mean(Volume))
 ## Plot the tree girths against height
@@ -369,7 +434,7 @@ Notice that the points from the `plot()` function were not replaced by the added
 
 The **`lines()`** function is used to add connected line segments to an existing plot. The syntax is identical to `points()`, but the output will connect specified coordinates by straight line segments.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r lines, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot(Girth ~ Height, data = trees)
 lines(coords_mat, col = "purple")
 ```
@@ -386,44 +451,84 @@ Lines constructed in base graphics functions (like `plot()` or `lines()`) can be
 
 * **`lwd`**: The `lwd` argument controls the line width. Similar to the `cex` argument for points, the value corresponds to the amount by which the line width should be scaled relative to the default of `lwd = 1`. Values above `1` will make the line wider, and values below `1` will make the line thinner.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r lines2, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot(Girth ~ Height, data = trees)
 lines(Girth ~ Height, data = trees[volume_index, ], col = "green", lty = 2, lwd = 3)
 ```
 
 **Note**: The `lines()` function can also be used to add a smooth density curve over a relative frequency histogram (`prob = TRUE`). The **`density()`** function computes a *kernel density estimate* of the data, which can be visualized as a smooth curve superimposed over a histogram using the `lines()` function.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r kerden, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 hist(trees$Girth, prob = TRUE)
 lines(density(trees$Girth), lwd = 2, col = "blue")
 ```
 
 How the kernel density estimation works is beyond the scope of the course, but kernel density estimates give smooth approximations to the underlying shape of the data distribution.
 
+```{r linesptsquiz, echo=FALSE}
+question("Which of the following would impose a density curve on a histogram?",
+         answer("lines(density(trees$Girth), lwd = 2, col = 'blue')", correct = TRUE),
+         answer("lines(trees$Girth, lwd = 2, col = 'blue')"),
+         answer("lines(density(trees$Girth), lwd = 2, col = 'blue', type = 'p')"),
+         answer("points(density(trees$Girth), lwd = 2, col = 'blue', type = 'l')", correct = TRUE),
+         answer("points(density(trees$Girth), lwd = 2, col = 'blue')"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
 ### The `text()` Function
 
 The **`text()`** function is used to add text to an existing plot. The basic syntax is `text(x, y, labels,...)`, where `x` and `y` are numeric vectors that correspond to the coordinates of the character values in the `labels` vector. The text will be centered at the coordinate values.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r plottext, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2)
 text(5, 40, "y = x^2")
 ```
 
 **Side Note**: The **`expression()`** function can be used to type mathematical expressions into R. The input of `expression()` is not interpreted as an R command, only as an abstract expression. The output of `expression()` is an `expression` object (both mode and class of `expression`). Expressions can be used to make well-formatted text that involves mathematical symbols.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r express, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2)
 text(5, 40, expression(y == x^2)) # The double equal sign is needed to print = on the plot
 ```
 
 Using vector inputs will create multiple labels in one command. Notice that `cex` and `col` can change the size and color of the text.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r finaltext, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2, ylim = c(0, 108)) # Increase ylim to fit text
 text(1:10, (1:10)^2 + 5, 1:10, cex = 1.5, col = "blue")
 ```
 
 **Note**: If the `x`, `y`, and `labels` arguments have different lengths, the shorter vectors will be recycled.
+
+
+In the below code chunk, graph the points (0, 1), (4, 2), and (3, 1.5), connect the points with lines, and write "y = 0.17x + 1" at (1.5, 1.25) and "y = 0.5x" at (3.5, 1.75). The text should all occur within one line of code.
+```{r linescheck, exercise=TRUE}
+
+
+
+```
+```{r linescheck-hint-1}
+plot(c(0, 4, 3), c(1, 2, 1.5))
+
+
+```
+```{r linescheck-hint-2}
+plot(c(0, 4, 3), c(1, 2, 1.5))
+lines(c(0, 3, 4), c(1, 1.5, 2))
+
+```
+```{r linescheck-solution}
+plot(c(0, 4, 3), c(1, 2, 1.5))
+lines(c(0, 3, 4), c(1, 1.5, 2))
+text(c(1.5, 3.5), c(1.25, 1.75), c("y = 0.17x + 1", "y = 0.5x"))
+```
+```{r linescheck-check}
+plot(c(0, 4, 3), c(1, 2, 1.5))
+lines(c(0, 3, 4), c(1, 1.5, 2))
+text(c(1.5, 3.5), c(1.25, 1.75), c("y = 0.17x + 1", "y = 0.5x"))
+```
 
 
 ### The `locator()` Function
@@ -432,12 +537,9 @@ Placing points, lines, or text exactly where you want them on a plot may take so
 
 The `locator()` function inputs a positive integer `n` for the number of points to locate. After calling the function, click the mouse at the desired points on the plot. After clicking `n` points, the `locator(n)` function will output a list of `x` and `y` coordinates.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%',eval=FALSE}
+```{r uselocate, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%',eval=FALSE}
 hist(trees$Girth)
 locator(2) # Click on two points on the histogram
-```
-```{r,echo=FALSE}
-list(x = c(10.90920, 18.94538), y = c(10.03406, 3.00180))
 ```
 
 **Caution**: Make sure to include the `n` argument in the `locator()` function. The default is `n = 512`, and you likely do not want to be stuck clicking on your plot 512 times.
@@ -447,16 +549,16 @@ list(x = c(10.90920, 18.94538), y = c(10.03406, 3.00180))
 
 The **`abline()`** function, in its basic form, adds a straight line to an existing plot. The syntax is `abline(a, b, ...)`, where the two main arguments `a` and `b` respectively represent the $y$-intercept and slope of the line with equation $y = \texttt{a} + \texttt{b} x$.
 
-For example, the command `abline(2, 3)` will draw the line with equation $y = 2 + 3x$.
+For example, the command `abline(2, 3)` will draw the line with equation $y = 2 + 3x$. Try this below for $y = 0 + 10x$ (i.e. abline(0, 10))
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r abline_intro, exercise=TRUE, fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2, xlim = c(0, 10)) # Change the xlim to see the y-intercept at (0,0)
-abline(0, 10)
+abline(, )
 ```
 
 The color, type, and width of the line from `abline()` can be changed with the the optional arguments applicable to lines, i.e., `col`, `lty`, and `lwd`.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r prettyabline, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2, xlim = c(0, 10))
 abline(0, 10, col = "red", lty = 3, lwd = 2.5)
 ```
@@ -469,7 +571,7 @@ The `abline()` function can also be used for horizontal and vertical lines by sp
 
 * For vertical lines, the syntax is `abline(v = x, ...)`, where `x` specifies the $x$-value(s) for the vertical line(s).
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r vhlines, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2, xlim = c(0, 10))
 abline(0, 10, col = "red", lty = 3, lwd = 2.5)
 abline(h = 50, lty = 2, col = "blue")
@@ -478,17 +580,31 @@ abline(v = 5, lty = 4, col = "green")
 
 The `h` and `v` arguments can be vectors, so multiple horizontal or vertical lines can be drawn at once.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r seqabline, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 plot((1:10)^2, xlim = c(0, 10))
 abline(h = seq(0, 100, by = 20), lty = 2, col = "blue")
 abline(v = seq(0, 10, by = 2), lty = 2, col = "blue")
 ```
 
+
+```{r ablinequiz, echo=FALSE}
+question("Which of the following plots y = 10? Select all correct answers.",
+         answer("abline(h = 10)", correct = TRUE),
+         answer("abline(10, 10)"),
+         answer("abline(v = 10)"),
+         answer("abline(10, 0)", correct = TRUE),
+         answer("abline(0, 10)"),
+         answer("abline(10)"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+
 #### Plotting Regression Lines
 
 One of the most common uses of `abline()` is to plot regression lines. The **`lm()`** function (`lm` stands for "linear model") inputs a formula `y ~ x` that specifies the response variable `y` and explanatory variable `x` and outputs an `lm` object. The `lm` object can be passed as an argument to the `abline()` function to superimpose a regression line over a scatterplot of the data.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r regline1, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 ## Fit a linear model of Girth by Height
 lm_trees <- lm(Girth ~ Height, data = trees)
 lm_trees
@@ -501,12 +617,32 @@ plot(Girth ~ Height, data = trees, pch = 21, bg = "grey")
 abline(lm_trees, col = "blue")
 ```
 
+
 **Note**: The `summary()` function with an `lm` object as its input produces the table of the regression estimates, standard errors, $t$-statistics, and $p$-values, along with other important quantities.
 
-```{r}
+```{r sumlm, exercise=TRUE}
 summary(lm_trees)
 ```
 
+```{r reglineq2, echo = FALSE}
+question("What would be an alternate way to plot the regression line? Hint: Use the summary output above",
+         answer("abline(-6.19, 0.256)", correct = TRUE),
+         answer("abline(0.256, -6.19)"),
+         answer("abline(5.96, 0.078)"),
+         answer("abline(0.078, 5.96)"),
+         answer("abline(0.003, 0.308)"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+```{r reglineq1, echo = FALSE}
+question("Which of the following parameters would have a 95% confidence interval that contains 0?",
+         answer("The intercept", correct=TRUE),
+         answer("The slope"),
+         answer("Neither"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
 
 ### The `legend()` Function
 
@@ -526,7 +662,7 @@ The common optional arguments (e.g., `pch`, `lty`, `lwd`) in base graphics funct
 
 * Much more documentation about the optional arguments can be found on the `?legend` help page.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r legend, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 ## Construct a relative frequency histogram of Girth
 hist(trees$Girth, prob = TRUE)
 ## Superimpose a density curve
@@ -538,6 +674,37 @@ legend("topright", c("Density Estimate", "IQR"),
   col = c("blue", "red"),
   lty = c(1, 2), lwd = c(2, 1), inset = 0.05
 )
+## After running this code chunk, move the legend to the right, change the density line to green, and edit the legend accordingly
+```
+
+```{r legend-solution,fig.align='center',fig.asp=1,out.width='100%'}
+## Construct a relative frequency histogram of Girth
+hist(trees$Girth, prob = TRUE)
+## Superimpose a density curve
+lines(density(trees$Girth), lwd = 2, col = "green")
+## Add lines for the first and third quartiles to denote the IQR
+abline(v = summary(trees$Girth)[c(2, 5)], lty = 2, col = "red")
+## Add a legend with two entries
+legend("right", c("Density Estimate", "IQR"),
+  col = c("green", "red"),
+  lty = c(1, 2), lwd = c(2, 1), inset = 0.05
+)
+## After running this code chunk, move the legend to the right, change the density line to green, and edit the legend accordingly
+```
+
+```{r legend-check,fig.align='center',fig.asp=1,out.width='100%'}
+## Construct a relative frequency histogram of Girth
+hist(trees$Girth, prob = TRUE)
+## Superimpose a density curve
+lines(density(trees$Girth), lwd = 2, col = "green")
+## Add lines for the first and third quartiles to denote the IQR
+abline(v = summary(trees$Girth)[c(2, 5)], lty = 2, col = "red")
+## Add a legend with two entries
+legend("right", c("Density Estimate", "IQR"),
+  col = c("green", "red"),
+  lty = c(1, 2), lwd = c(2, 1), inset = 0.05
+)
+## After running this code chunk, move the legend to the right, change the density line to green, and edit the legend accordingly
 ```
 
 
@@ -549,7 +716,7 @@ Some (but not most) high level plot functions are able to add to an existing plo
 
 As an example, suppose we want to use the `births` data to visualize how the distribution of weights for full term babies overlaps with the distribution of weights for premature babies. With two colors, different density shading, and `add = TRUE`, we can plot both histograms on the same plot.
 
-```{r,fig.align='center',fig.asp=1,out.width='100%'}
+```{r addhist, exercise=TRUE,fig.align='center',fig.asp=1,out.width='100%'}
 ## Make histogram for full term baby weights
 with(births, hist(weight[Premie == "No"],
   prob = TRUE, density = 20, col = "red",
@@ -567,6 +734,17 @@ legend("topleft", c("Full Term", "Premie"),
   fill = c("red", "blue"),
   inset = 0.05
 )
+```
+
+
+```{r addhistq, echo=FALSE}
+question("Which of the following would be appropriate for using add = TRUE?",
+         answer("prob = FALSE"),
+         answer("prob = TRUE", correct = TRUE),
+         answer("freq = FALSE", correct = TRUE),
+         answer("freq = TRUE"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
 ```
 
 
@@ -661,7 +839,7 @@ One common parameter is the **`mfrow`** parameter, which allows for multiple plo
 
 Suppose we want to plot the histograms of the `Girth`, `Height`, and `Volume` variables of the `trees` data in a row of plots with the corresponding boxplots in a row below them.
 
-```{r,fig.align='center', fig.height=10, fig.width=9}
+```{r layout, exercise = TRUE,fig.align='center', fig.height=10, fig.width=9}
 par(mfrow = c(2, 3))
 hist(trees$Girth)
 hist(trees$Height)
@@ -669,4 +847,45 @@ hist(trees$Volume)
 boxplot(trees$Girth, horizontal = TRUE)
 boxplot(trees$Height, horizontal = TRUE)
 boxplot(trees$Volume, horizontal = TRUE)
+```
+
+## Chapter Quiz
+```{r q1}
+question("Which of the following functions can be used to create an initial plot?",
+         answer("lines()"),
+         answer("points()"),
+         answer("hist()", correct = TRUE),
+         answer("plot()", correct = TRUE),
+         answer("barplot()", correct = TRUE),
+         answer("arrows()"),
+         answer("boxplot()", correct = TRUE),
+         answer("legend()"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+```{r q2}
+question("How can I change the limits on the y-axis?",
+         answer("ylab"),
+         answer("ylim", correct = TRUE),
+         answer("axis()", correct = TRUE),
+         answer("xlab"),
+         answer("xlim"),
+         answer("main"),
+         answer("legend"),
+         answer("range"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
+```{r q3}
+question("What can I use to get a line of best fit for a data set?",
+         answer("lines()"),
+         answer("summary()"),
+         answer("abline()"),
+         answer("lm()", correct = TRUE),
+         answer("regression()"),
+         answer("bestfit()"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
 ```

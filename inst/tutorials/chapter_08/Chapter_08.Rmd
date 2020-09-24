@@ -22,8 +22,18 @@ runtime: shiny_prerendered
 library(learnr)
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 options(width = 80)
+source("../../setup.R")
+library(MASS)
+setwd("../../tutorials/chapter_08")
+```
 
-tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
+
+```{js, echo=FALSE}
+$(function() {
+   $('.ace_editor').each(function( index ) {
+     ace.edit(this).setFontSize("20px");
+   });
+})
 ```
 
 ## Learning Objectives {-}
@@ -76,7 +86,7 @@ parks_df
 
 The **`dump()`** function will store the command necessary to create the input R object(s) in a text/script file on your computer's hard drive. The first argument, called `list`, is a character vector of object names to store in the file, whose name we specify in the second argument called `file`.
 
-```{r}
+```{r, eval=FALSE}
 dump("parks_df", "parks.R")
 ```
 
@@ -145,13 +155,13 @@ Recall that all objects created and stored in an R session are collectively call
 
 In general, **RData** files are binary files that contain R objects. The **`save()`** function can be used to save specific R objects from the workspace into an RData file. The objects to be saved can be listed as separate arguments in the `save()` function. The `file` argument then specifies the name of the resulting RData file.
 
-```{r}
+```{r, eval = FALSE}
 save(parks_df, first_ten, file = "chapter_8.RData")
 ```
 
 To save all of the objects in the workspace (i.e., make a workspace image), we can use the **`save.image()`** function, which is an example of a **wrapper** function for `save()`. The `save.image()` function actually calls `save()` to save objects, but a few of the default arguments are changed to be more convenient for saving the entire workspace. In particular, `save.image()` runs the command `save(list = ls(all.names = TRUE), file = ".RData", envir = .GlobalEnv)`.
 
-```{r}
+```{r, eval=FALSE}
 save.image("workspace.RData")
 ```
 
@@ -247,7 +257,7 @@ The **`write.table()`** and **`write.csv()`** functions are used to export a mat
 
 The first argument, called `x`, is the matrix or data frame to write into a .txt or .csv file, whose name we specify in the second argument called `file`.
 
-```{r}
+```{r, eval=FALSE}
 write.table(parks_df, "parks.txt")
 ```
 
@@ -266,12 +276,11 @@ Notice that the row and column names of the data frame are preserved, and the de
 
 **Question**: How would you read the data from `parks.txt` into R?
 
-
 ### The `write.csv()` Function
 
 The **`write.csv()`** function, similar to `read.csv()`, is a wrapper function for CSV files.
 
-```{r}
+```{r, eval=FALSE}
 write.csv(parks_df, "parks.csv")
 ```
 
@@ -318,4 +327,28 @@ Since the `foreign` package was written in 2000, newer versions of SPSS, Stata, 
 
 The `haven` package is part of the **`tidyverse`**, a system of R packages designed by Hadley Wickham (creator of `ggplot2` and current Chief Scientist at RStudio), to improve data management, exploration, and visualization in R.
 
+## Quiz Time
+```{r q1, echo=FALSE}
+question("Which of the following saves and reads RData files?",
+         answer("dump/source"),
+         answer("dump/load"),
+         answer("save/load", correct = TRUE),
+         answer("save/source"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
 
+```{r q2, echo=FALSE}
+question("How can I use the read.table() code and optional arguments to function as read.csv()?",
+         answer("Not possible"),
+         answer("header = TRUE", correct = TRUE),
+         answer("header = FALSE"),
+         answer("fill = FALSE"),
+         answer("fill = TRUE", correct = TRUE),
+         answer("sep = ''"),
+         answer("sep = ','", correct = TRUE),
+         answer("sep = ';'"),
+         answer("url = csv"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```

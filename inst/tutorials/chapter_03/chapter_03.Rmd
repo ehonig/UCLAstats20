@@ -628,11 +628,11 @@ some_nums[some_nums > 4 & some_nums < 6]
 ```
 
 ```{r or_question-solution}
-some_nums[some_nums > 4 & some_nums < 6]
+some_nums[some_nums < 4 | some_nums > 6]
 ```
 
 ```{r or_question-check}
-some_nums[some_nums > 4 & some_nums < 6]
+some_nums[some_nums < 4 | some_nums > 6]
 ```
 
 

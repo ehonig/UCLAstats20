@@ -23,7 +23,6 @@ library(learnr)
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 options(width = 80)
 
-tutorial_options(exercise.completion = FALSE, exercise.checker = checker)
 source("waffles.R")
 x <- "Pawnee rules!"
 y <- c("Pawnee rules", "Eagleton drools")
@@ -65,6 +64,15 @@ count_syllables <- function(word) {
     sum(word_vowels) - sum(diff(which(word_vowels)) == 1)
   }
 }
+
+x <- "Pawnee rules"
+y <- c("Pawnee rules", "Eagleton drools")
+reading_ease <- function(text) {
+  96.76339
+}
+z <- c("Pawnee rules and Eagleton drools.", "I love friends, waffles, and work.")
+word_z <- strsplit(z, split = " ")
+source("../../setup.R")
 ```
 
 
@@ -83,6 +91,7 @@ knit_hooks$set(output = function(x, options) {
   hook_output(x, options)
 })
 
+source("waffles.R")
 ```
 
 ```{js, echo=FALSE}
@@ -210,7 +219,27 @@ Make a length-5 character vector using the `character()` function.
 
 ```
 
+```{r length_5_char-solution}
+character(5)
+```
+
+```{r length_5_char-check}
+character(5)
+```
+
+
 **Note**: The empty character `""` is **not the same** as `character(0)`.
+
+```{r quotes_quiz, echo=FALSE}
+question("What is the length of the vector ''?",
+         answer("0"),
+         answer("1", correct = TRUE),
+         answer("NA"),
+         answer("2"),
+         random_answer_order = TRUE,
+         allow_retry = TRUE)
+```
+
 
 ### The `paste()` Function
 
@@ -266,6 +295,11 @@ noquote(x)
 
 ```
 
+```{r print_noquote-solution}
+print(x, quote = FALSE)
+```
+
+
 Do the same with `noquote()`
 ```{r noquote, exercise = TRUE}
 
@@ -287,7 +321,7 @@ The printing is slightly different from that of `noquote()`. In particular, the 
 
 One benefit of `cat()` is that the printed output can be saved to an external file using the **`file`** argument:
 
-```{r cat_file, exercise = TRUE}
+```{r cat_file}
 dir()
 cat(x, "Eagleton drools", sep=", ", file = "pawnee.txt")
 dir()
@@ -320,6 +354,14 @@ format(1 / (1:5), digits = 2)
 format(1 / (1:5), digits = 2, scientific = TRUE)
 format(c("Pawnee", "rules", "Eagleton", "drools"),
        width=10, justify = "left")
+```
+
+```{r format_quiz, echo =FALSE}
+question("How would I use format() to print 100 / 7 in scientific notation with three significant digits?",
+         answer("format(100 / 7, digits = 3, scientific = TRUE)", correct = TRUE),
+         answer("format(100 / 7, nsmall = 3, scientific = TRUE)"),
+         answer("format(100 / 7, digits = 3)"),
+         answer("format(100 / 7, nsmall = 3)"))
 ```
 
 <!-- \vspace{-0.1in} -->
@@ -375,6 +417,11 @@ casefold(y, upper = TRUE)
 
 **Question**: What is the default value of the `upper` argument in `casefold()`? Equivalently, does `casefold()` use `tolower()` or `toupper()` by default?
 
+```{r test_casefold, exercise = TRUE}
+
+```
+
+
 <!-- \vspace{-0.1in} -->
 
 ### The `chartr()` Function
@@ -392,6 +439,18 @@ We can also translate to and from non-alphabetic characters. For example, the co
 ```{r chartr2, exercise = TRUE}
 chartr("aeo", "#?!", y)
 ```
+
+```{r chartr_quiz, echo = FALSE}
+question("How can I change Mike to Jake using chartr()?",
+         answer("chartr(old = 'Mike', new = 'Jake', 'Mike')", correct = TRUE),
+         answer("chartr(old = 'Mi', new = 'Ja', 'Jake')"),
+         answer("chartr(old = 'Mi', new = 'Ja', 'Mike')", correct = TRUE),
+         answer("chartr(old = 'Mike', new = 'ja', 'Mike')"),
+         answer("chartr(old = 'Jake', new = 'Mike', 'Jake')"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE)
+```
+
 
 <!-- \vspace{-0.1in} -->
 
@@ -457,6 +516,29 @@ letters[letters %in% ucla]
 ```
 
 **Question**: How would you write a function `is_vowel()` to find the vowels (`"a"`, `"e"`, `"i"`, `"o"`, `"u"`, `"y"`) in a character vector containing single letters?
+
+```{r vowels, exercise = TRUE}
+is_vowel <- function(letter) {
+  
+}
+```
+
+```{r vowels-hint}
+Use the %in% operator as described above
+```
+
+```{r vowels-solution}
+is_vowel <- function(letter) {
+  letter %in% c("a", "e", "i", "o", "u", "y")
+}
+```
+
+```{r vowels-check}
+is_vowel <- function(letter) {
+  letter %in% c("a", "e", "i", "o", "u", "y")
+}
+```
+
 
 <!-- \vspace{-0.1in} -->
 
@@ -550,7 +632,7 @@ $$
 $$
 where $\mathrm{ASL}$ is the **average sentence length** and $\mathrm{ASW}$ is the **average number of syllables per word**.
 
-The reading ease score $\mathrm{RE}$ is a number between 0 and 100. Higher values of $\mathrm{RE}$ indicate text that is easier to read, and lower values indicate text that is more difficult to read.
+The reading ease score $\mathrm{RE}$ is usually a number between 0 and 100, though there are some exceptions for non-standard words/sentences. Higher values of $\mathrm{RE}$ indicate text that is easier to read, and lower values indicate text that is more difficult to read.
 
 More information on the Flesch reading ease score:
 
@@ -819,7 +901,7 @@ is_vowel <- function(letter) {
   eagleton_letters <- unlist(strsplit("eagleton", split = ""))
 ```
 
-```{r vowels, exercise = TRUE,exercise.setup = "prepare-vowels"}
+```{r vowels2, exercise = TRUE,exercise.setup = "prepare-vowels"}
 eagleton_vowels <- is_vowel(eagleton_letters)
 eagleton_vowels
 ```
@@ -898,7 +980,7 @@ reading_ease <- function(text) {
 ```
 
 
-```{r, echo = TRUE}
+```{r end, exercise = TRUE}
 waffles
 reading_ease(waffles)
 ```
