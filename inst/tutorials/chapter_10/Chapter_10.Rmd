@@ -850,7 +850,7 @@ boxplot(trees$Volume, horizontal = TRUE)
 ```
 
 ## Chapter Quiz
-```{r q1}
+```{r q1, echo = FALSE}
 question("Which of the following functions can be used to create an initial plot?",
          answer("lines()"),
          answer("points()"),
@@ -864,7 +864,7 @@ question("Which of the following functions can be used to create an initial plot
          allow_retry = TRUE)
 ```
 
-```{r q2}
+```{r q2, echo = FALSE}
 question("How can I change the limits on the y-axis?",
          answer("ylab"),
          answer("ylim", correct = TRUE),
@@ -878,7 +878,7 @@ question("How can I change the limits on the y-axis?",
          allow_retry = TRUE)
 ```
 
-```{r q3}
+```{r q3, echo = FALSE}
 question("What can I use to get a line of best fit for a data set?",
          answer("lines()"),
          answer("summary()"),
