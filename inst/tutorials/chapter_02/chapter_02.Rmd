@@ -960,27 +960,17 @@ A step-by-step function to compute variance is shown below. Notice the use of ve
 ```{r var_func, exercise = TRUE}
 variance <- function(x) {
   # This function inputs a vector x and outputs the variance of x.
-
-  # Compute the sample size
-  n <- length(x)
-
+  n <- length(x) # Compute the sample size
   # First compute the mean of x.
   xbar <- mean(x) # Or sum(x)/length(x)
-
   # Compute each deviation from the mean of x.
   devs <- x - xbar
-
   # Compute the squared deviations from the mean.
   squared_devs <- devs^2
-
   # Sum the squared deviations together.
   sum_squared_devs <- sum(squared_devs)
-
   # Divide the sum of squared deviations by n-1.
-  var_x <- sum_squared_devs / (n - 1)
-
-  # Output var.x
-  var_x
+  sum_squared_devs / (n - 1) # Note the last evaluated expression is returned.
 }
 ```
 

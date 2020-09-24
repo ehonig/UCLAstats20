@@ -582,7 +582,7 @@ The definition of a function typically has the following components:
 
 * A pair of round parentheses `()` containing the argument list (it may be empty).
 
-* A pair of curly braces `\{\}` containing a statement or sequence of statements (called the **body** of the function).
+* A pair of curly braces `{}` containing a statement or sequence of statements (called the **body** of the function).
 
 The basic syntax to create your own function is
 
