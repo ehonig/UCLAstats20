@@ -23,6 +23,7 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
+source("../../setup.R")
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = "styler", warning = TRUE, comment = "")
 options(width = 80)
 tutorial_options(exercise.completion = FALSE, exercise.checker = checker)

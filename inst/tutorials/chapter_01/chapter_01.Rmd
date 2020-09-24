@@ -13,7 +13,7 @@ runtime: shiny_prerendered
 ---
 ```{r setup, include=FALSE}
 source("../../setup.R")
-final_balance <- function(initial) {
+Bfinal_balance <- function(initial) {
   interest_rate <- 0.25 / 100
   years <- 20
   final <- initial * (1 + interest_rate)^years
