@@ -83,6 +83,13 @@ build_homework_file <- function(path, ...) {
     body_file <- trimws(manifest[manifest[["dir"]] == "body", "file"])
     body_url <- paste0(base_url, "body/", body_file)
     hw_body <- RCurl::getURL(body_url)
+    if (dots[["type"]] == "Advanced") {
+      body_parts <- strsplit(hw_body, "\n")[[1]]
+      h2 <- grep(pattern = "^## ", body_parts)
+      tabs <- "{.tabset .tabset-fade .tabset-pills}"
+      body_parts[h2] <- paste(body_parts[h2], tabs)
+      hw_body <- paste(body_parts, collapse = "\n")
+    }
     
     aux_mani <- manifest[manifest[["dir"]] != "body", ]
     aux_dir <- trimws(aux_mani[["dir"]])
