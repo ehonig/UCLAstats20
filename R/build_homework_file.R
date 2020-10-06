@@ -1,19 +1,11 @@
-# This function showcases how one might write a function to be used as an
-# RStudio project template. This function will be called when the user invokes
-# the New Project wizard using the project template defined in the template file
-# at:
-#
-#   inst/rstudio/templates/project/hello_world.dcf
-#
-# The function itself just echos its inputs and outputs to a file called INDEX,
-# which is then opened by RStudio when the new project is opened.
 build_header <- function(bib_string, hw, ...) {
   dots <- list(...)
   c(
     "---",
     paste0("title: \"Stats 20, 20f -- Homework ", hw,"\""),
     paste("author: \"", dots[["student"]], "--", dots[["uid"]],"\""),
-    paste0("date: \"", Sys.Date(), "\""),
+    paste0("date: \"", format(Sys.time(),
+                              format = "%A, %B %d, %Y<br/>%X"), "\""),
     "output:",
     "  html_document:",
     "    theme: paper",
