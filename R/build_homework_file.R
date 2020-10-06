@@ -15,8 +15,8 @@ build_header <- function(bib_string, hw, ...) {
     "    toc: yes",
     "    toc_depth: 4",
     "    toc_float: yes",
-    paste0("    ", bib_string),
-    "    nocite: '@*'",
+    bib_string,
+    "nocite: '@*'",
     "---",
     "",
     "```{r setup, include=FALSE}",
@@ -31,8 +31,7 @@ build_header <- function(bib_string, hw, ...) {
 
 build_homework_file <- function(path, ...) {
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  dir.create(file.path(path, "data"), recursive = TRUE, showWarnings = FALSE)
-  dir.create(file.path(path, "images"), recursive = TRUE, showWarnings = FALSE)
+  
   
   hw <- tail(regmatches(path, gregexpr("\\d+", path))[[1]], 1)
   pkg_path <- system.file(package = "UCLAstats20")
@@ -65,6 +64,17 @@ build_homework_file <- function(path, ...) {
   base_url <- paste0("https://raw.githubusercontent.com/elmstedt/stats20_homework/master/hw", hw, "/")
   
   manifest <- try(read.csv(paste0(base_url, "manifest")), silent = TRUE)
+  if (any(manifest[["dir"]] == "data")) {
+    dir.create(file.path(path, "data"),
+               recursive = TRUE,
+               showWarnings = FALSE)  
+  }
+  if (any(manifest[["dir"]] == "images")) {
+    dir.create(file.path(path, "images"),
+               recursive = TRUE,
+               showWarnings = FALSE)  
+  }
+  
   if (inherits(manifest, "try-error")) {
     hw_body <- if (dots[["boilerplate"]]) {
       project_notes <- c(project_notes, paste0("No homework files found for Homework ", hw, ", building generic boilerplate."))
@@ -100,7 +110,9 @@ build_homework_file <- function(path, ...) {
     }
   }
   hw_text <- c(my_yaml, hw_body)
-  
+  if (length(bib_string) > 0) {
+    hw_text <- c(hw_text, "\n\n\n## Citations\n")
+  }
   # write to index file
   hw_name <- paste0(dots[["uid"]], "_stats20_hw", hw, ".Rmd")
   # check if hw already exists,if so append iterator so as not to overwrite
