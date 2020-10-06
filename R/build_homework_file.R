@@ -21,7 +21,7 @@ build_header <- function(bib_string, hw, ...) {
     "    df_print: paged",
     "    tidy: yes",
     "    toc: yes",
-    "    toc_depth: 3",
+    "    toc_depth: 4",
     "    toc_float: yes",
     paste0("    ", bib_string),
     "    nocite: '@*'",
@@ -85,9 +85,9 @@ build_homework_file <- function(path, ...) {
     hw_body <- RCurl::getURL(body_url)
     if (dots[["type"]] == "Advanced") {
       body_parts <- strsplit(hw_body, "\n")[[1]]
-      h2 <- grep(pattern = "^## ", body_parts)
+      h3 <- grep(pattern = "^### ", body_parts)
       tabs <- "{.tabset .tabset-fade .tabset-pills}"
-      body_parts[h2] <- paste(body_parts[h2], tabs)
+      body_parts[h3] <- paste(body_parts[h3], tabs)
       hw_body <- paste(body_parts, collapse = "\n")
     }
     
