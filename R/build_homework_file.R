@@ -70,17 +70,30 @@ build_homework_file <- function(path, ...) {
   my_yaml <- build_header(bib_string = bib_string, hw, ...)
   
   # Check if Homework file exists
-  url <- paste0("https://raw.githubusercontent.com/elmstedt/stats20_homework/master/homework", hw,".Rmd")
-  hw_body <- RCurl::getURL(url)
-  if (hw_body == "404: Not Found") {
+  hw <- 1
+  base_url <- paste0("https://raw.githubusercontent.com/elmstedt/stats20_homework/master/hw", hw, "/")
+  
+  manifest <- try(read.csv(paste0(base_url, "manifest")), silent = TRUE)
+  if (inherits(manifest, "try-error")) {
     hw_body <- if (dots[["boilerplate"]]) {
-      project_notes <- c(project_notes, paste0("No homework file found for Homework ", hw, ", building generic boilerplate."))
+      project_notes <- c(project_notes, paste0("No homework files found for Homework ", hw, ", building generic boilerplate."))
       readLines(file.path(resources_path,
                           paste0(dots[["type"]], "_", "boilerplate.Rmd")))
     }
+  } else {
+    body_file <- trimws(manifest[manifest[["dir"]] == "body", "file"])
+    body_url <- paste0(base_url, "/body/", body_file)
+    hw_body <- RCurl::getURL(body_url)
   }
   
   hw_text <- c(my_yaml, hw_body)
+  aux_mani <- manifest[manifest[["dir"]] != "body", ]
+  aux_dir <- trimws(aux_mani[["dir"]])
+  aux_file <- trimws(aux_mani[["file"]])
+  dl_files <- paste0(base_url, paste(aux_dir, aux_file, sep = "/"), sep = "/")
+  for (i in seq_along(dl_files)) {
+    download.file(dl_files[[i]], file.path(aux_dir[[i]], aux_file[[i]]))
+  }
   # write to index file
   hw_name <- paste0(dots[["uid"]], "_stats20_hw", hw, ".Rmd")
   # check if hw already exists,if so append iterator so as not to overwrite
