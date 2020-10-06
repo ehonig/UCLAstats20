@@ -15,6 +15,18 @@ Label: Include Bibliography
 Default: On
 Position: left
 
+Parameter: boilerplate
+Widget: CheckboxInput
+Label: Include Boilerplate
+Default: On
+Position: left
+
+Parameter: prompt
+Widget: CheckboxInput
+Label: Include Question Prompts
+Default: Off
+Position: left
+
 Parameter: student
 Widget: TextInput
 Label: Name
@@ -39,11 +51,7 @@ Label: Save as Defaults
 Default: Off
 Position: right
 
-Parameter: boilerplate
-Widget: CheckboxInput
-Label: Include Boilerplate
-Default: On
-Position: left
+
 
 
 
