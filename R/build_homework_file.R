@@ -39,6 +39,9 @@ build_header <- function(bib_string, hw, ...) {
 
 build_homework_file <- function(path, ...) {
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
+  dir.create(file.path(path, "data"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(file.path(path, "images"), recursive = TRUE, showWarnings = FALSE)
+  
   hw <- tail(regmatches(path, gregexpr("\\d+", path))[[1]], 1)
   pkg_path <- system.file(package = "UCLAstats20")
   resources_path <- file.path(pkg_path, "resources")
