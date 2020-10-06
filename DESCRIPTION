@@ -1,7 +1,7 @@
 Package: UCLAstats20
 Type: Package
 Title: Stats 20 Homework Templates
-Version: 1.1.0
+Version: 1.1.1
 Author@R: c(
   person("Jake", "Elmstedt", email = "jake.elmstedt@gmail.com", role = c("aut", "cre")),
   person("Michael", "Tsiang", email = "michael.tsiang@stat.ucla.edu", role = c("aut", "cre")),
@@ -13,5 +13,6 @@ Description: Two custom html_document templates for creating homework templates
 License: MIT
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 4.0)
 Imports: learnr, shiny, styler, withr, rmarkdown, RCurl
 RoxygenNote: 7.1.0
