@@ -13,7 +13,6 @@ output:
   learnr::tutorial:
     number_sections: false
     toc: true
-    toc_depth: 3
     progressive: false
 runtime: shiny_prerendered
 ---
@@ -100,15 +99,16 @@ To illustrate this, consider this example:
 To help get around rounding errors when comparing values, it can be helpful to use the **`round()`** function, which rounds a numeric input. The second argument is called `digits`, which specifies the number of digits (decimal places) to use.
 
 ```{r round_error_pt2, exercise = TRUE}
-pi # Outputs pi to 6 digits
-
-pi == 3.141593 # Is pi equal to 3.141593?
-
-round(pi, digits = 6) # Round pi to 5 digits
-
-round(pi, 6) == 3.141593 # Is rounded pi equal to 3.14159?
-
-round(49 * (4 / 49), 8) == 4 # Is 49 * (4 / 49) (rounded to 8 digits) equal to 4?
+# Outputs pi to 6 digits
+pi
+# Is pi equal to 3.141593?
+pi == 3.141593 
+# Round pi to 5 digits
+round(pi, digits = 6) 
+# Is rounded pi equal to 3.14159?
+round(pi, 6) == 3.141593
+# Is 49 * (4 / 49) (rounded to 8 digits) equal to 4?
+round(49 * (4 / 49), 8) == 4 
 ```
 
 
@@ -215,29 +215,46 @@ first_ten
 ## Are any of the values greater than 7?
 any(first_ten > 7)
 ```
-```{r any_all, exercise = TRUE}
+```{r any70, exercise = TRUE}
 ## Are any of the values greater than 70?
+```
+
+```{r any70-hint}
+"Try putting the any() function around the relational operator."
+```
 
 
+```{r all70, exercise = TRUE}
 ## Are all of the values greater than 70?
+```
+```{r all70-hint}
+"Try putting the all() function around the relational operator."
+```
 
 
+```{r all0, exercise = TRUE}
 ## Are all of the values greater than 0?
 
 ```
-
-```{r any_all-hint}
-"Try putting the any() and all() functions around the relational operator"
+```{r all0-hint}
+"Try putting the all() function around the relational operator."
 ```
 
 
-```{r any_all-solution}
+
+```{r any70-solution}
 ## Are any of the values greater than 70?
 any(first_ten > 70)
+```
 
+
+```{r all70-solution}
 ## Are all of the values greater than 70?
 all(first_ten > 70)
+```
 
+
+```{r all0-solution}
 ## Are all of the values greater than 0?
 all(first_ten > 0)
 ```
