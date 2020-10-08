@@ -1,0 +1,60 @@
+---
+title: "Citations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Citations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Why to cite your homework?
+
+1. It's the right thing to do.  
+Give credit where credit is due!
+2. It _helps_ protect you from claims of academic dishonesty.  
+You shouldn't use resources which aren't allowed -- you won't get credit for doing so, but it's not _plagiarism_ if you cite your sources.
+3. It develops great habits which will save your butt later in life.  
+Often (outside of academic settings) you'll find yourself needing to do things you don't know how to do where the solution is a quick Google search away. Copying code found online and modifying it to fit your own needs is commonplace and _generally_ acceptable. (Be on the lookout for code licenses though!)  
+When you do this, I **STRONGLY** recommend you include the source link as a comment in your code. That way, if you need to come back to it days, weeks, or months later, you know where you got the code so you can look at the source again.
+
+## How to cite your homework?
+
+To cite your homework properly, you'll need to do three things.
+
+1. Create a bibliography file.
+
+If you create a UCLA Stats 20 Homework project, and check the Include Bibliography checkbox, one will be created for you, you can also run the command `UCLAstats20::make_bib()` in the console to generate a default `citations.bib` file in your working directory.  
+A citation entry in your .bib file will consist of a `type` (e.g. `@misc`), a `key` (e.g. `jake`), and several tags specific to that type of reference in a key-value pair format (e.g. `title`, `author`, etc.).
+```
+@misc{jake,
+title = {Conversation},
+author = {Jake Elmstedt},
+note = {10/08/2020},
+year = {2020}
+}
+```
+
+2. Update your YAML header  
+To have your citations automatically pulled from your bibliography file, you need to put the following in your YAML header  
+    * `bibliography: <the filename of your bibliography file>`  
+e.g. `bibliography: citations.bib`  
+This tells R Markdown where to find your references and what they are.
+    * `nocite: '@*'`  
+This tells R Markdown to include all of the items in your bibliography file at the end of your document.
+
+3. Include citations in your document where appropriate.  
+Each citation you make will have a _key_ associated with it. To include a reference with the key `jake`, for instance, you would include the text `@jake` in your .Rmd file at the appropriate place.  
+For example:  
+In your .Rmd file you might write something like,  
+```
+## Question 3
+
+The answer is "blah." I collaborated with @jake on this problem. We discussed ideas about using the `foo()` function to solve this.
+```
