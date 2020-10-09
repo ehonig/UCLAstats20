@@ -64,16 +64,7 @@ build_homework_file <- function(path, ...) {
   base_url <- paste0("https://raw.githubusercontent.com/elmstedt/stats20_homework/master/hw", hw, "/")
   
   manifest <- try(read.csv(paste0(base_url, "manifest")), silent = TRUE)
-  if (any(manifest[["dir"]] == "data")) {
-    dir.create(file.path(path, "data"),
-               recursive = TRUE,
-               showWarnings = FALSE)  
-  }
-  if (any(manifest[["dir"]] == "images")) {
-    dir.create(file.path(path, "images"),
-               recursive = TRUE,
-               showWarnings = FALSE)  
-  }
+  
   
   if (inherits(manifest, "try-error")) {
     hw_body <- if (dots[["boilerplate"]]) {
@@ -82,6 +73,16 @@ build_homework_file <- function(path, ...) {
                           paste0(dots[["type"]], "_", "boilerplate.Rmd")))
     }
   } else {
+    if (any(manifest[["dir"]] == "data")) {
+      dir.create(file.path(path, "data"),
+                 recursive = TRUE,
+                 showWarnings = FALSE)  
+    }
+    if (any(manifest[["dir"]] == "images")) {
+      dir.create(file.path(path, "images"),
+                 recursive = TRUE,
+                 showWarnings = FALSE)  
+    }
     body_file <- trimws(manifest[manifest[["dir"]] == "body", "file"])
     body_url <- paste0(base_url, "body/", body_file)
     hw_body <- RCurl::getURL(body_url)
