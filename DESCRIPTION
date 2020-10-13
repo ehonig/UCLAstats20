@@ -1,7 +1,7 @@
 Package: UCLAstats20
 Type: Package
 Title: Stats 20 Homework Templates
-Version: 1.2.2.1
+Version: 1.2.2.3
 Author@R: c(
   person("Jake", "Elmstedt", email = "jake.elmstedt@gmail.com", role = c("aut", "cre")),
   person("Michael", "Tsiang", email = "michael.tsiang@stat.ucla.edu", role = c("aut", "cre")),

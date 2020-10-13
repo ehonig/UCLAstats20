@@ -59,10 +59,9 @@ build_homework_file <- function(path, ...) {
 
   # Make custom YAML header  
   my_yaml <- build_header(bib_string = bib_string, hw, ...)
-  
+  hw <- 2
   # Check if Homework file exists
   base_url <- paste0("https://raw.githubusercontent.com/elmstedt/stats20_homework/master/hw", hw, "/")
-  
   manifest <- try(read.csv(paste0(base_url, "manifest")), silent = TRUE)
   
   
@@ -101,13 +100,19 @@ build_homework_file <- function(path, ...) {
     hw_body <- gsub("\n\n+", "\n\n", paste(body_parts, collapse = "\n"))
     
     aux_mani <- manifest[manifest[["dir"]] != "body", ]
-    aux_dir <- trimws(aux_mani[["dir"]])
-    aux_file <- trimws(aux_mani[["file"]])
-    dl_files <- paste(base_url, paste(aux_dir, aux_file, sep = "/"), sep = "/")
-    for (i in seq_along(dl_files)) {
-      download.file(dl_files[[i]],
-                    file.path(path, aux_dir[[i]], aux_file[[i]]),
-                    mode = "wb")
+    if (nrow(aux_mani)) {
+      aux_dir <- trimws(aux_mani[["dir"]])
+      aux_file <- trimws(aux_mani[["file"]])
+      dl_files <- paste(base_url,
+                        paste(aux_dir, aux_file, sep = "/"),
+                        sep = "/")
+      for (i in seq_along(dl_files)) {
+        download.file(dl_files[[i]],
+                      file.path(path,
+                                aux_dir[[i]],
+                                aux_file[[i]]),
+                      mode = "wb")
+      }
     }
   }
   hw_text <- c(my_yaml, hw_body)
