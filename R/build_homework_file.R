@@ -59,7 +59,6 @@ build_homework_file <- function(path, ...) {
 
   # Make custom YAML header  
   my_yaml <- build_header(bib_string = bib_string, hw, ...)
-  hw <- 2
   # Check if Homework file exists
   base_url <- paste0("https://raw.githubusercontent.com/elmstedt/stats20_homework/master/hw", hw, "/")
   manifest <- try(read.csv(paste0(base_url, "manifest")), silent = TRUE)
