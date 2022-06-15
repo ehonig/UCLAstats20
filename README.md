@@ -7,12 +7,15 @@ This package contains interactive versions of the course notes written by Dr. Mi
 
 **NOTE:** Windows users will need to install `R tools` from: https://cran.r-project.org/bin/windows/Rtools/ before installing the `devtools` package.
 
-<!--Either run the commands:-->
+Run the following code in your R console:
 ```
 install.packages("devtools")
 library(devtools)
 install_github("ehonig/UCLAstats20")
 ```
+
+Note that you only need to perform this installation step once.
+
 <!--Or download the file: `UCLAstats20_1.0.tar.gz` and run the command:
 ```
 install.packages("<PATH TO FILE>/UCLAstats20_1.0.tar.gz", repos = NULL, type = "source")
@@ -64,11 +67,19 @@ Name your file something meaningful e.g. `123456789_stats20_hw1` where `12345678
 This will create a new directory named `123456789_stats20_hw1` containing the required files. You should then, immediately, do:
 `File` > `New Project` > `Existing Directory` and select the newly created directory, e.g. `123456789_stats20_hw1`. -->
 
-## Course Notes
+## Accessing Interactive Course Notes
 
-After loading the library, type `notes(#)` where the `#` is replaced with the number corresponding to the chapter number you want to see. Current chapters are 1-11.
+In the R console, first load the package by using the command `library(UCLAstats20)`. Then, run the command `notes(#)` where the `#` is replaced with the number corresponding to the chapter number you want to see. Current chapters are 1-11.
 
 This will launch a local shiny app with the course notes and interactive R code environments.
+
+For example:
+```
+library(UCLAstats20)
+notes(1)
+```
+
+Note that you only need to load the package once per R session to access the `notes()` function. This means that every new session you will need to re-load the package, but also that you only need to load it once per session.
 
 ## Copyright Notice
 
@@ -76,4 +87,4 @@ The contents of the course notes are the copyright of Dr Michael Tsiang.
 
 ## Contributor Credits
 
-To my knowledge, this package was originally created by (Jake Elmstedt)[https://github.com/elmstedt] with help from (Ethan Allavarpu)[https://sites.google.com/view/ethan-allavarpu/].
+To my knowledge, this package was originally created by Jake Elmstedt and Michael Tsiang with help from Ethan Allavarpu.
