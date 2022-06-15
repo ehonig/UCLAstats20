@@ -7,15 +7,14 @@ Author@R: c(
   person("Michael", "Tsiang", email = "michael.tsiang@stat.ucla.edu", role = c("aut", "cre")),
   person("Ethan", "Allavarpu", email = "ethanallavarpu@ucla.edu", role = c("ctb")))
 Maintainer: Jake Elmstedt <jake.elmstedt@gmail.com>
-Description: Two custom html_document templates for creating homework templates
-    to use in Stats 20: Introduction to Statistical Programming with R course at
-    UCLA.
+Description: Interactive Notes for use in the UCLA course
+  STATS 20: Introduction to Statistical Programming with R.
 License: MIT
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.0)
 Imports: learnr, shiny, styler, withr, rmarkdown, RCurl
 RoxygenNote: 7.1.1
-Suggests: 
+Suggests:
     knitr
 VignetteBuilder: knitr

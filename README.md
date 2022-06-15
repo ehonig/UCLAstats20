@@ -1,8 +1,7 @@
 # UCLAstats20
-This is an R package for use in Stats 20 at UCLA.
-It has two main functions:
-1. It provides two templates for homework.
-2. It contains interactive versions of the course notes written by Dr Michael Tsiang.
+This is an R package for use in Stats 20 at UCLA. The contentS were last updated in 2020 Fall.
+
+This package contains interactive versions of the course notes written by Dr. Michael Tsiang.
 
 ## Installation
 
@@ -12,7 +11,7 @@ It has two main functions:
 ```
 install.packages("devtools")
 library(devtools)
-install_github("elmstedt/UCLAstats20")
+install_github("ehonig/UCLAstats20")
 ```
 <!--Or download the file: `UCLAstats20_1.0.tar.gz` and run the command:
 ```
@@ -20,7 +19,7 @@ install.packages("<PATH TO FILE>/UCLAstats20_1.0.tar.gz", repos = NULL, type = "
 ```
 replacing `<PATH TO FILE>` with the location where you saved the file.-->
 
-## Use
+<!-- ## Use
 Before you can access the templates, you may need to "restart"  R. You can do this from the top menu bar with **Session > Retart R**, or with the keyboard shortcuts **Ctrl+Shift+F10** (PC/Linux) or **Cmd+Shift+F10** (OSX). **NOTE:** If you are on a laptop or using a keyboard without a dedicated row of function keys above the number keys (typically you may have combined function and media keys, volume up, down, mute, etc.) you'll often have a **`fn`** key located somewhere (often in the lower left corner of the keyboard). You'll need to press this key in conjunction with the above key combination.
 
 ### Homework Templates
@@ -63,9 +62,9 @@ Individual template files can be created by:
 Name your file something meaningful e.g. `123456789_stats20_hw1` where `123456789` is replaced with your University ID.
 
 This will create a new directory named `123456789_stats20_hw1` containing the required files. You should then, immediately, do:
-`File` > `New Project` > `Existing Directory` and select the newly created directory, e.g. `123456789_stats20_hw1`.
+`File` > `New Project` > `Existing Directory` and select the newly created directory, e.g. `123456789_stats20_hw1`. -->
 
-### Course Notes
+## Course Notes
 
 After loading the library, type `notes(#)` where the `#` is replaced with the number corresponding to the chapter number you want to see. Current chapters are 1-11.
 
@@ -74,3 +73,7 @@ This will launch a local shiny app with the course notes and interactive R code 
 ## Copyright Notice
 
 The contents of the course notes are the copyright of Dr Michael Tsiang.
+
+## Contributor Credits
+
+To my knowledge, this package was originally created by (Jake Elmstedt)[https://github.com/elmstedt] with help from (Ethan Allavarpu)[https://sites.google.com/view/ethan-allavarpu/].
